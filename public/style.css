@@ -1,0 +1,100 @@
+/* Professional Islamic Theme */
+:root {
+    --primary-green: #1b5e20;
+    --light-green: #e8f5e9;
+    --gold: #d4af37;
+    --white: #ffffff;
+    --text-dark: #333;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f9fbf9;
+    margin: 0;
+    color: var(--text-dark);
+}
+
+header {
+    background: linear-gradient(rgba(27, 94, 32, 0.9), rgba(27, 94, 32, 0.9)), 
+                url('https://www.transparenttextures.com/patterns/arabesque.png');
+    color: var(--white);
+    padding: 60px 20px;
+    text-align: center;
+    border-bottom: 5px solid var(--gold);
+}
+
+.logo-placeholder {
+    font-size: 50px;
+    margin-bottom: 10px;
+}
+
+h1 { margin: 0; font-size: 2.5rem; }
+
+section {
+    max-width: 800px;
+    margin: 20px auto;
+    background: var(--white);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+h2 {
+    color: var(--primary-green);
+    border-bottom: 2px solid var(--light-green);
+    padding-bottom: 10px;
+}
+
+#times {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 15px;
+}
+
+#times li {
+    background: var(--light-green);
+    padding: 15px;
+    border-radius: 10px;
+    font-weight: bold;
+    border: 1px solid #c8e6c9;
+    transition: transform 0.3s;
+}
+
+#times li:hover {
+    transform: translateY(-5px);
+    border-color: var(--gold);
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background: var(--primary-green);
+    color: white;
+    margin-top: 50px;
+}
+
+a { color: var(--primary-green); font-weight: bold; text-decoration: none; }
+a:hover { color: var(--gold); }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th, td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+
+th {
+    background-color: var(--primary-green);
+    color: white;
+}
+
+tr:hover {
+    background-color: var(--light-green);
+}
