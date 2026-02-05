@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#1b5e20">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masjidul Hasanath | Godamuduna</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --primary: #1b5e20; --secondary: #f4f7f2; --gold: #c5a021; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #fff; color: #333; scroll-behavior: smooth; }
+        
+        /* Navigation */
+        nav { background: var(--primary); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; color: white; }
+        nav a { color: white; text-decoration: none; margin-left: 20px; font-size: 0.9rem; text-transform: uppercase; }
+
+        /* Sections */
+        section { padding: 60px 10%; }
+        .hero { background: var(--primary); color: white; text-align: center; padding: 100px 10%; }
+        .card { background: var(--secondary); padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        
+        /* Prayer Table */
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { color: var(--primary); }
+
+        /* Dua Styling */
+        .dua-box { border-left: 5px solid var(--gold); background: #fff; padding: 20px; margin: 15px 0; border-radius: 0 10px 10px 0; }
+        .arabic { font-size: 1.6rem; display: block; text-align: right; margin-bottom: 10px; color: #000; }
+
+        /* Grid */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        h2 { color: var(--primary); border-bottom: 2px solid var(--gold); display: inline-block; margin-bottom: 30px; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div style="font-size: 1.4rem; font-weight: bold;">🕌 MASJIDUL HASANATH</div>
+    <div>
+        <a href="#prayer">Prayer Times</a>
+        <a href="#duas">Duas</a>
+        <a href="#ramadan">Ramadan</a>
+    </div>
+</nav>
+
+<section class="hero">
+    <h1>Assalamu Alaikum</h1>
+    <p>Official Portal for Masjidul Hasanath, Godamuduna</p>
+    <p id="hijri-date" style="font-size: 1.2rem; color: var(--gold);"></p>
+</section>
+
+<section id="prayer">
+    <h2><i class="fas fa-clock"></i> Prayer Times (Adhan & Iqamah)</h2>
+    <div class="card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Salah</th>
+                    <th>Adhan</th>
+                    <th>Iqamah</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Fajr</td><td>05:00 AM</td><td>05:20 AM</td></tr>
+                <tr><td>Dhuhr</td><td>12:20 PM</td><td>12:45 PM</td></tr>
+                <tr><td>Asr</td><td>03:35 PM</td><td>03:50 PM</td></tr>
+                <tr><td>Maghrib</td><td>06:20 PM</td><td>06:25 PM</td></tr>
+                <tr><td>Isha</td><td>07:35 PM</td><td>07:50 PM</td></tr>
+                <tr style="background: #e8f5e9;"><td>Jummah</td><td>12:20 PM</td><td>12:50 PM</td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section id="duas" style="background: #f9f9f9;">
+    <h2><i class="fas fa-book-open"></i> Essential Duas</h2>
+    
+    <div class="grid">
+        <div class="card">
+            <h3 style="color: var(--primary);"><i class="fas fa-coins"></i> For Wealth & Rizq</h3>
+            <div class="dua-box">
+                <span class="arabic">اللَّهُمَّ اكْفِنِي بِحَلَالِكَ عَنْ حَرَامِكَ</span>
+                <p><strong>Translation:</strong> O Allah, suffice me with what is lawful instead of what is forbidden.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 style="color: var(--primary);"><i class="fas fa-heart"></i> For Mothers & Parents</h3>
+            <div class="dua-box">
+                <span class="arabic">رَبِّ اغْفِرْ لِي وَلِوَالِدَيَّ</span>
+                <p><strong>Translation:</strong> My Lord, forgive me and my parents.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 style="color: var(--primary);"><i class="fas fa-sun"></i> Daily Life</h3>
+            <div class="dua-box">
+                <span class="arabic">بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا</span>
+                <p><strong>Translation:</strong> In Your name, O Allah, I die and I live.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="ramadan">
+    <h2><i class="fas fa-moon"></i> Ramadan 2026 Calendar</h2>
+    <div class="card">
+        <p>Ramadan in 2026 is expected to begin on <strong>February 18th</strong> (depending on moon sighting).</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Day</th>
+                    <th>Sehri Ends</th>
+                    <th>Iftar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Day 1</td><td>04:55 AM</td><td>06:22 PM</td></tr>
+                <tr><td>Day 10</td><td>04:52 AM</td><td>06:24 PM</td></tr>
+                <tr><td>Day 20</td><td>04:48 AM</td><td>06:26 PM</td></tr>
+                <tr><td>Day 30</td><td>04:44 AM</td><td>06:28 PM</td></tr>
+            </tbody>
+        </table>
+        <p style="font-size: 0.8rem; margin-top: 10px; color: #666;">*Times are approximate for Godamuduna region.</p>
+    </div>
+</section>
+
+<footer>
+  <section id="developer" style="background: var(--secondary); border-top: 2px solid var(--gold);">
+    <div style="text-align: center; max-width: 800px; margin: auto;">
+        <h2 style="color: var(--primary);"><i class="fas fa-code"></i> About the Developer</h2>
+        <div class="card" style="background: white; border: 1px solid #ddd;">
+            <p><strong>Assalamu Alaikum! I am Hamad.</strong></p>
+            <p>I spent many hours of hard work learning how to code, design, and deploy this website from scratch. My goal was to create a digital home for <strong>Masjidul Hasanath</strong> so our community in Godamuduna can stay connected to Allah's house from anywhere in the world.</p>
+            <p style="font-style: italic;">"This project was built with patience, late nights, and a desire to serve the Ummah through technology."</p>
+            <div style="margin-top: 20px;">
+                <span style="background: var(--primary); color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.8rem;">HTML5</span>
+                <span style="background: var(--primary); color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.8rem;">CSS3</span>
+                <span style="background: var(--primary); color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.8rem;">JavaScript</span>
+                <span style="background: var(--primary); color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.8rem;">Vercel</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section style="text-align: center; background: #fff;">
+    <h3>Digital Tasbih</h3>
+    <div style="font-size: 3rem; color: var(--primary); font-weight: bold;" id="count">0</div>
+    <button onclick="countUp()" style="background: var(--primary); color: white; border: none; padding: 15px 40px; border-radius: 50px; font-size: 1.2rem; cursor: pointer; margin: 10px;">Count Dhikr</button>
+    <button onclick="resetCount()" style="background: #f44336; color: white; border: none; padding: 10px 20px; border-radius: 50px; cursor: pointer;">Reset</button>
+</section>
+
+<footer>
+    <div style="text-align: center; padding: 60px 20px; background: #1a1a1a; color: white; border-top: 4px solid var(--gold);">
+        <h3 style="color: var(--gold);">MASJIDUL HASANATH</h3>
+        <p>Godamuduna, Sri Lanka</p>
+        <hr style="width: 50px; border: 1px solid var(--gold); margin: 20px auto;">
+        <p style="max-width: 600px; margin: auto; color: #bbb; font-size: 0.9rem;">
+            This website is a voluntary contribution to the mosque. It serves as a platform for prayer times, Islamic learning, and community updates. 
+        </p>
+        <p style="margin-top: 30px; font-weight: bold; letter-spacing: 1px;">
+            Hand-coded with ❤️ by <span style="color: var(--gold);">HAMAD</span>
+        </p>
+        <p style="font-size: 0.7rem; color: #666; margin-top: 10px;">&copy; 2026 All Rights Reserved.</p>
+    </div>
+</footer>
+
+<script>
+    // Tasbih Counter Logic
+    let currentCount = 0;
+    function countUp() {
+        currentCount++;
+        document.getElementById('count').innerText = currentCount;
+    }
+    function resetCount() {
+        currentCount = 0;
+        document.getElementById('count').innerText = currentCount;
+    }
+
+    // Hijri Date Logic
+    const hijriDate = new Intl.DateTimeFormat('en-u-ca-islamic-uma', {day:'numeric', month:'long', year:'numeric'}).format(new Date());
+    document.getElementById('hijri-date').innerText = hijriDate;
+</script>
+
+</body>
+</html>  
