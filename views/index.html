@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masjidul Hasanath | Dua & Learning</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --primary: #2e7d32; --gold: #d4af37; --bg: #fdfdfb; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--bg); color: #333; line-height: 1.6; }
+        nav { background: var(--primary); color: white; padding: 1rem; position: sticky; top: 0; z-index: 1000; display: flex; justify-content: space-between; }
+        nav a { color: white; text-decoration: none; margin-left: 15px; font-weight: 500; }
+        
+        .hero { background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1590076215667-873d31295393?q=80&w=2000'); background-size: cover; height: 40vh; color: white; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        
+        .container { max-width: 1000px; margin: auto; padding: 20px; }
+        
+        /* Dua Search Bar */
+        .search-box { width: 100%; padding: 15px; border-radius: 30px; border: 2px solid var(--primary); font-size: 1rem; margin-bottom: 30px; outline: none; }
+
+        .dua-card { background: white; padding: 25px; border-radius: 15px; margin-bottom: 20px; border-left: 6px solid var(--gold); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .dua-category { display: inline-block; background: #e8f5e9; color: var(--primary); padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; margin-bottom: 10px; }
+        .arabic { font-family: 'Traditional Arabic', serif; font-size: 1.8rem; text-align: right; display: block; margin: 15px 0; color: #222; }
+        .translation { font-style: italic; color: #555; }
+        .benefit { color: var(--primary); font-weight: bold; font-size: 0.9rem; margin-top: 10px; }
+
+        footer { background: #222; color: white; text-align: center; padding: 30px; margin-top: 50px; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div style="font-weight: bold;">🕌 Masjidul Hasanath</div>
+    <div>
+        <a href="#prayer">Prayer</a>
+        <a href="#duas">Duas</a>
+        <a href="#events">Events</a>
+    </div>
+</nav>
+
+<header class="hero">
+    <h1>Supplications (Duas)</h1>
+    <p>Useful Duas for Wealth, Family, and Daily Life</p>
+    <div id="hijri-date" style="color: var(--gold); font-weight: bold;"></div>
+</header>
+
+<div class="container">
+    
+    <section id="duas">
+        <h2 style="text-align: center; color: var(--primary);">Search the Dua Library</h2>
+        <input type="text" id="duaSearch" class="search-box" placeholder="Search for wealth, mother, morning, traveling..." onkeyup="searchDuas()">
+
+        <div id="duaList">
+            <div class="dua-card" data-tags="wealth provision money sustenance">
+                <span class="dua-category">Wealth & Sustenance</span>
+                <h3>Dua for Provision (Rizq)</h3>
+                <span class="arabic">اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا، وَرِزْقًا طَيِّبًا، وَعَمَلًا مُتَقَبَّلًا</span>
+                <p class="translation">"O Allah, I ask You for knowledge that is of benefit, a good provision, and deeds that will be accepted."</p>
+                <p class="benefit">Benefit: Recite after Fajr for barakah in your work and wealth.</p>
+            </div>
+
+            <div class="dua-card" data-tags="parents mother father family">
+                <span class="dua-category">Family</span>
+                <h3>Dua for Parents</h3>
+                <span class="arabic">رَّبِّ ارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا</span>
+                <p class="translation">"My Lord, have mercy upon them as they brought me up [when I was] small."</p>
+                <p class="benefit">Benefit: A Quranic prayer for the lifelong well-being of your mother and father.</p>
+            </div>
+
+            <div class="dua-card" data-tags="anxiety stress daily life worry">
+                <span class="dua-category">Daily Life</span>
+                <h3>Dua Against Anxiety and Grief</h3>
+                <span class="arabic">اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ، وَالْعَجْزِ وَالْكَسَلِ، وَالْبُخْلِ وَالْجُبْنِ</span>
+                <p class="translation">"O Allah, I seek refuge in You from anxiety and sorrow, weakness and laziness, miserliness and cowardice..."</p>
+                <p class="benefit">Benefit: Perfect for daily stress and staying productive.</p>
+            </div>
+
+            </div>
+    </section>
+</div>
+
+<footer>
+    <p>&copy; 2026 Masjidul Hasanath - Godamuduna</p>
+    <p>Powered by Faith | Created by Hamad</p>
+</footer>
+
+<script>
+    // Search Functionality
+    function searchDuas() {
+        let input = document.getElementById('duaSearch').value.toLowerCase();
+        let cards = document.getElementsByClassName('dua-card');
+        
+        for (let i = 0; i < cards.length; i++) {
+            let tags = cards[i].getAttribute('data-tags');
+            if (tags.includes(input)) {
+                cards[i].style.display = "";
+            } else {
+                cards[i].style.display = "none";
+            }
+        }
+    }
+
+    // Hijri Date
+    const date = new Intl.DateTimeFormat('en-u-ca-islamic-uma', {day:'numeric', month:'long', year:'numeric'}).format(new Date());
+    document.getElementById('hijri-date').innerText = date;
+</script>
+
+</body>
+</html>
