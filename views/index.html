@@ -1,201 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Masjidul Hasanath | Godamuduna</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masjidul Hasanath Super-App</title>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#1b5e20">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --primary: #1b5e20; --gold: #c5a021; --light: #f4f7f2; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 80px; background: #fff; transition: 0.3s; }
+        header { background: var(--primary); color: white; padding: 15px; text-align: center; border-radius: 0 0 20px 20px; }
+        
+        .lang-bar { background: #f0f0f0; padding: 10px; overflow-x: auto; white-space: nowrap; display: flex; gap: 8px; border-bottom: 1px solid #ddd; }
+        .lang-btn { background: white; border: 1px solid #ccc; padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; cursor: pointer; transition: 0.2s; }
+        .lang-btn.active { background: var(--gold); color: white; border-color: var(--gold); }
 
-<!-- PWA Manifest -->
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#1b5e20">
+        .content-section { display: none; padding: 20px; animation: fadeIn 0.4s; }
+        .active-section { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-<!-- Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        .card { background: var(--light); padding: 20px; border-radius: 15px; margin-bottom: 15px; border-left: 5px solid var(--gold); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .btn { background: var(--primary); color: white; border: none; padding: 12px; border-radius: 10px; width: 100%; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .arabic { font-size: 1.8rem; text-align: right; display: block; margin: 10px 0; font-family: 'Traditional Arabic', serif; }
 
-<style>
-:root { --primary:#1b5e20; --secondary:#f4f7f2; --gold:#c5a021; }
-body { font-family:'Segoe UI', sans-serif; margin:0; background:#fff; color:#333; scroll-behavior:smooth; }
-
-/* Navigation */
-nav { background: var(--primary); padding: 15px 5%; display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; z-index:1000; color:white; }
-nav a { color:white; text-decoration:none; margin-left:20px; font-size:0.9rem; text-transform:uppercase; }
-
-/* Sections */
-section { padding: 60px 10%; }
-.hero { background: var(--primary); color:white; text-align:center; padding:100px 10%; }
-.card { background: var(--secondary); padding:25px; border-radius:12px; box-shadow:0 4px 6px rgba(0,0,0,0.05); margin-bottom:20px; }
-table { width:100%; border-collapse:collapse; margin-top:15px; }
-th, td { padding:12px; text-align:left; border-bottom:1px solid #ddd; }
-th { color: var(--primary); }
-.dua-box { border-left:5px solid var(--gold); background:#fff; padding:20px; margin:15px 0; border-radius:0 10px 10px 0; }
-.arabic { font-size:1.6rem; display:block; text-align:right; margin-bottom:10px; color:#000; }
-.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:30px; }
-h2 { color: var(--primary); border-bottom:2px solid var(--gold); display:inline-block; margin-bottom:30px; }
-button { cursor:pointer; }
-</style>
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #eee; box-shadow: 0 -3px 15px rgba(0,0,0,0.1); z-index: 9999; }
+        .nav-item { text-align: center; color: #777; font-size: 0.7rem; cursor: pointer; flex: 1; transition: 0.3s; }
+        .nav-item i { font-size: 1.3rem; margin-bottom: 4px; display: block; }
+        .nav-item.active { color: var(--primary); font-weight: bold; }
+    </style>
 </head>
 <body>
 
-<nav>
-<div style="font-size:1.4rem; font-weight:bold;">🕌 MASJIDUL HASANATH</div>
-<div>
-    <a href="#prayer" data-i18n="prayer_times">Prayer Times</a>
-    <a href="#duas" data-i18n="duas">Duas</a>
-    <a href="#ramadan" data-i18n="ramadan">Ramadan</a>
-</div>
-</nav>
+<header>
+    <div style="font-weight: bold; font-size: 1.2rem;" id="site-title">MASJIDUL HASANATH</div>
+    <div id="hijri-date" style="color: var(--gold); font-size: 0.8rem;"></div>
+</header>
 
-<section class="hero">
-<h1 id="greeting">Assalamu Alaikum</h1>
-<p data-i18n="portal_text">Official Portal for Masjidul Hasanath, Godamuduna</p>
-<p id="hijri-date" style="font-size:1.2rem; color:var(--gold);"></p>
+<div class="lang-bar">
+    <button class="lang-btn active" onclick="setLang('en', this)">English</button>
+    <button class="lang-btn" onclick="setLang('si', this)">සිංහල</button>
+    <button class="lang-btn" onclick="setLang('ta', this)">தமிழ்</button>
+    <button class="lang-btn" onclick="setLang('ar', this)">العربية</button>
+    <button class="lang-btn" onclick="setLang('ur', this)">اردو</button>
+</div>
+
+<section id="dua-sec" class="content-section active-section">
+    <h3 id="dua-heading">Daily Duas</h3>
+    <div id="dua-container">Loading...</div>
+    <button class="btn" id="load-more-btn" onclick="renderDuas()">Show More</button>
 </section>
 
-<section id="prayer">
-<h2><i class="fas fa-clock"></i> <span data-i18n="prayer_times">Prayer Times (Adhan & Iqamah)</span></h2>
-<div class="card">
-<table>
-<thead>
-<tr><th data-i18n="salah">Salah</th><th data-i18n="adhan">Adhan</th><th data-i18n="iqamah">Iqamah</th></tr>
-</thead>
-<tbody>
-<tr><td colspan="3" data-i18n="loading">Loading prayer times...</td></tr>
-</tbody>
-</table>
-</div>
+<section id="about-sec" class="content-section">
+    <div class="card" style="text-align: center;">
+        <i class="fas fa-user-circle" style="font-size: 4rem; color: var(--gold);"></i>
+        <h2 id="about-name">Developed by Hamad</h2>
+        <p id="about-bio">Assalamu Alaikum! I am Hamad. I built this platform for Masjidul Hasanath with deep passion and talent. This is a result of hours of hard work to serve the Ummah.</p>
+        <p><strong id="location">Godamuduna, Sri Lanka</strong></p>
+    </div>
 </section>
 
-<section id="duas" style="background:#f9f9f9;">
-<h2><i class="fas fa-book-open"></i> <span data-i18n="essential_duas">Essential Duas</span></h2>
-<div class="grid"></div>
-</section>
-
-<section id="ramadan">
-<h2><i class="fas fa-moon"></i> <span data-i18n="ramadan_calendar">Ramadan 2026 Calendar</span></h2>
-<div class="card" id="ramadan-card"></div>
-</section>
-
-<section id="developer" style="background:var(--secondary); border-top:2px solid var(--gold); padding:60px 10%;">
-<div style="max-width:800px; margin:auto; text-align:center;">
-<h2 style="color:var(--primary);"><i class="fas fa-code"></i> <span data-i18n="about_dev">About the Developer</span></h2>
-<div class="card" style="background:white; border:1px solid #ddd;">
-<p><strong>Assalamu Alaikum! I am Hamad.</strong></p>
-<p data-i18n="dev_text">I spent many hours of hard work learning how to code, design, and deploy this website from scratch. My goal was to create a digital home for Masjidul Hasanath so our community in Godamuduna can stay connected to Allah's house from anywhere in the world.</p>
-<p style="font-style:italic;" data-i18n="dev_quote">"This project was built with patience, late nights, and a desire to serve the Ummah through technology."</p>
-<div style="margin-top:20px;">
-<span style="background:var(--primary); color:white; padding:5px 15px; border-radius:20px; font-size:0.8rem;">HTML5</span>
-<span style="background:var(--primary); color:white; padding:5px 15px; border-radius:20px; font-size:0.8rem;">CSS3</span>
-<span style="background:var(--primary); color:white; padding:5px 15px; border-radius:20px; font-size:0.8rem;">JavaScript</span>
-<span style="background:var(--primary); color:white; padding:5px 15px; border-radius:20px; font-size:0.8rem;">Vercel</span>
+<div class="bottom-nav">
+    <div class="nav-item active" onclick="tab('dua-sec', this)" id="nav-dua"><i class="fas fa-hands-praying"></i>Duas</div>
+    <div class="nav-item" onclick="tab('about-sec', this)" id="nav-about"><i class="fas fa-user-tie"></i>Hamad</div>
 </div>
-</div>
-</div>
-
-<div style="text-align:center; margin-top:40px;">
-<h3 data-i18n="tasbih">Digital Tasbih</h3>
-<div id="count" style="font-size:3rem; color:var(--primary); font-weight:bold;">0</div>
-<button onclick="countUp()" style="background:var(--primary); color:white; border:none; padding:15px 40px; border-radius:50px; font-size:1.2rem; margin:10px;" data-i18n="count_dhikr">Count Dhikr</button>
-<button onclick="resetCount()" style="background:#f44336; color:white; border:none; padding:10px 20px; border-radius:50px;" data-i18n="reset">Reset</button>
-</div>
-</section>
-
-<footer>
-<div style="text-align:center; padding:60px 20px; background:#1a1a1a; color:white; border-top:4px solid var(--gold);">
-<h3 style="color:var(--gold);">MASJIDUL HASANATH</h3>
-<p>Godamuduna, Sri Lanka</p>
-<hr style="width:50px; border:1px solid var(--gold); margin:20px auto;">
-<p style="max-width:600px; margin:auto; color:#bbb; font-size:0.9rem;" data-i18n="footer_text">This website is a voluntary contribution to the mosque. It serves as a platform for prayer times, Islamic learning, and community updates.</p>
-<p style="margin-top:30px; font-weight:bold; letter-spacing:1px;">Hand-coded with ❤️ by <span style="color:var(--gold);">HAMAD</span></p>
-<p style="font-size:0.7rem; color:#666; margin-top:10px;">&copy; 2026 All Rights Reserved.</p>
-</div>
-</footer>
-
-<section style="text-align:center; background:#f4f7f2; padding:20px;">
-<p style="font-size:1rem; color:#1b5e20; font-style:italic;" data-i18n="hardwork_dua">May Allah bless my hard work for the community. Please remember me in your duas. 🤲</p>
-</section>
 
 <script>
-// ------------------ Language Prompt ------------------
-let lang = prompt("Choose your language / اختر لغتك / اختر زبانك: (en/ar/si)", "en");
+    let allDuas = [];
+    let currentIndex = 0;
+    let currentLang = 'en';
 
-// Simple translation object
-const translations = {
-  "en": { prayer_times:"Prayer Times", duas:"Duas", ramadan:"Ramadan", essential_duas:"Essential Duas", greeting:"Assalamu Alaikum", portal_text:"Official Portal for Masjidul Hasanath, Godamuduna", about_dev:"About the Developer", dev_text:"I spent many hours of hard work learning how to code, design, and deploy this website from scratch. My goal was to create a digital home for Masjidul Hasanath so our community in Godamuduna can stay connected to Allah's house from anywhere in the world.", dev_quote:"This project was built with patience, late nights, and a desire to serve the Ummah through technology.", tasbih:"Digital Tasbih", count_dhikr:"Count Dhikr", reset:"Reset", footer_text:"This website is a voluntary contribution to the mosque. It serves as a platform for prayer times, Islamic learning, and community updates.", hardwork_dua:"May Allah bless my hard work for the community. Please remember me in your duas. 🤲", salah:"Salah", adhan:"Adhan", iqamah:"Iqamah", loading:"Loading prayer times...", ramadan_calendar:"Ramadan 2026 Calendar" },
-  "ar": { prayer_times:"مواقيت الصلاة", duas:"الأدعية", ramadan:"رمضان", essential_duas:"الأدعية الأساسية", greeting:"السلام عليكم", portal_text:"البوابة الرسمية لمسجد الحسنات، جودامودونا", about_dev:"عن المطور", dev_text:"لقد قضيت ساعات عديدة في تعلم البرمجة والتصميم ونشر هذا الموقع من الصفر. هدفي هو إنشاء بيت رقمي لمسجد الحسنات ليبقى مجتمعنا في جودامودونا متصلًا ببيت الله من أي مكان في العالم.", dev_quote:"تم بناء هذا المشروع بالصبر والسهر ورغبة في خدمة الأمة من خلال التقنية.", tasbih:"المسبحة الرقمية", count_dhikr:"عد الذكر", reset:"إعادة ضبط", footer_text:"هذا الموقع هو مساهمة طوعية للمسجد. يخدم كمنصة لأوقات الصلاة والتعلم الإسلامي وتحديثات المجتمع.", hardwork_dua:"بارك الله في جهودي من أجل المجتمع. تذكروني في دعائكم. 🤲", salah:"الصلاة", adhan:"الأذان", iqamah:"الإقامة", loading:"جار تحميل أوقات الصلاة...", ramadan_calendar:"تقويم رمضان 2026" },
-  "si": { prayer_times:"ආසල් සහ ඉකාම", duas:"දොආ", ramadan:"රමදාන්", essential_duas:"අවශ්‍ය දොආ", greeting:"අසල්සුඅලයිකුම්", portal_text:"Godamuduna Masjidul Hasanath නිල වෙබ් අඩවිය", about_dev:"සංවර්ධකයා ගැන", dev_text:"මම ගැඹුරු කාලයක් කේත කිරීම, නිර්මාණය සහ වෙබ් අඩවිය ප්‍රකාශ කිරීම ඉගෙන ගත් අතර, Godamuduna ප්‍රජාව ලොව කිසිදු ස්ථානයකින් අල්ලාහ්ගේ ගෘහයට සම්බන්ධ විය හැකිවීමට මෙම ව්‍යාපෘතිය නිර්මාණය කළෙමි.", dev_quote:"මෙම ව්‍යාපෘතිය සෙනහසින්, රාත්‍රීවල රැඳී සහ උපකාරක අවශ්‍යතාවයෙන් නිර්මාණය කරන ලදි.", tasbih:"ඩිජිටල් තස්බීහ්", count_dhikr:"උප්පැන්න ගණන්", reset:"නැවත සකස් කරන්න", footer_text:"මෙම වෙබ් අඩවිය මුස්ලිම් ප්‍රජාවට සිදු කරන ස්වෛරී දායකත්වයකි. මෙය ආසල්, ඉගැන්වීම් සහ ප්‍රජා යාවත්කාලීන කිරීමට උපකාරී වේ.", hardwork_dua:"මගේ දියුණුව සඳහා ඇල්ලාහ්ගේ ආශිර්වාද ලබා දේවා. කරුණාකර මාගේ දොආ වලට මතක් කරන්න. 🤲", salah:"නාමසංඛ්‍යාව", adhan:"ආසල්", iqamah:"ඉකාම", loading:"ආසල් වේලාවන් උඩුගත වෙමින් පවතී...", ramadan_calendar:"රමදාන් 2026 දිනදසුන" }
-};
+    // TRANSLATIONS DICTIONARY
+    const uiTexts = {
+        en: { title: "MASJIDUL HASANATH", duaHead: "Daily Duas", load: "Show More", navDua: "Duas", navAbout: "Hamad", aboutHead: "Developed by Hamad", aboutBio: "Assalamu Alaikum! I am Hamad. I built this platform for Masjidul Hasanath with deep passion and talent. This is a result of hours of hard work to serve the Ummah.", loc: "Godamuduna, Sri Lanka" },
+        si: { title: "මස්ජිදුල් හසනාත්", duaHead: "දිනපතා දුආ", load: "තව පෙන්වන්න", navDua: "දුආ", navAbout: "හමඩ්", aboutHead: "හමඩ් විසින් නිර්මාණය කරන ලදී", aboutBio: "අස්සලාමු අලයිකුම්! මම හමඩ්. මම මෙම පද්ධතිය මස්ජිදුල් හසනාත් වෙනුවෙන් දැඩි උනන්දුවකින් නිර්මාණය කළෙමි. මෙය මුස්ලිම් ප්‍රජාවට සේවය කිරීම සඳහා කළ කැපවීමකි.", loc: "ගොඩමුදුන, ශ්‍රී ලංකාව" },
+        ta: { title: "மஸ்ஜிதுல் ஹஸனாத்", duaHead: "தினசரி துஆக்கள்", load: "மேலும் காட்டவும்", navDua: "துஆக்கள்", navAbout: "ஹமத்", aboutHead: "ஹமத் தயாரித்தார்", aboutBio: "அஸ்ஸலாமு அலைக்கும்! நான் ஹமத். மஸ்ஜிதுல் ஹஸனாத் சமூகத்திற்காக நான் இந்த தளத்தை உருவாக்கினேன். இது ஒரு சிறந்த சேவையாகும்.", loc: "கொடமுதுன, இலங்கை" },
+        ar: { title: "مسجد الحسنات", duaHead: "الأدعية اليومية", load: "عرض المزيد", navDua: "أدعية", navAbout: "حمد", aboutHead: "تم التطوير بواسطة حمد", aboutBio: "السلام عليكم! أنا حمد. لقد بنيت هذه المنصة لمسجد الحسنات بشغف كبير وموهبة. هذا نتيجة عمل شاق لخدمة الأمة.", loc: "جودامودونا، سريلانக்கா" },
+        ur: { title: "مسجد الحسنات", duaHead: "روزانہ کی دعائیں", load: "مزید دکھائیں", navDua: "دعائیں", navAbout: "حمد", aboutHead: "حمد نے تیار کیا", aboutBio: "السلام علیکم! میں حمد ہوں۔ میں نے یہ پلیٹ فارم مسجد الحسنات کے لیے بڑی محنت اور لگن سے بنایا ہے۔", loc: "گوڈاموڈونا، سری لنکا" }
+    };
 
-document.querySelectorAll("[data-i18n]").forEach(el=>{
-  const key = el.getAttribute("data-i18n");
-  if(translations[lang] && translations[lang][key]) el.innerText = translations[lang][key];
-});
-
-// ------------------ Tasbih ------------------
-let currentCount = 0;
-function countUp(){currentCount++; document.getElementById('count').innerText=currentCount;}
-function resetCount(){currentCount=0; document.getElementById('count').innerText=currentCount;}
-
-// ------------------ Hijri Date ------------------
-document.getElementById('hijri-date').innerText = new Intl.DateTimeFormat('en-u-ca-islamic-umalqura',{day:'numeric',month:'long',year:'numeric'}).format(new Date());
-
-// ------------------ Dynamic Prayer Times ------------------
-async function fetchPrayerTimes(){
-    if(navigator.geolocation){
-        navigator.geolocation.getCurrentPosition(async pos=>{
-            const lat = pos.coords.latitude;
-            const lon = pos.coords.longitude;
-            const res = await fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=2`);
-            const data = await res.json();
-            const timings = data.data.timings;
-            const salahList = ["Fajr","Dhuhr","Asr","Maghrib","Isha"];
-            let tableBody = "";
-            salahList.forEach(salah=>{
-                tableBody+=`<tr><td>${translations[lang]["salah"]}</td><td>${timings[salah]}</td><td>${timings[salah]}</td></tr>`;
-            });
-            tableBody+=`<tr style="background:#e8f5e9;"><td>Jummah</td><td>${timings.Dhuhr}</td><td>${timings.Dhuhr}</td></tr>`;
-            document.querySelector("#prayer tbody").innerHTML=tableBody;
-        });
-    } else {
-        document.querySelector("#prayer tbody").innerHTML=`<tr><td colspan="3">Geolocation not supported</td></tr>`;
-    }
-}
-fetchPrayerTimes();
-
-// ------------------ Daily Essential Duas ------------------
-const essentialDuas = [
-  {arabic:"بسم الله الرحمن الرحيم", translation:"In the name of Allah, the Most Gracious, the Most Merciful"},
-  {arabic:"الحمد لله", translation:"All praise is for Allah"},
-  {arabic:"سبحان الله", translation:"Glory be to Allah"},
-  {arabic:"لا إله إلا الله", translation:"There is no god but Allah"},
-  {arabic:"اللهم اغفر لي", translation:"O Allah, forgive me"},
-  {arabic:"ربنا آتنا في الدنيا حسنة", translation:"Our Lord, give us good in this world"},
-  {arabic:"ربنا آتنا في الآخرة حسنة", translation:"Our Lord, give us good in the Hereafter"},
-  {arabic:"اللهم اجعلنا من المتقين", translation:"O Allah, make us among the pious"}
-];
-
-const duaGrid = document.querySelector("#duas .grid");
-essentialDuas.forEach(dua=>{
-    const div = document.createElement("div");
-    div.className="card";
-    div.innerHTML=`<span class="arabic">${dua.arabic}</span><p><strong>Translation:</strong> ${dua.translation}</p>`;
-    duaGrid.appendChild(div);
-});
-
-// ------------------ Notifications ------------------
-if("Notification" in window){
-    Notification.requestPermission().then(p=>{
-        if(p==="granted"){
-            essentialDuas.forEach((dua,i)=>{
-                setTimeout(()=>new Notification("Daily Dua Reminder",{body:`${dua.arabic} - ${dua.translation}`, icon:"icon-192.png"}),i*60000);
-            });
+    async function loadData() {
+        try {
+            const res = await fetch('duas.json');
+            allDuas = await res.json();
+            updateUI();
+        } catch (e) {
+            document.getElementById('dua-container').innerHTML = 'Please upload duas.json to GitHub.';
         }
-    });
-}
+    }
 
-// ------------------ PWA Service Worker ------------------
-if('serviceWorker' in navigator){
-    navigator.serviceWorker.register('sw.js').then(reg=>console.log('SW registered',reg)).catch(err=>console.log('SW failed',err));
-}
+    function updateUI() {
+        const t = uiTexts[currentLang] || uiTexts.en;
+        document.getElementById('site-title').innerText = t.title;
+        document.getElementById('dua-heading').innerText = t.duaHead;
+        document.getElementById('load-more-btn').innerText = t.load;
+        document.getElementById('nav-dua').innerHTML = `<i class="fas fa-hands-praying"></i>${t.navDua}`;
+        document.getElementById('nav-about').innerHTML = `<i class="fas fa-user-tie"></i>${t.navAbout}`;
+        document.getElementById('about-name').innerText = t.aboutHead;
+        document.getElementById('about-bio').innerText = t.aboutBio;
+        document.getElementById('location').innerText = t.loc;
+        
+        document.getElementById('dua-container').innerHTML = '';
+        currentIndex = 0;
+        renderDuas();
+    }
+
+    function renderDuas() {
+        const container = document.getElementById('dua-container');
+        const batch = allDuas.slice(currentIndex, currentIndex + 10);
+        batch.forEach(d => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `<span class="arabic">${d.ar}</span><p>${d[currentLang] || d.en}</p>`;
+            container.appendChild(card);
+        });
+        currentIndex += 10;
+        document.getElementById('load-more-btn').style.display = currentIndex >= allDuas.length ? 'none' : 'block';
+    }
+
+    function setLang(lang, btn) {
+        currentLang = lang;
+        document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        updateUI();
+    }
+
+    function tab(id, el) {
+        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active-section'));
+        document.getElementById(id).classList.add('active-section');
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        el.classList.add('active');
+    }
+
+    loadData();
+    const hijri = new Intl.DateTimeFormat('en-u-ca-islamic-uma', {day:'numeric', month:'long', year:'numeric'}).format(new Date());
+    document.getElementById('hijri-date').innerText = hijri;
 </script>
 </body>
 </html>
