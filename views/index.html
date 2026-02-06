@@ -1,140 +1,221 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masjidul Hasanath Super-App</title>
-    <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#1b5e20">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        :root { --primary: #1b5e20; --gold: #c5a021; --light: #f4f7f2; }
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 80px; background: #fff; transition: 0.3s; }
-        header { background: var(--primary); color: white; padding: 15px; text-align: center; border-radius: 0 0 20px 20px; }
-        
-        .lang-bar { background: #f0f0f0; padding: 10px; overflow-x: auto; white-space: nowrap; display: flex; gap: 8px; border-bottom: 1px solid #ddd; }
-        .lang-btn { background: white; border: 1px solid #ccc; padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; cursor: pointer; transition: 0.2s; }
-        .lang-btn.active { background: var(--gold); color: white; border-color: var(--gold); }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Masjidul Hasanath Super-App</title>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#1b5e20">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+:root { --primary: #1b5e20; --gold: #c5a021; --light: #f4f7f2; }
+body { font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 80px; background: #fff; transition: 0.3s; }
+header { background: var(--primary); color: white; padding: 15px; text-align: center; border-radius: 0 0 20px 20px; }
 
-        .content-section { display: none; padding: 20px; animation: fadeIn 0.4s; }
-        .active-section { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.lang-bar { background: #f0f0f0; padding: 10px; overflow-x: auto; white-space: nowrap; display: flex; gap: 8px; border-bottom: 1px solid #ddd; }
+.lang-btn { background: white; border: 1px solid #ccc; padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; cursor: pointer; transition: 0.2s; }
+.lang-btn.active { background: var(--gold); color: white; border-color: var(--gold); }
 
-        .card { background: var(--light); padding: 20px; border-radius: 15px; margin-bottom: 15px; border-left: 5px solid var(--gold); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .btn { background: var(--primary); color: white; border: none; padding: 12px; border-radius: 10px; width: 100%; font-weight: bold; cursor: pointer; margin-top: 10px; }
-        .arabic { font-size: 1.8rem; text-align: right; display: block; margin: 10px 0; font-family: 'Traditional Arabic', serif; }
+.content-section { display: none; padding: 20px; animation: fadeIn 0.4s; }
+.active-section { display: block; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #eee; box-shadow: 0 -3px 15px rgba(0,0,0,0.1); z-index: 9999; }
-        .nav-item { text-align: center; color: #777; font-size: 0.7rem; cursor: pointer; flex: 1; transition: 0.3s; }
-        .nav-item i { font-size: 1.3rem; margin-bottom: 4px; display: block; }
-        .nav-item.active { color: var(--primary); font-weight: bold; }
-    </style>
+.card { background: var(--light); padding: 20px; border-radius: 15px; margin-bottom: 15px; border-left: 5px solid var(--gold); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+.btn { background: var(--primary); color: white; border: none; padding: 12px; border-radius: 10px; width: 100%; font-weight: bold; cursor: pointer; margin-top: 10px; }
+.arabic { font-size: 1.8rem; text-align: right; display: block; margin: 10px 0; font-family: 'Traditional Arabic', serif; }
+
+.bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #eee; box-shadow: 0 -3px 15px rgba(0,0,0,0.1); z-index: 9999; }
+.nav-item { text-align: center; color: #777; font-size: 0.7rem; cursor: pointer; flex: 1; transition: 0.3s; }
+.nav-item i { font-size: 1.3rem; margin-bottom: 4px; display: block; }
+.nav-item.active { color: var(--primary); font-weight: bold; }
+
+/* Modal for initial language & location selection */
+#setup-modal { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); display:flex; align-items:center; justify-content:center; z-index:10000; }
+#setup-content { background:white; padding:30px; border-radius:20px; width:90%; max-width:400px; text-align:center; }
+#setup-content h2 { margin-bottom:15px; }
+#setup-content select, #setup-content button { padding:10px; margin:10px 0; width:80%; font-size:1rem; }
+</style>
 </head>
 <body>
 
 <header>
-    <div style="font-weight: bold; font-size: 1.2rem;" id="site-title">MASJIDUL HASANATH</div>
-    <div id="hijri-date" style="color: var(--gold); font-size: 0.8rem;"></div>
+    <div id="site-title" style="font-weight:bold;font-size:1.2rem;">MASJIDUL HASANATH</div>
+    <div id="hijri-date" style="color: var(--gold); font-size:0.8rem;"></div>
 </header>
 
-<div class="lang-bar">
-    <button class="lang-btn active" onclick="setLang('en', this)">English</button>
-    <button class="lang-btn" onclick="setLang('si', this)">සිංහල</button>
-    <button class="lang-btn" onclick="setLang('ta', this)">தமிழ்</button>
-    <button class="lang-btn" onclick="setLang('ar', this)">العربية</button>
-    <button class="lang-btn" onclick="setLang('ur', this)">اردو</button>
-</div>
+<!-- Language Bar -->
+<div class="lang-bar" id="lang-bar"></div>
 
-<section id="dua-sec" class="content-section active-section">
+<!-- Sections -->
+<section id="prayer-sec" class="content-section active-section">
+    <h3 id="prayer-heading">Prayer Times</h3>
+    <div id="prayer-container">Loading...</div>
+</section>
+
+<section id="qibla-sec" class="content-section">
+    <h3 id="qibla-heading">Qibla Direction</h3>
+    <div id="qibla-container" style="text-align:center; font-size:2rem;">🧭 Loading...</div>
+</section>
+
+<section id="dua-sec" class="content-section">
     <h3 id="dua-heading">Daily Duas</h3>
     <div id="dua-container">Loading...</div>
     <button class="btn" id="load-more-btn" onclick="renderDuas()">Show More</button>
 </section>
 
+<section id="learning-sec" class="content-section">
+    <h3 id="learning-heading">Islamic Learning</h3>
+    <div class="card">Interactive Quran (Offline Reading)</div>
+    <div class="card">Hadith Explorer</div>
+    <div class="card">Prophets' Stories & Lessons</div>
+</section>
+
+<section id="mosque-sec" class="content-section">
+    <h3 id="mosque-heading">Nearby Mosques</h3>
+    <div class="card" id="mosque-container">Loading nearby mosques...</div>
+</section>
+
 <section id="about-sec" class="content-section">
-    <div class="card" style="text-align: center;">
-        <i class="fas fa-user-circle" style="font-size: 4rem; color: var(--gold);"></i>
+    <div class="card" style="text-align:center;">
+        <i class="fas fa-user-circle" style="font-size:4rem;color:var(--gold);"></i>
         <h2 id="about-name">Developed by Hamad</h2>
-        <p id="about-bio">Assalamu Alaikum! I am Hamad. I built this platform for Masjidul Hasanath with deep passion and talent. This is a result of hours of hard work to serve the Ummah.</p>
+        <p id="about-bio">Assalamu Alaikum! I built this platform for Masjidul Hasanath.</p>
         <p><strong id="location">Godamuduna, Sri Lanka</strong></p>
     </div>
 </section>
 
+<!-- Bottom Navigation -->
 <div class="bottom-nav">
-    <div class="nav-item active" onclick="tab('dua-sec', this)" id="nav-dua"><i class="fas fa-hands-praying"></i>Duas</div>
-    <div class="nav-item" onclick="tab('about-sec', this)" id="nav-about"><i class="fas fa-user-tie"></i>Hamad</div>
+    <div class="nav-item active" onclick="tab('prayer-sec', this)"><i class="fas fa-mosque"></i>Prayer</div>
+    <div class="nav-item" onclick="tab('qibla-sec', this)"><i class="fas fa-compass"></i>Qibla</div>
+    <div class="nav-item" onclick="tab('dua-sec', this)"><i class="fas fa-hands-praying"></i>Duas</div>
+    <div class="nav-item" onclick="tab('learning-sec', this)"><i class="fas fa-book"></i>Learn</div>
+    <div class="nav-item" onclick="tab('mosque-sec', this)"><i class="fas fa-map-marker-alt"></i>Mosques</div>
+    <div class="nav-item" onclick="tab('about-sec', this)"><i class="fas fa-user-tie"></i>About</div>
+</div>
+
+<!-- Setup Modal -->
+<div id="setup-modal">
+    <div id="setup-content">
+        <h2>Welcome! Setup your app</h2>
+        <label>Select Language:</label>
+        <select id="lang-select">
+            <option value="en">English</option>
+            <option value="si">සිංහල</option>
+            <option value="ta">தமிழ்</option>
+            <option value="ar">العربية</option>
+            <option value="ur">اردو</option>
+        </select>
+        <br>
+        <button onclick="initApp()">Continue</button>
+    </div>
 </div>
 
 <script>
-    let allDuas = [];
-    let currentIndex = 0;
-    let currentLang = 'en';
+let currentLang = 'en';
+let allDuas = [];
+let currentIndex = 0;
 
-    // TRANSLATIONS DICTIONARY
-    const uiTexts = {
-        en: { title: "MASJIDUL HASANATH", duaHead: "Daily Duas", load: "Show More", navDua: "Duas", navAbout: "Hamad", aboutHead: "Developed by Hamad", aboutBio: "Assalamu Alaikum! I am Hamad. I built this platform for Masjidul Hasanath with deep passion and talent. This is a result of hours of hard work to serve the Ummah.", loc: "Godamuduna, Sri Lanka" },
-        si: { title: "මස්ජිදුල් හසනාත්", duaHead: "දිනපතා දුආ", load: "තව පෙන්වන්න", navDua: "දුආ", navAbout: "හමඩ්", aboutHead: "හමඩ් විසින් නිර්මාණය කරන ලදී", aboutBio: "අස්සලාමු අලයිකුම්! මම හමඩ්. මම මෙම පද්ධතිය මස්ජිදුල් හසනාත් වෙනුවෙන් දැඩි උනන්දුවකින් නිර්මාණය කළෙමි. මෙය මුස්ලිම් ප්‍රජාවට සේවය කිරීම සඳහා කළ කැපවීමකි.", loc: "ගොඩමුදුන, ශ්‍රී ලංකාව" },
-        ta: { title: "மஸ்ஜிதுல் ஹஸனாத்", duaHead: "தினசரி துஆக்கள்", load: "மேலும் காட்டவும்", navDua: "துஆக்கள்", navAbout: "ஹமத்", aboutHead: "ஹமத் தயாரித்தார்", aboutBio: "அஸ்ஸலாமு அலைக்கும்! நான் ஹமத். மஸ்ஜிதுல் ஹஸனாத் சமூகத்திற்காக நான் இந்த தளத்தை உருவாக்கினேன். இது ஒரு சிறந்த சேவையாகும்.", loc: "கொடமுதுன, இலங்கை" },
-        ar: { title: "مسجد الحسنات", duaHead: "الأدعية اليومية", load: "عرض المزيد", navDua: "أدعية", navAbout: "حمد", aboutHead: "تم التطوير بواسطة حمد", aboutBio: "السلام عليكم! أنا حمد. لقد بنيت هذه المنصة لمسجد الحسنات بشغف كبير وموهبة. هذا نتيجة عمل شاق لخدمة الأمة.", loc: "جودامودونا، سريلانக்கா" },
-        ur: { title: "مسجد الحسنات", duaHead: "روزانہ کی دعائیں", load: "مزید دکھائیں", navDua: "دعائیں", navAbout: "حمد", aboutHead: "حمد نے تیار کیا", aboutBio: "السلام علیکم! میں حمد ہوں۔ میں نے یہ پلیٹ فارم مسجد الحسنات کے لیے بڑی محنت اور لگن سے بنایا ہے۔", loc: "گوڈاموڈونا، سری لنکا" }
-    };
+// UI Texts
+const uiTexts = {
+    en: {title:"MASJIDUL HASANATH", prayer:"Prayer Times", qibla:"Qibla Direction", dua:"Daily Duas", load:"Show More", learn:"Islamic Learning", mosque:"Nearby Mosques", about:"About"},
+    si: {title:"මස්ජිදුල් හසනාත්", prayer:"ප්‍රාර්ථනා වේලාවන්", qibla:"කිබ්ලා දිශාව", dua:"දිනපතා දුආ", load:"තව පෙන්වන්න", learn:"ඉස්ලාමි අධ්‍යාපනය", mosque:"ලඟම මසජිදු", about:"සම්බන්ධව"},
+    ta: {title:"மஸ்ஜிதுல் ஹஸனாத்", prayer:"ஏலிய நேரங்கள்", qibla:"கிப்லா திசை", dua:"தினசரி துஆக்கள்", load:"மேலும் காட்டவும்", learn:"இஸ்லாமிய கல்வி", mosque:"பக்கமுள்ள மசூதி", about:"பற்றி"},
+    ar: {title:"مسجد الحسنات", prayer:"مواقيت الصلاة", qibla:"اتجاه القبلة", dua:"الأدعية اليومية", load:"عرض المزيد", learn:"التعليم الإسلامي", mosque:"المساجد القريبة", about:"حول"},
+    ur: {title:"مسجد الحسنات", prayer:"نمازی اوقات", qibla:"قبلہ کا رخ", dua:"روزانہ کی دعائیں", load:"مزید دکھائیں", learn:"اسلامی تعلیم", mosque:"قریب کے مساجد", about:"کے بارے میں"}
+};
 
-    async function loadData() {
-        try {
-            const res = await fetch('duas.json');
-            allDuas = await res.json();
-            updateUI();
-        } catch (e) {
-            document.getElementById('dua-container').innerHTML = 'Please upload duas.json to GitHub.';
-        }
-    }
+// Set language and close modal
+function initApp(){
+    currentLang = document.getElementById('lang-select').value;
+    document.getElementById('setup-modal').style.display = 'none';
+    updateUIText();
+    getLocation();
+    loadDuas();
+}
 
-    function updateUI() {
-        const t = uiTexts[currentLang] || uiTexts.en;
-        document.getElementById('site-title').innerText = t.title;
-        document.getElementById('dua-heading').innerText = t.duaHead;
-        document.getElementById('load-more-btn').innerText = t.load;
-        document.getElementById('nav-dua').innerHTML = `<i class="fas fa-hands-praying"></i>${t.navDua}`;
-        document.getElementById('nav-about').innerHTML = `<i class="fas fa-user-tie"></i>${t.navAbout}`;
-        document.getElementById('about-name').innerText = t.aboutHead;
-        document.getElementById('about-bio').innerText = t.aboutBio;
-        document.getElementById('location').innerText = t.loc;
-        
-        document.getElementById('dua-container').innerHTML = '';
-        currentIndex = 0;
-        renderDuas();
-    }
+// Update UI Texts
+function updateUIText(){
+    const t = uiTexts[currentLang];
+    document.getElementById('site-title').innerText = t.title;
+    document.getElementById('prayer-heading').innerText = t.prayer;
+    document.getElementById('qibla-heading').innerText = t.qibla;
+    document.getElementById('dua-heading').innerText = t.dua;
+    document.getElementById('load-more-btn').innerText = t.load;
+    document.getElementById('learning-heading').innerText = t.learn;
+    document.getElementById('mosque-heading').innerText = t.mosque;
+}
 
-    function renderDuas() {
-        const container = document.getElementById('dua-container');
-        const batch = allDuas.slice(currentIndex, currentIndex + 10);
-        batch.forEach(d => {
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.innerHTML = `<span class="arabic">${d.ar}</span><p>${d[currentLang] || d.en}</p>`;
-            container.appendChild(card);
+// Bottom nav tab
+function tab(id, el){
+    document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active-section'));
+    document.getElementById(id).classList.add('active-section');
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    el.classList.add('active');
+}
+
+// Location & Prayer Times
+function getLocation(){
+    if(navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(pos=>{
+            const lat=pos.coords.latitude;
+            const lon=pos.coords.longitude;
+            document.getElementById('location').innerText=`Lat: ${lat.toFixed(2)}, Lon: ${lon.toFixed(2)}`;
+            fetchPrayerTimes(lat, lon);
+            showQibla(lat, lon);
+            showNearbyMosques(lat, lon);
+        },err=>{
+            alert("Location access denied. Default location used.");
         });
-        currentIndex += 10;
-        document.getElementById('load-more-btn').style.display = currentIndex >= allDuas.length ? 'none' : 'block';
-    }
+    }else{alert("Geolocation not supported.");}
+}
 
-    function setLang(lang, btn) {
-        currentLang = lang;
-        document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        updateUI();
-    }
+// Fake prayer times example (replace with API if desired)
+function fetchPrayerTimes(lat, lon){
+    const container = document.getElementById('prayer-container');
+    const times = ["Fajr: 05:00","Dhuhr: 12:30","Asr: 15:45","Maghrib: 18:20","Isha: 19:45"];
+    container.innerHTML = times.map(t=>`<div class="card">${t}</div>`).join('');
+}
 
-    function tab(id, el) {
-        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active-section'));
-        document.getElementById(id).classList.add('active-section');
-        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-        el.classList.add('active');
-    }
+// Qibla direction
+function showQibla(lat, lon){
+    // Using simple compass emoji as placeholder
+    document.getElementById('qibla-container').innerText = "🧭 Point towards Kaaba";
+}
 
-    loadData();
-    const hijri = new Intl.DateTimeFormat('en-u-ca-islamic-uma', {day:'numeric', month:'long', year:'numeric'}).format(new Date());
-    document.getElementById('hijri-date').innerText = hijri;
+// Nearby Mosques (static example, can integrate Google Maps API)
+function showNearbyMosques(lat, lon){
+    const container=document.getElementById('mosque-container');
+    container.innerHTML=`<div>Masjid Al-Falah - 0.5km</div><div>Masjid Al-Noor - 1.2km</div>`;
+}
+
+// Load Duas
+async function loadDuas(){
+    try{
+        const res=await fetch('duas.json');
+        allDuas=await res.json();
+        renderDuas();
+    }catch(e){
+        document.getElementById('dua-container').innerText='Upload duas.json';
+    }
+}
+
+function renderDuas(){
+    const container=document.getElementById('dua-container');
+    const batch=allDuas.slice(currentIndex,currentIndex+10);
+    batch.forEach(d=>{
+        const card=document.createElement('div');
+        card.className='card';
+        card.innerHTML=`<span class="arabic">${d.ar}</span><p>${d[currentLang]||d.en}</p>`;
+        container.appendChild(card);
+    });
+    currentIndex+=10;
+    document.getElementById('load-more-btn').style.display=currentIndex>=allDuas.length?'none':'block';
+}
+
+// Hijri date
+const hijri=new Intl.DateTimeFormat('en-u-ca-islamic-umalqura',{day:'numeric',month:'long',year:'numeric'}).format(new Date());
+document.getElementById('hijri-date').innerText=hijri;
 </script>
 </body>
 </html>
