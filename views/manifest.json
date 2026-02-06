@@ -1,0 +1,22 @@
+{
+  "name": "Masjidul Hasanath",
+  "short_name": "DuaVerse",
+  "description": "Authentic Duas from Quran and Hadith for daily life",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b5e3c",
+  "theme_color": "#0b5e3c",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
