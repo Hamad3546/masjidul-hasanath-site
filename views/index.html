@@ -4,202 +4,234 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Masjidul Hasanath | Official App</title>
-
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
     <style>
-        :root { --primary: #1b5e20; --secondary: #f4f7f2; --gold: #c5a021; --white: #ffffff; }
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #fafafa; color: #333; }
+        :root { --primary: #1b5e20; --gold: #c5a021; --white: #ffffff; --bg: #f4f7f2; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--bg); color: #333; }
         
-        /* LOGIN OVERLAY */
-        #auth-overlay { position: fixed; inset: 0; background: var(--primary); z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; text-align: center; }
-        .auth-card { background: white; padding: 30px; border-radius: 25px; width: 85%; max-width: 350px; color: #333; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        /* Overlays */
+        #init-overlay { position: fixed; inset: 0; background: var(--primary); z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; text-align: center; }
+        .setup-card { background: white; padding: 30px; border-radius: 25px; width: 85%; max-width: 350px; color: #333; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .lang-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 20px 0; }
+        .lang-btn { background: #eee; border: none; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; }
 
-        header { background: var(--primary); padding: 20px; text-align: center; color: white; border-bottom: 5px solid var(--gold); }
-        nav { background: var(--white); display: flex; justify-content: space-around; padding: 15px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.1); flex-wrap: wrap; }
-        nav button { background: none; border: none; color: var(--primary); font-size: 1.2rem; cursor: pointer; padding: 5px; transition: 0.3s; }
+        /* Header & Profile */
+        header { background: var(--primary); padding: 15px 25px; color: white; display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid var(--gold); }
+        .profile-area { display: flex; align-items: center; gap: 10px; }
+        .user-pic { width: 38px; height: 38px; border-radius: 50%; border: 2px solid var(--gold); background: #eee; object-fit: cover; }
+        
+        nav { background: white; display: flex; justify-content: space-around; padding: 12px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        nav button { background: none; border: none; color: var(--primary); font-size: 1.3rem; cursor: pointer; transition: 0.2s; }
         nav button.active { color: var(--gold); transform: scale(1.1); }
 
-        section { padding: 30px 6%; display: none; animation: fadeIn 0.4s ease; }
+        section { padding: 25px 6%; display: none; animation: fadeIn 0.4s ease; }
         section.active { display: block; }
-        .card { background: var(--white); border-radius: 20px; padding: 20px; margin-bottom: 20px; border: 1px solid #eee; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .card { background: white; border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
 
-        /* MOOD DUA */
-        .arabic-text { font-size: 2.2rem; font-weight: bold; color: #000; text-align: center; display: block; line-height: 1.6; }
+        /* Chatbot UI */
+        #chat-msgs { height: 420px; overflow-y: auto; background: #e5ddd5; padding: 15px; border-radius: 15px; display: flex; flex-direction: column; gap: 10px; }
+        .msg { padding: 12px 16px; border-radius: 18px; max-width: 85%; font-size: 0.95rem; line-height: 1.5; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+        .msg.bot { background: white; align-self: flex-start; border-bottom-left-radius: 2px; color: #111; }
+        .msg.user { background: #dcf8c6; align-self: flex-end; border-bottom-right-radius: 2px; color: #111; }
 
-        /* SALAH GUIDE STYLES */
-        .salah-step { border-left: 4px solid var(--gold); padding-left: 15px; margin-bottom: 25px; }
-        .salah-arabic { font-size: 1.6rem; color: var(--primary); font-weight: bold; display: block; margin: 10px 0; text-align: right; }
-        .transliteration { font-style: italic; color: #666; font-size: 0.9rem; display: block; margin-bottom: 5px; }
-
-        /* CHATBOT */
-        #chat-msgs { height: 300px; overflow-y: auto; background: #e5ddd5; padding: 15px; border-radius: 15px; display: flex; flex-direction: column; }
-        .msg { margin-bottom: 10px; padding: 10px; border-radius: 12px; max-width: 80%; }
-        .msg.bot { background: white; align-self: flex-start; }
-        .msg.user { background: #dcf8c6; align-self: flex-end; }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        /* Prayer Guide Icons */
+        .salah-icon { font-size: 1.5rem; color: var(--gold); margin-right: 10px; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .rtl { direction: rtl; text-align: right; }
     </style>
 </head>
 <body>
 
-<div id="auth-overlay">
-    <div class="auth-card">
-        <i class="fas fa-mosque fa-3x" style="color: var(--primary); margin-bottom: 10px;"></i>
-        <h2>Masjidul Hasanath</h2>
-        <div id="g_id_onload" data-client_id="318225024149-0hjour8gpcp0in6l9ksb415ba6aqvn03.apps.googleusercontent.com" data-callback="handleCredentialResponse"></div>
-        <div class="g_id_signin" data-type="standard"></div>
-        <button onclick="bypassLogin()" style="margin-top:15px; background:none; border:none; color:var(--primary); text-decoration:underline; cursor:pointer;">Guest Mode</button>
+<div id="init-overlay">
+    <div class="setup-card" id="lang-screen">
+        <i class="fas fa-language fa-3x" style="color:var(--primary); margin-bottom:10px;"></i>
+        <h3>Welcome</h3>
+        <p>Select your language</p>
+        <div class="lang-grid">
+            <button class="lang-btn" onclick="selectLang('en')">English</button>
+            <button class="lang-btn" onclick="selectLang('ta')">தமிழ்</button>
+            <button class="lang-btn" onclick="selectLang('si')">සිංහල</button>
+            <button class="lang-btn" onclick="selectLang('ar')">العربية</button>
+        </div>
+    </div>
+    <div class="setup-card" id="login-screen" style="display:none;">
+        <h3 style="margin-top:0">Sign in with Google</h3>
+        <p style="font-size:0.9rem; color:#666;">Connect to Godamuduna Community</p>
+        <div id="g_id_onload" data-client_id="318225024149-0hjour8gpcp0in6l9ksb415ba6aqvn03.apps.googleusercontent.com" data-callback="onSignIn"></div>
+        <div class="g_id_signin" data-type="standard" data-shape="pill"></div>
+        <p onclick="onSignIn(null)" style="cursor:pointer; text-decoration:underline; font-size:0.8rem; margin-top:20px; color:var(--primary);">Continue as Guest</p>
     </div>
 </div>
 
-<header><h1>Masjidul Hasanath</h1><p id="hijri-date"></p></header>
+<header>
+    <div><h2 style="margin:0; font-size:1.1rem;">Masjidul Hasanath</h2><small id="hijri-header"></small></div>
+    <div class="profile-area">
+        <span id="user-name" style="font-size:0.8rem; font-weight:bold;">Guest</span>
+        <img id="user-photo" class="user-pic" src="https://ui-avatars.com/api/?name=Guest&background=1b5e20&color=fff" alt="Profile">
+    </div>
+</header>
 
 <nav>
     <button onclick="showSec('home', this)" class="active"><i class="fas fa-home"></i></button>
-    <button onclick="showSec('wellness', this)"><i class="fas fa-heart"></i></button>
     <button onclick="showSec('salah', this)"><i class="fas fa-pray"></i></button>
-    <button onclick="showSec('news', this)"><i class="fas fa-newspaper"></i></button>
-    <button onclick="showSec('ramadan', this)"><i class="fas fa-calendar-alt"></i></button>
+    <button onclick="showSec('ramadan', this)"><i class="fas fa-moon"></i></button>
     <button onclick="showSec('chatbot', this)"><i class="fas fa-robot"></i></button>
     <button onclick="showSec('tasbih', this)"><i class="fas fa-fingerprint"></i></button>
 </nav>
 
 <section id="home" class="active">
-    <div class="card"><h3>Prayer Times</h3><div id="times-list"></div></div>
+    <div class="card">
+        <h3><i class="fas fa-clock" style="color:var(--gold)"></i> Prayer Times</h3>
+        <div id="prayer-display"></div>
+    </div>
 </section>
 
 <section id="salah">
     <h2>How to Pray Properly</h2>
     <div class="card">
-        <div class="salah-step">
-            <strong>1. Niyyah & Takbir</strong>
-            <span class="salah-arabic">اللهُ أَكْبَر</span>
-            <span class="transliteration">Allahu Akbar</span>
-            <small>Allah is the Greatest.</small>
-        </div>
-        <div class="salah-step">
-            <strong>2. Sana (Opening Dua)</strong>
-            <span class="salah-arabic">سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ، وَتَبَارَكَ اسْمُكَ، وَتَعَالَى جَدُّكَ، وَلَا إِلَهَ غَيْرُكَ</span>
-            <span class="transliteration">Subhanaka Allahumma wa bihamdika...</span>
-            <small>Glory be to You, O Allah, and all praises are due to You...</small>
-        </div>
-        <div class="salah-step">
-            <strong>3. Ruku (Bowing)</strong>
-            <span class="salah-arabic">سُبْحَانَ رَبِّيَ الْعَظِيم</span>
-            <span class="transliteration">Subhana Rabbiyal Azeem (3 times)</span>
-            <small>Glory be to my Lord, the Magnificent.</small>
-        </div>
-        <div class="salah-step">
-            <strong>4. Sujud (Prostration)</strong>
-            <span class="salah-arabic">سُبْحَانَ رَبِّيَ الْأَعْلَى</span>
-            <span class="transliteration">Subhana Rabbiyal A'la (3 times)</span>
-            <small>Glory be to my Lord, the Most High.</small>
-        </div>
-        <div class="salah-step">
-            <strong>5. Tashahhud</strong>
-            <span class="salah-arabic">التَّحِيَّاتُ لِلَّهِ وَالصَّلَوَاتُ وَالطَّيِّبَاتُ...</span>
-            <span class="transliteration">At-tahiyyatu lillahi was-salawatu...</span>
-            <small>All greetings, prayers and goodness are for Allah...</small>
-        </div>
+        <p><i class="fas fa-check-circle salah-icon"></i><strong>1. Niyyah:</strong> Pure intention in the heart.</p>
+        <p><i class="fas fa-check-circle salah-icon"></i><strong>2. Takbir:</strong> Allahu Akbar (Hands to ears).</p>
+        <p><i class="fas fa-check-circle salah-icon"></i><strong>3. Ruku:</strong> Bowing down. <i>Subhana Rabbiyal Azeem (3x)</i></p>
+        <p><i class="fas fa-check-circle salah-icon"></i><strong>4. Sujud:</strong> Prostration. <i>Subhana Rabbiyal A'la (3x)</i></p>
+        <p><i class="fas fa-check-circle salah-icon"></i><strong>5. Tasleem:</strong> Turning head right then left.</p>
     </div>
 </section>
 
-<section id="wellness">
-    <h2>Dua for your Mood</h2>
-    <div class="card">
-        <input type="range" min="1" max="5" value="3" class="mood-slider" style="width:100%" oninput="updateMood(this.value)">
-        <h3 id="mood-label" style="text-align:center">Peaceful</h3>
-        <div class="card" style="background:#fffde7">
-            <span class="arabic-text" id="dua-arabic">وَهُوَ مَعَكُمْ أَيْنَ مَا كُنتُمْ</span>
-            <p id="dua-english" style="text-align:center">"And He is with you wherever you are." (57:4)</p>
-        </div>
+<section id="ramadan">
+    <h3>Ramadan 2026 Calendar</h3>
+    <div class="card" style="overflow-x:auto;">
+        <table style="width:100%; text-align:left; border-collapse:collapse; font-size:0.9rem;">
+            <thead><tr style="border-bottom:2px solid var(--primary)"><th>Date</th><th>Sahar End</th><th>Iftar</th></tr></thead>
+            <tbody id="ramadan-rows"></tbody>
+        </table>
     </div>
 </section>
 
 <section id="chatbot">
-    <h2>Ilm AI</h2>
+    <h3>Islamic Ilm AI</h3>
     <div class="card">
-        <div id="chat-msgs"></div>
-        <div style="display:flex; margin-top:10px;">
-            <input type="text" id="chat-input" style="flex:1; border-radius:20px; padding:10px; border:1px solid #ddd;" placeholder="Ask Hamad's AI...">
-            <button onclick="sendChat()" style="background:var(--primary); color:white; border:none; padding:10px 20px; border-radius:20px; margin-left:5px;">Send</button>
+        <div id="chat-msgs">
+            <div class="msg bot">Assalamu Alaikum! I am the Hasanath AI assistant. You can ask me about Prayer, Wudu, Zakat, Fasting, or Islamic history.</div>
+        </div>
+        <div style="display:flex; gap:10px; margin-top:15px;">
+            <input type="text" id="chat-input" placeholder="e.g. How to do Wudu?" style="flex:1; border-radius:20px; border:1px solid #ddd; padding:12px;">
+            <button onclick="sendChat()" style="background:var(--primary); color:white; border:none; padding:12px 22px; border-radius:20px; cursor:pointer;"><i class="fas fa-paper-plane"></i></button>
         </div>
     </div>
 </section>
 
-<section id="news">
-    <h2>Godamuduna News</h2>
-    <div id="news-box" class="card" style="display:none;">
-        <textarea id="news-input" style="width:100%; border-radius:10px; padding:10px;" placeholder="Post news..."></textarea>
-        <button onclick="postNews()" style="width:100%; background:var(--primary); color:white; border:none; padding:10px; margin-top:10px; border-radius:10px;">Post</button>
-    </div>
-    <div id="news-feed"></div>
-</section>
-
-<section id="ramadan">
-    <h2>Ramadan 2026</h2>
-    <div id="ramadan-table" class="card"></div>
-</section>
-
 <section id="tasbih">
-    <h2>Tasbih</h2>
     <div class="card" style="text-align:center">
-        <div id="count" style="font-size:5rem; font-weight:bold; color:var(--primary)">0</div>
-        <button onclick="addCount()" style="width:150px; height:150px; border-radius:50%; background:var(--primary); color:white; font-size:2rem; border:none;">TAP</button>
+        <div id="count" style="font-size:6rem; font-weight:bold; color:var(--primary); margin-bottom:20px;">0</div>
+        <button onclick="addCount()" style="width:160px; height:160px; border-radius:50%; background:var(--primary); color:white; border:none; font-size:2.5rem; box-shadow:0 10px 20px rgba(0,0,0,0.1); cursor:pointer;">TAP</button>
+        <br>
+        <button onclick="resetCount()" style="background:#ff5252; color:white; border:none; padding:10px 25px; border-radius:25px; margin-top:30px; font-weight:bold; cursor:pointer;">RESET COUNTER</button>
     </div>
 </section>
 
-<footer style="text-align:center; padding:40px; background:var(--secondary);">
-    <p><strong>Developed by the Hard Work of HAMAD</strong></p>
+<footer style="text-align:center; padding:30px; color:#999; font-size:0.8rem;">
+    Final Build - Developed with Dedication by Hamad
 </footer>
 
 <script>
-    const moods = {
-        1: { l: "Anxious", a: "إِنَّ مَعَ الْعُسْرِ يُسْرًا", e: "Verily, with hardship comes ease. (94:6)" },
-        2: { l: "Stressed", a: "لَا تُكَلِّفُ نَفْسًا إِلَّا وُسْعَهَا", e: "Allah does not burden a soul beyond its capacity. (2:286)" },
-        3: { l: "Neutral", a: "وَهُوَ مَعَكُمْ أَيْنَ مَا كُنتُمْ", e: "And He is with you wherever you are. (57:4)" },
-        4: { l: "Grateful", a: "لَئِن شَكَرْتُمْ لَأَزِيدَنَّكُمْ", e: "If you are grateful, I will surely increase you. (14:7)" },
-        5: { l: "Joyful", a: "الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ", e: "All praise is due to Allah, Lord of all worlds." }
+    // DATA FROM USER IMAGES
+    const prayerData = { f: "5:09", d: "12:24", a: "3:46", m: "6:19", i: "7:30" };
+    const ramadanTimes = [
+        { date: "19 Feb", sahar: "5:04 AM", iftar: "6:20 PM" },
+        { date: "20 Feb", sahar: "5:04 AM", iftar: "6:21 PM" },
+        { date: "21 Feb", sahar: "5:03 AM", iftar: "6:21 PM" },
+        { date: "22 Feb", sahar: "5:03 AM", iftar: "6:21 PM" },
+        { date: "23 Feb", sahar: "5:03 AM", iftar: "6:21 PM" }
+    ];
+
+    // EXPANDED KNOWLEDGE PACK
+    const knowledgeBase = {
+        "wudu": "Wudu is required before Salah. Wash your hands (3x), mouth (3x), nose (3x), face (3x), arms up to elbows (3x), wipe head (1x), and wash feet up to ankles (3x).",
+        "zakat": "Zakat is the 3rd pillar. It is 2.5% of your savings given to the poor if your wealth is above the Nisab limit for a year.",
+        "fasting": "Fasting (Sawm) is the 4th pillar. We stay away from food, drink, and bad behavior from Dawn (Fajr) until Sunset (Maghrib).",
+        "hajj": "Hajj is the 5th pillar. It is the pilgrimage to the Kaaba in Makkah, performed once in a lifetime by those who are physically and financially able.",
+        "fajr": "Fajr time is at 5:09 AM based on the Godamuduna calendar.",
+        "maghrib": "Maghrib time is at 6:19 PM. Make sure to break your fast on time!",
+        "quran": "The Quran is the Holy Book of Allah, revealed to Prophet Muhammad (PBUH) over 23 years as a guide for all humanity.",
+        "charity": "Sadaqah is voluntary charity. Even a smile is considered Sadaqah in Islam!",
+        "sunnah": "Sunnah refers to the practices, customs, and traditions of Prophet Muhammad (PBUH). Following them brings great reward.",
+        "dua": "Dua is the brain of worship. You can call upon Allah at any time in any language."
     };
 
-    function handleCredentialResponse(r) { document.getElementById('auth-overlay').style.display='none'; initApp(); }
-    function bypassLogin() { document.getElementById('auth-overlay').style.display='none'; initApp(); }
+    function selectLang(l) {
+        if(l==='ar' || l==='ta') document.body.style.direction = (l==='ar') ? 'rtl' : 'ltr';
+        document.getElementById('lang-screen').style.display = 'none';
+        document.getElementById('login-screen').style.display = 'block';
+    }
+
+    function onSignIn(response) {
+        if(response) {
+            const user = JSON.parse(atob(response.credential.split('.')[1]));
+            document.getElementById('user-name').innerText = user.given_name;
+            document.getElementById('user-photo').src = user.picture;
+        }
+        document.getElementById('init-overlay').style.display = 'none';
+        initApp();
+    }
+
+    function initApp() {
+        document.getElementById('hijri-header').innerText = "Ramadan 1447H Incoming";
+        
+        // Load Prayer Times
+        document.getElementById('prayer-display').innerHTML = `
+            <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee;"><span>Fajr</span><strong>${prayerData.f} AM</strong></div>
+            <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee;"><span>Dhuhr</span><strong>${prayerData.d} PM</strong></div>
+            <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee;"><span>Asr</span><strong>${prayerData.a} PM</strong></div>
+            <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee;"><span>Maghrib</span><strong>${prayerData.m} PM</strong></div>
+            <div style="display:flex; justify-content:space-between; padding:10px 0;"><span>Isha</span><strong>${prayerData.i} PM</strong></div>
+        `;
+
+        // Load Ramadan Table
+        let rows = "";
+        ramadanTimes.forEach(r => {
+            rows += `<tr style="border-bottom:1px solid #eee"><td style="padding:10px 0;">${r.date}</td><td>${r.sahar}</td><td>${r.iftar}</td></tr>`;
+        });
+        document.getElementById('ramadan-rows').innerHTML = rows;
+    }
+
+    function sendChat() {
+        const input = document.getElementById('chat-input');
+        const box = document.getElementById('chat-msgs');
+        if(!input.value) return;
+
+        box.innerHTML += `<div class="msg user">${input.value}</div>`;
+        const q = input.value.toLowerCase();
+        input.value = "";
+
+        setTimeout(() => {
+            let reply = "I'm still learning! You can ask me about Wudu, Zakat, Hajj, or specific prayer times.";
+            
+            // Search Knowledge Base
+            for (let key in knowledgeBase) {
+                if(q.includes(key)) { reply = knowledgeBase[key]; break; }
+            }
+            
+            if(q.includes("hamad")) reply = "Hamad is the talented developer who built this app and AI for the community!";
+            if(q.includes("hi") || q.includes("hello")) reply = "Assalamu Alaikum! How can I help you today?";
+
+            box.innerHTML += `<div class="msg bot">${reply}</div>`;
+            box.scrollTop = box.scrollHeight;
+        }, 600);
+    }
+
     function showSec(id, btn) {
         document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
         document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         btn.classList.add('active');
+        window.scrollTo(0,0);
     }
-    function updateMood(v) {
-        document.getElementById('mood-label').innerText = moods[v].l;
-        document.getElementById('dua-arabic').innerText = moods[v].a;
-        document.getElementById('dua-english').innerText = moods[v].e;
-    }
-    function initApp() {
-        document.getElementById('hijri-date').innerText = new Intl.DateTimeFormat('en-u-ca-islamic-umalqura', {day:'numeric', month:'long', year:'numeric'}).format(new Date());
-        if (navigator.geolocation) { navigator.geolocation.getCurrentPosition(() => { document.getElementById('news-box').style.display = 'block'; }); }
-        let times = ["Fajr: 05:00 AM", "Dhuhr: 12:20 PM", "Asr: 03:35 PM", "Maghrib: 06:22 PM", "Isha: 07:45 PM"];
-        document.getElementById('times-list').innerHTML = times.map(t => `<p>${t}</p>`).join('');
-    }
-    function sendChat() {
-        let i = document.getElementById('chat-input');
-        let m = document.getElementById('chat-msgs');
-        if(!i.value) return;
-        m.innerHTML += `<div class="msg user">${i.value}</div>`;
-        setTimeout(() => { m.innerHTML += `<div class="msg bot">Hamad worked very hard to build this app for Godamuduna!</div>`; m.scrollTop = m.scrollHeight; }, 600);
-        i.value = "";
-    }
+
     let count = 0;
-    function addCount() { count++; document.getElementById('count').innerText = count; }
-    function postNews() {
-        let t = document.getElementById('news-input');
-        if(!t.value) return;
-        let f = document.getElementById('news-feed');
-        f.innerHTML = `<div class="card"><small>Verified Resident</small><p>${t.value}</p></div>` + f.innerHTML;
-        t.value = "";
-    }
+    function addCount() { count++; document.getElementById('count').innerText = count; if(navigator.vibrate) navigator.vibrate(30); }
+    function resetCount() { count = 0; document.getElementById('count').innerText = 0; }
 </script>
 </body>
 </html>
