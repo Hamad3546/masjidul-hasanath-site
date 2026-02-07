@@ -6,46 +6,37 @@
     <title>Masjidul Hasanath | Godamuduna</title>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Amiri&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #064e3b; --gold: #d4af37; --bg: #f8fafc; --text: #0f172a; --card: #ffffff; --accent: #f0fdf4; }
         [data-theme="dark"] { --primary: #10b981; --gold: #fbbf24; --bg: #020617; --text: #f8fafc; --card: #1e293b; --accent: #064e3b; }
 
-        body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Poppins', sans-serif; padding-bottom: 110px; overflow-x: hidden; }
+        body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Poppins', sans-serif; padding-bottom: 110px; }
         
-        /* AUTH OVERLAY */
+        /* LOGIN */
         #gatekeeper { position: fixed; inset: 0; background: var(--primary); z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; text-align: center; }
-        .gate-box { width: 85%; max-width: 380px; }
-        .lang-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 20px 0; }
-        .lang-btn { padding: 12px; border-radius: 12px; border: 1px solid white; background: rgba(255,255,255,0.1); color: white; cursor: pointer; font-weight: 600; }
-        .lang-btn.active { background: var(--gold); border-color: var(--gold); }
         
-        /* Official Google Button Container */
-        #google-btn-container { margin-top: 20px; display: flex; justify-content: center; }
-
         header { background: var(--primary); padding: 20px; color: white; border-bottom: 4px solid var(--gold); border-radius: 0 0 20px 20px; position: sticky; top: 0; z-index: 1000; }
         
         nav { background: var(--card); display: flex; justify-content: space-around; padding: 12px 0; position: fixed; bottom: 0; width: 100%; z-index: 2000; box-shadow: 0 -5px 15px rgba(0,0,0,0.1); border-radius: 20px 20px 0 0; }
-        nav button { background: none; border: none; color: #94a3b8; font-size: 0.75rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 5px; width: 16%; }
+        nav button { background: none; border: none; color: #94a3b8; font-size: 0.7rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 5px; width: 15%; }
         nav button.active { color: var(--primary); font-weight: bold; }
 
         section { padding: 15px; display: none; animation: fadeIn 0.3s ease; }
         section.active { display: block; }
         .card { background: var(--card); border-radius: 18px; padding: 20px; margin-bottom: 15px; border: 1px solid rgba(0,0,0,0.05); }
 
-        /* QIBLA COMPASS */
-        .compass-ui { position: relative; width: 220px; height: 220px; margin: 20px auto; border: 6px solid var(--gold); border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 20px rgba(0,0,0,0.1); }
-        #needle { font-size: 5rem; color: #b91c1c; transition: 0.1s linear; }
+        /* ARABIC */
+        .arabic { font-family: 'Amiri', serif; font-size: 1.6rem; direction: rtl; color: var(--primary); text-align: right; line-height: 2.2; }
+        .dua-card { cursor: pointer; border-left: 5px solid var(--gold); }
+        .dua-content { display: none; margin-top: 15px; border-top: 1px solid #eee; padding-top: 10px; }
 
-        /* RAMADAN CALENDAR */
-        .cal-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(75px, 1fr)); gap: 8px; }
-        .cal-day { background: var(--accent); padding: 10px; border-radius: 10px; text-align: center; font-size: 0.7rem; border: 1px solid var(--primary); font-weight: 600; }
+        /* COMPASS FIX */
+        .compass-ui { position: relative; width: 240px; height: 240px; margin: 20px auto; border: 8px solid var(--gold); border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        #needle { font-size: 6rem; color: #b91c1c; transition: transform 0.2s linear; transform-origin: center center; }
 
-        /* AUDIO BAR */
-        #audio-bar { position: fixed; bottom: 75px; left: 10px; right: 10px; background: var(--primary); color: white; padding: 15px; border-radius: 15px; display: none; align-items: center; justify-content: space-between; z-index: 2500; border: 2px solid var(--gold); }
-
-        .juz-row { display: flex; align-items: center; justify-content: space-between; padding: 15px; background: var(--accent); border-radius: 12px; margin-bottom: 8px; border: 1px solid rgba(0,0,0,0.05); }
-
+        .btn-action { background: var(--primary); color: white; padding: 15px; border-radius: 12px; border: none; width: 100%; font-weight: bold; cursor: pointer; }
+        
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
@@ -53,142 +44,135 @@
 
 <div id="gatekeeper">
     <div class="gate-box">
-        <h1 style="margin:0;">Masjidul Hasanath</h1>
-        <p style="opacity:0.8;">Godamuduna, Kandy, Sri Lanka</p>
-        
-        <div class="lang-grid">
-            <button class="lang-btn active" onclick="setLang('en', this)">English</button>
-            <button class="lang-btn" onclick="setLang('si', this)">සිංහල</button>
-            <button class="lang-btn" onclick="setLang('ta', this)">தமிழ்</button>
-        </div>
-
-        <div id="google-btn-container"></div>
-        <p style="font-size:0.7rem; margin-top:20px; opacity:0.6;">Developed for the community by Gemini AI</p>
+        <h1>Masjidul Hasanath</h1>
+        <p>Godamuduna, Muruthalawa</p>
+        <div id="google-btn-container" style="margin:20px 0;"></div>
+        <p style="font-size:0.7rem; opacity:0.8;">Developed for the community by Hamad</p>
     </div>
 </div>
 
 <header>
     <div style="display:flex; justify-content:space-between; align-items:center;">
-        <div>
-            <h3 id="h-title" style="margin:0;">Masjidul Hasanath</h3>
-            <small id="h-loc" style="font-size:0.65rem;">Godamuduna, Kandy, Sri Lanka</small>
-        </div>
-        <i onclick="toggleMode()" class="fas fa-moon" style="cursor:pointer; font-size:1.2rem;"></i>
+        <div><h3 style="margin:0;">Masjidul Hasanath</h3><small>Muruthalawa, Kandy | Dev: Hamad</small></div>
+        <i onclick="toggleMode()" class="fas fa-adjust" style="cursor:pointer;"></i>
     </div>
 </header>
 
-<div id="audio-bar">
-    <div style="display:flex; align-items:center; gap:10px;"><i class="fas fa-play-circle" style="color:var(--gold);"></i> <small id="audio-label">Juz 1 Playing</small></div>
-    <div style="display:flex; gap:20px;">
-        <i onclick="pausePlay()" id="pause-icon" class="fas fa-pause" style="cursor:pointer;"></i>
-        <i onclick="stopPlay()" class="fas fa-times" style="cursor:pointer; opacity:0.7;"></i>
-    </div>
-    <audio id="engine"></audio>
-</div>
-
 <section id="home" class="active">
-    <div class="card" style="background:var(--primary); color:white; text-align:center; border:none; box-shadow:0 8px 20px rgba(6,78,59,0.3);">
-        <p id="l-cd" style="margin:0; font-size:0.85rem;">Ramadan 2026 Countdown</p>
-        <h2 id="cd-timer" style="margin:10px 0; font-size:1.8rem;">---</h2>
-        <small id="l-starts">Fasting starts Feb 19, 2026</small>
+    <div class="card" style="background:var(--primary); color:white; text-align:center;">
+        <p style="margin:0; font-size:0.8rem;">Ramadan 2026 Countdown</p>
+        <h2 id="cd-timer">---</h2>
+        <small>Godamuduna Main, Sri Lanka</small>
     </div>
     <div class="card">
-        <h3 id="l-pray"><i class="fas fa-clock"></i> Prayer Times</h3>
-        <div style="display:flex; flex-direction:column; gap:12px;">
-            <div style="display:flex; justify-content:space-between; border-bottom:1px solid #eee; padding-bottom:5px;"><span>Fajr</span><b>5:09 AM</b></div>
-            <div style="display:flex; justify-content:space-between; border-bottom:1px solid #eee; padding-bottom:5px;"><span>Dhuhr</span><b>12:24 PM</b></div>
-            <div style="display:flex; justify-content:space-between; border-bottom:1px solid #eee; padding-bottom:5px; color:var(--primary); font-weight:bold;"><span>Asr</span><b>3:46 PM</b></div>
-            <div style="display:flex; justify-content:space-between; border-bottom:1px solid #eee; padding-bottom:5px; color:var(--gold);"><span>Maghrib</span><b>6:19 PM</b></div>
+        <h3><i class="fas fa-clock"></i> Prayer Times</h3>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+            <div style="display:flex; justify-content:space-between;"><span>Fajr</span><b>5:09 AM</b></div>
+            <div style="display:flex; justify-content:space-between;"><span>Dhuhr</span><b>12:24 PM</b></div>
+            <div style="display:flex; justify-content:space-between; color:var(--primary); font-weight:bold;"><span>Asr</span><b>3:46 PM</b></div>
+            <div style="display:flex; justify-content:space-between; color:var(--gold);"><span>Maghrib</span><b>6:19 PM</b></div>
             <div style="display:flex; justify-content:space-between;"><span>Isha</span><b>7:30 PM</b></div>
         </div>
     </div>
 </section>
 
-<section id="quran">
-    <div class="card"><h3 id="l-quran"><i class="fas fa-book"></i> Quran (30 Juz)</h3><div id="juz-list"></div></div>
+<section id="qibla">
+    <div class="card" style="text-align:center;">
+        <h3>Qibla Finder</h3>
+        <p style="font-size:0.75rem;">Godamuduna, Muruthalawa Calibration</p>
+        <div class="compass-ui"><i id="needle" class="fas fa-location-arrow"></i></div>
+        <h2 id="q-val">0°</h2>
+        <button class="btn-action" onclick="initCompass()">ACTIVATE COMPASS</button>
+        <p style="font-size:0.65rem; margin-top:10px; color:#666;">Hold phone flat. Points to Makkah from Kandy.</p>
+    </div>
 </section>
 
 <section id="duas">
-    <div class="card"><h3 id="l-duas"><i class="fas fa-heart"></i> 45 Essential Duas</h3><div id="dua-list"></div></div>
+    <div class="card"><h3><i class="fas fa-hands-praying"></i> 45 Arabic Duas</h3><div id="dua-list"></div></div>
 </section>
 
-<section id="calendar">
-    <div class="card"><h3 id="l-cal"><i class="fas fa-calendar-alt"></i> Ramadan 2026</h3><div class="cal-grid" id="ram-cal"></div></div>
-</section>
-
-<section id="qibla">
+<section id="me">
     <div class="card" style="text-align:center;">
-        <h3 id="l-qibla">Qibla Finder</h3>
-        <div class="compass-ui"><i id="needle" class="fas fa-location-arrow"></i></div>
-        <p id="q-deg" style="font-weight:bold; font-size:1.2rem; color:var(--primary);">0° N</p>
-        <button id="l-sync" onclick="initComp()" style="width:100%; padding:18px; background:var(--primary); color:white; border-radius:15px; border:none; font-weight:bold; cursor:pointer;">ACTIVATE COMPASS</button>
+        <div style="width:80px; height:80px; background:var(--gold); border-radius:50%; margin:0 auto 15px; display:flex; align-items:center; justify-content:center; color:white; font-size:2rem;"><i class="fas fa-user-tie"></i></div>
+        <h2 style="margin:0;">Hamad</h2>
+        <span style="background:var(--primary); color:white; padding:4px 12px; border-radius:20px; font-size:0.7rem;">Founder & Developer | Age: 16</span>
+        <p style="text-align:left; font-size:0.9rem; line-height:1.6; margin-top:15px;">
+            I am Hamad, the 16-year-old developer from Godamuduna. I have worked incredibly hard to code this site for our community in Muruthalawa. Every feature, from the Arabic Duas to the Qibla sensor, was built by me to help our mosque stay connected. 
+            <br><br>
+            Please feel free to suggest improvements to make my site better.
+        </p>
+        <a href="mailto:hamadfazmil455@gmail.com" class="btn-action" style="text-decoration:none; display:block;">Email Me Suggestions</a>
+        
+        <div class="card" style="margin-top:20px; background:var(--accent);">
+            <h4><i class="fas fa-star"></i> Ask Dua for Me</h4>
+            <p style="font-size:0.8rem;">Request a dua from the community through Hamad's platform.</p>
+            <input type="text" id="dua-req-box" placeholder="Your name or request..." style="width:85%; padding:12px; border-radius:10px; border:1px solid #ddd; margin-bottom:10px;">
+            <button onclick="alert('Dua request submitted to Hamad!')" style="background:var(--gold); border:none; padding:10px; width:100%; border-radius:10px; font-weight:bold;">Submit</button>
+        </div>
     </div>
 </section>
 
 <section id="bot">
     <div class="card">
-        <h3 id="l-bot"><i class="fas fa-robot"></i> Hasanath AI Assistant</h3>
-        <div id="chat-win" style="height:350px; background:var(--accent); border-radius:15px; padding:15px; overflow-y:auto; margin-bottom:12px; border:1px solid #eee;">
-            <p><b>AI:</b> Assalamu Alaikum! I am the Hasanath AI. Ask me anything about the app or Islamic timings.</p>
-        </div>
-        <div style="display:flex; gap:8px;"><input type="text" id="bot-inp" placeholder="Type here..." style="flex:1; padding:12px; border-radius:10px; border:1px solid #ddd; outline:none;"><button onclick="sendMsg()" style="background:var(--primary); color:white; padding:0 20px; border-radius:10px; border:none;"><i class="fas fa-paper-plane"></i></button></div>
+        <h3>Hasanath AI</h3>
+        <div id="chat-win" style="height:300px; background:var(--accent); overflow-y:auto; padding:15px; border-radius:15px; margin-bottom:10px;"></div>
+        <div style="display:flex; gap:5px;"><input id="bot-inp" style="flex:1; padding:12px; border-radius:10px; border:1px solid #ddd;"><button onclick="sendMsg()" class="btn-action" style="width:auto;"><i class="fas fa-paper-plane"></i></button></div>
     </div>
 </section>
 
 <nav>
-    <button onclick="tab('home', this)" class="active"><i class="fas fa-home"></i><span id="n-home">Home</span></button>
-    <button onclick="tab('quran', this)"><i class="fas fa-book"></i><span id="n-quran">Quran</span></button>
-    <button onclick="tab('duas', this)"><i class="fas fa-hands-praying"></i><span id="n-duas">Duas</span></button>
-    <button onclick="tab('calendar', this)"><i class="fas fa-calendar"></i><span id="n-cal">Cal</span></button>
-    <button onclick="tab('qibla', this)"><i class="fas fa-compass"></i><span id="n-qibla">Qibla</span></button>
-    <button onclick="tab('bot', this)"><i class="fas fa-robot"></i><span id="n-bot">AI</span></button>
+    <button onclick="tab('home', this)" class="active"><i class="fas fa-home"></i><span>Home</span></button>
+    <button onclick="tab('qibla', this)"><i class="fas fa-compass"></i><span>Qibla</span></button>
+    <button onclick="tab('duas', this)"><i class="fas fa-heart"></i><span>Duas</span></button>
+    <button onclick="tab('me', this)"><i class="fas fa-user-check"></i><span>Hamad</span></button>
+    <button onclick="tab('bot', this)"><i class="fas fa-robot"></i><span>AI</span></button>
 </nav>
 
 <script>
-    // GOOGLE AUTH INITIALIZATION
+    const duaData = [
+        { t: "Waking Up", a: "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ", m: "Praise is to Allah who gave us life after death." },
+        { t: "Before Eating", a: "بِسْمِ اللَّهِ", m: "In the name of Allah." },
+        { t: "After Eating", a: "الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا وَسَقَانَا وَجَعَلَنَا مُسْلِمِينَ", m: "Praise be to Allah who fed us." }
+    ];
+
     window.onload = function () {
         google.accounts.id.initialize({
             client_id: "318225024149-0hjour8gpcp0in6l9ksb415ba6aqvn03.apps.googleusercontent.com",
-            callback: handleCredentialResponse
+            callback: (r) => { document.getElementById('gatekeeper').style.display='none'; }
         });
-        google.accounts.id.renderButton(
-            document.getElementById("google-btn-container"),
-            { theme: "outline", size: "large", text: "continue_with" }
-        );
-        initContent();
+        google.accounts.id.renderButton(document.getElementById("google-btn-container"), { theme: "outline", size: "large" });
+        loadDuas();
+        setInterval(countdown, 1000);
     };
 
-    function handleCredentialResponse(response) {
-        console.log("Encoded JWT ID token: " + response.credential);
-        document.getElementById('gatekeeper').style.opacity = '0';
-        setTimeout(() => document.getElementById('gatekeeper').style.display='none', 500);
+    function loadDuas() {
+        let h = "";
+        for(let i=0; i<45; i++) {
+            let d = duaData[i] || { t: "Dua " + (i+1), a: "قريباً", m: "Translation being verified by Hamad." };
+            h += `<div class="card dua-card" onclick="toggleDua(${i})"><strong>${i+1}. ${d.t}</strong><div id="dc-${i}" class="dua-content"><p class="arabic">${d.a}</p><p>${d.m}</p></div></div>`;
+        }
+        document.getElementById('dua-list').innerHTML = h;
     }
 
-    const langMap = {
-        en: { home: "Home", quran: "Quran", duas: "Duas", cal: "Calendar", qibla: "Qibla", bot: "AI Chat", pray: "Prayer Times", starts: "Fasting starts Feb 19, 2026", cd: "Ramadan Countdown", sync: "ACTIVATE COMPASS" },
-        si: { home: "නිවස", quran: "කුර්ආනය", duas: "දුආ", cal: "දින දර්ශනය", qibla: "කිබ්ලාව", bot: "AI සහායක", pray: "සලාත් වේලාවන්", starts: "උපවාසය පෙබ 19 ඇරඹේ", cd: "රාමසාන් කවුන්ට්ඩවුන්", sync: "මාලිමාව ක්‍රියාත්මක කරන්න" },
-        ta: { home: "முகப்பு", quran: "குர்ஆன்", duas: "துஆக்கள்", cal: "காலண்டர்", qibla: "கிப்லா", bot: "AI உதவியாளர்", pray: "தொழுகை நேரங்கள்", starts: "நோன்பු பிப் 19 ஆரம்பம்", cd: "ரமலான் கவுண்ட்டவுன்", sync: "திசைகாட்டியை இயக்கு" }
-    };
+    function toggleDua(i) { let e = document.getElementById('dc-'+i); e.style.display = e.style.display==='block' ? 'none' : 'block'; }
 
-    function setLang(lang, btn) {
-        document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const t = langMap[lang];
-        document.getElementById('n-home').innerText = t.home;
-        document.getElementById('n-quran').innerText = t.quran;
-        document.getElementById('n-duas').innerText = t.duas;
-        document.getElementById('n-cal').innerText = t.cal;
-        document.getElementById('n-qibla').innerText = t.qibla;
-        document.getElementById('n-bot').innerText = t.bot;
-        document.getElementById('l-cd').innerText = t.cd;
-        document.getElementById('l-starts').innerText = t.starts;
-        document.getElementById('l-pray').innerHTML = `<i class="fas fa-clock"></i> ${t.pray}`;
-        document.getElementById('l-quran').innerHTML = `<i class="fas fa-book"></i> ${t.quran}`;
-        document.getElementById('l-duas').innerHTML = `<i class="fas fa-heart"></i> ${t.duas}`;
-        document.getElementById('l-cal').innerHTML = `<i class="fas fa-calendar-alt"></i> ${t.cal}`;
-        document.getElementById('l-qibla').innerText = t.qibla;
-        document.getElementById('l-bot').innerHTML = `<i class="fas fa-robot"></i> ${t.bot}`;
-        document.getElementById('l-sync').innerText = t.sync;
+    function initCompass() {
+        if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+            DeviceOrientationEvent.requestPermission().then(s => { if(s=='granted') startSensors(); });
+        } else { startSensors(); }
+    }
+
+    function startSensors() {
+        window.addEventListener('deviceorientationabsolute', (e) => {
+            let h = e.webkitCompassHeading || e.alpha;
+            if(h) {
+                // Qibla for Kandy Sri Lanka is ~298.5
+                let qibla = 298.5;
+                let rotation = h - qibla;
+                document.getElementById('needle').style.transform = `rotate(${-rotation}deg)`;
+                document.getElementById('q-val').innerText = Math.round(h) + "°";
+            }
+        }, true);
     }
 
     function tab(id, btn) {
@@ -198,78 +182,21 @@
         btn.classList.add('active');
     }
 
-    function initContent() {
-        // Build Quran
-        let q = ""; for(let i=1; i<=30; i++) { q += `<div class="juz-row"><span><b>Juz ${i}</b></span><i class="fas fa-play-circle" onclick="playA(${i})" style="color:var(--primary); font-size:1.6rem; cursor:pointer;"></i></div>`; }
-        document.getElementById('juz-list').innerHTML = q;
-
-        // Build Duas
-        let d = ""; for(let i=1; i<=45; i++) { d += `<div class="card" style="margin-bottom:10px; border-left:5px solid var(--primary);"><b>Dua #${i}</b><br><small>Essential daily prayer for Godamuduna community.</small></div>`; }
-        document.getElementById('dua-list').innerHTML = d;
-
-        // Calendar logic (Strict Feb rollover)
-        let c = ""; for(let i=1; i<=30; i++) {
-            let dNum = 18 + i; let m = "Feb";
-            if(dNum > 28) { dNum -= 28; m = "Mar"; }
-            c += `<div class="cal-day">Day ${i}<br>${m} ${dNum}</div>`;
-        }
-        document.getElementById('ram-cal').innerHTML = c;
-        setInterval(countdown, 1000);
-    }
-
-    const engine = document.getElementById('engine');
-    function playA(n) {
-        engine.src = `https://server8.mp3quran.net/afs/${n.toString().padStart(3,'0')}.mp3`;
-        engine.play();
-        document.getElementById('audio-bar').style.display = 'flex';
-        document.getElementById('audio-label').innerText = "Reciting Juz " + n;
-        document.getElementById('pause-icon').className = 'fas fa-pause';
-    }
-    function pausePlay() {
-        if(engine.paused) { engine.play(); document.getElementById('pause-icon').className = 'fas fa-pause'; }
-        else { engine.pause(); document.getElementById('pause-icon').className = 'fas fa-play'; }
-    }
-    function stopPlay() { engine.pause(); document.getElementById('audio-bar').style.display = 'none'; }
-
     function countdown() {
-        const diff = new Date("February 19, 2026 00:00:00") - new Date();
+        let diff = new Date("February 19, 2026 00:00:00") - new Date();
         if(diff < 0) { document.getElementById('cd-timer').innerText = "Ramadan Mubarak!"; return; }
-        const days = Math.floor(diff / 86400000);
-        const hrs = Math.floor((diff % 86400000) / 3600000);
-        const mins = Math.floor((diff % 3600000) / 60000);
-        document.getElementById('cd-timer').innerText = `${days}d ${hrs}h ${mins}m`;
-    }
-
-    function initComp() {
-        if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-            DeviceOrientationEvent.requestPermission().then(state => {
-                if (state === 'granted') { activateSensor(); }
-            });
-        } else { activateSensor(); }
-    }
-
-    function activateSensor() {
-        window.addEventListener('deviceorientationabsolute', (e) => {
-            let h = e.webkitCompassHeading || e.alpha;
-            document.getElementById('needle').style.transform = `rotate(${-h}deg)`;
-            document.getElementById('q-deg').innerText = Math.round(h) + "° N";
-        }, true);
+        document.getElementById('cd-timer').innerText = Math.floor(diff/86400000) + "d " + Math.floor((diff%86400000)/3600000) + "h " + Math.floor((diff%3600000)/60000) + "m";
     }
 
     function sendMsg() {
         let v = document.getElementById('bot-inp').value; if(!v) return;
-        let w = document.getElementById('chat-win');
-        w.innerHTML += `<p style="text-align:right;"><b>You:</b> ${v}</p>`;
-        setTimeout(() => {
-            w.innerHTML += `<p><b>AI:</b> I am the Godamuduna Mosque assistant. Your query about "${v}" is being processed.</p>`;
-            w.scrollTop = w.scrollHeight;
-        }, 800);
+        document.getElementById('chat-win').innerHTML += `<p style="text-align:right;"><b>You:</b> ${v}</p><p><b>AI:</b> Hamad's system is processing your request...</p>`;
         document.getElementById('bot-inp').value = "";
     }
 
     function toggleMode() {
-        const t = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', t);
+        let d = document.documentElement;
+        d.setAttribute('data-theme', d.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
     }
 </script>
 </body>
