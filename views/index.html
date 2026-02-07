@@ -3,107 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Masjidul Hasanath | Muruthalawa</title>
+    <title>Masjidul Hasanath | Godamuduna</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #064e3b; --gold: #d4af37; --bg: #f8fafc; --text: #0f172a; --card: #ffffff; --accent: #f0fdf4; }
         [data-theme="dark"] { --primary: #10b981; --gold: #fbbf24; --bg: #020617; --text: #f8fafc; --card: #1e293b; --accent: #064e3b; }
 
-        body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Poppins', sans-serif; padding-bottom: 140px; overflow-x: hidden; }
+        body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Poppins', sans-serif; padding-bottom: 110px; overflow-x: hidden; }
         
-        /* 1. STARTUP GATEKEEPER (Asked First) */
-        #gatekeeper { position: fixed; inset: 0; background: var(--primary); z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; transition: 0.6s ease; }
-        .gate-box { width: 85%; max-width: 360px; text-align: center; }
-        .gate-btn { width: 100%; padding: 16px; margin: 8px 0; border-radius: 15px; border: none; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 1rem; transition: 0.3s; }
-        .lang-choice { background: rgba(255,255,255,0.15); color: white; border: 1px solid white; }
-        .lang-choice.selected { background: var(--gold); border-color: var(--gold); }
-        .google-login { background: white; color: var(--text); margin-top: 15px; }
+        /* AUTH OVERLAY */
+        #gatekeeper { position: fixed; inset: 0; background: var(--primary); z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; text-align: center; }
+        .gate-box { width: 85%; max-width: 380px; }
+        .lang-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 20px 0; }
+        .lang-btn { padding: 12px; border-radius: 12px; border: 1px solid white; background: rgba(255,255,255,0.1); color: white; cursor: pointer; font-weight: 600; }
+        .lang-btn.active { background: var(--gold); border-color: var(--gold); }
+        
+        /* Official Google Button Container */
+        #google-btn-container { margin-top: 20px; display: flex; justify-content: center; }
 
-        header { background: var(--primary); padding: 20px; color: white; border-bottom: 4px solid var(--gold); position: sticky; top: 0; z-index: 1000; border-radius: 0 0 20px 20px; }
+        header { background: var(--primary); padding: 20px; color: white; border-bottom: 4px solid var(--gold); border-radius: 0 0 20px 20px; position: sticky; top: 0; z-index: 1000; }
         
-        nav { background: var(--card); display: flex; justify-content: space-around; padding: 12px 0; position: fixed; bottom: 0; width: 100%; z-index: 2000; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); border-radius: 20px 20px 0 0; }
-        nav button { background: none; border: none; color: #94a3b8; font-size: 0.8rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; width: 20%; }
+        nav { background: var(--card); display: flex; justify-content: space-around; padding: 12px 0; position: fixed; bottom: 0; width: 100%; z-index: 2000; box-shadow: 0 -5px 15px rgba(0,0,0,0.1); border-radius: 20px 20px 0 0; }
+        nav button { background: none; border: none; color: #94a3b8; font-size: 0.75rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 5px; width: 16%; }
         nav button.active { color: var(--primary); font-weight: bold; }
 
         section { padding: 15px; display: none; animation: fadeIn 0.3s ease; }
         section.active { display: block; }
-        .card { background: var(--card); border-radius: 20px; padding: 20px; margin-bottom: 15px; border: 1px solid rgba(0,0,0,0.05); }
+        .card { background: var(--card); border-radius: 18px; padding: 20px; margin-bottom: 15px; border: 1px solid rgba(0,0,0,0.05); }
 
-        /* CALENDAR */
+        /* QIBLA COMPASS */
+        .compass-ui { position: relative; width: 220px; height: 220px; margin: 20px auto; border: 6px solid var(--gold); border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 20px rgba(0,0,0,0.1); }
+        #needle { font-size: 5rem; color: #b91c1c; transition: 0.1s linear; }
+
+        /* RAMADAN CALENDAR */
         .cal-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(75px, 1fr)); gap: 8px; }
-        .cal-day { background: var(--accent); padding: 10px; border-radius: 12px; text-align: center; font-size: 0.7rem; border: 1px solid var(--primary); font-weight: 600; }
+        .cal-day { background: var(--accent); padding: 10px; border-radius: 10px; text-align: center; font-size: 0.7rem; border: 1px solid var(--primary); font-weight: 600; }
 
-        /* AUDIO PLAYER BAR */
-        #audio-bar { position: fixed; bottom: 85px; left: 10px; right: 10px; background: #064e3b; color: white; padding: 15px; border-radius: 15px; display: none; align-items: center; justify-content: space-between; z-index: 2500; border: 2px solid var(--gold); }
-        
-        /* CHATBOT (Positioned to never block Pause) */
-        #bot-fab { position: fixed; bottom: 185px; right: 20px; background: var(--primary); color: white; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; z-index: 3000; box-shadow: 0 4px 15px rgba(0,0,0,0.3); border: 2px solid white; }
+        /* AUDIO BAR */
+        #audio-bar { position: fixed; bottom: 75px; left: 10px; right: 10px; background: var(--primary); color: white; padding: 15px; border-radius: 15px; display: none; align-items: center; justify-content: space-between; z-index: 2500; border: 2px solid var(--gold); }
 
-        /* QIBLA */
-        .compass-ui { position: relative; width: 210px; height: 210px; margin: 20px auto; border: 6px solid var(--gold); border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; }
-        #needle { width: 85%; transition: 0.1s linear; z-index: 5; }
+        .juz-row { display: flex; align-items: center; justify-content: space-between; padding: 15px; background: var(--accent); border-radius: 12px; margin-bottom: 8px; border: 1px solid rgba(0,0,0,0.05); }
 
-        .dua-tile { background: var(--accent); padding: 15px; border-radius: 12px; margin-bottom: 10px; border-left: 5px solid var(--primary); }
-        .juz-row { display: flex; align-items: center; justify-content: space-between; padding: 14px; background: var(--accent); border-radius: 12px; margin-bottom: 8px; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
 <div id="gatekeeper">
     <div class="gate-box">
-        <h1 style="margin-bottom:0;">Masjidul Hasanath</h1>
-        <p style="margin-top:5px; opacity:0.8;">Godamuduna, Muruthalawa</p>
+        <h1 style="margin:0;">Masjidul Hasanath</h1>
+        <p style="opacity:0.8;">Godamuduna, Kandy, Sri Lanka</p>
         
-        <p style="text-align:left; margin:15px 0 5px; font-size:0.9rem;">Select Language:</p>
-        <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:5px;">
-            <button class="gate-btn lang-choice selected" id="l-en" onclick="setLang('en')">EN</button>
-            <button class="gate-btn lang-choice" id="l-si" onclick="setLang('si')">සිං</button>
-            <button class="gate-btn lang-choice" id="l-ta" onclick="setLang('ta')">தழ்</button>
+        <div class="lang-grid">
+            <button class="lang-btn active" onclick="setLang('en', this)">English</button>
+            <button class="lang-btn" onclick="setLang('si', this)">සිංහල</button>
+            <button class="lang-btn" onclick="setLang('ta', this)">தமிழ்</button>
         </div>
 
-        <button class="gate-btn google-login" onclick="unlockApp()">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" width="18"> Google Sign In
-        </button>
-        <p style="font-size: 0.7rem; margin-top: 15px; opacity: 0.6;">Kandy, Sri Lanka</p>
+        <div id="google-btn-container"></div>
+        <p style="font-size:0.7rem; margin-top:20px; opacity:0.6;">Developed for the community by Gemini AI</p>
     </div>
 </div>
 
 <header>
     <div style="display:flex; justify-content:space-between; align-items:center;">
         <div>
-            <h3 style="margin:0;">Masjidul Hasanath</h3>
-            <small style="font-size:0.65rem; opacity:0.9;">Godamuduna, Muruthalawa, Kandy, Sri Lanka</small>
+            <h3 id="h-title" style="margin:0;">Masjidul Hasanath</h3>
+            <small id="h-loc" style="font-size:0.65rem;">Godamuduna, Kandy, Sri Lanka</small>
         </div>
-        <i onclick="toggleMode()" class="fas fa-moon" style="font-size:1.2rem; cursor:pointer;"></i>
+        <i onclick="toggleMode()" class="fas fa-moon" style="cursor:pointer; font-size:1.2rem;"></i>
     </div>
 </header>
 
-<div id="bot-fab" onclick="tab('bot')"><i class="fas fa-robot"></i></div>
-
 <div id="audio-bar">
-    <div style="display:flex; align-items:center; gap:10px;"><i class="fas fa-volume-up" style="color:var(--gold);"></i> <small id="audio-label" style="font-weight:600;">Juz Playing</small></div>
-    <div style="display:flex; gap:25px;">
-        <i onclick="pausePlay()" id="pause-icon" class="fas fa-pause" style="cursor:pointer; font-size:1.2rem;"></i>
-        <i onclick="stopPlay()" class="fas fa-stop" style="cursor:pointer; font-size:1.2rem; opacity:0.7;"></i>
+    <div style="display:flex; align-items:center; gap:10px;"><i class="fas fa-play-circle" style="color:var(--gold);"></i> <small id="audio-label">Juz 1 Playing</small></div>
+    <div style="display:flex; gap:20px;">
+        <i onclick="pausePlay()" id="pause-icon" class="fas fa-pause" style="cursor:pointer;"></i>
+        <i onclick="stopPlay()" class="fas fa-times" style="cursor:pointer; opacity:0.7;"></i>
     </div>
     <audio id="engine"></audio>
 </div>
 
 <section id="home" class="active">
-    <div class="card" style="background:var(--primary); color:white; border:none; text-align:center;">
-        <p style="margin:0; font-size:0.9rem; opacity:0.9;">Ramadan 2026 Countdown</p>
-        <h2 id="cd-timer" style="font-size:1.8rem; margin:10px 0;">---</h2>
-        <small style="background:rgba(255,255,255,0.2); padding:3px 8px; border-radius:5px;">Fasting Starts: Feb 19, 2026</small>
+    <div class="card" style="background:var(--primary); color:white; text-align:center; border:none; box-shadow:0 8px 20px rgba(6,78,59,0.3);">
+        <p id="l-cd" style="margin:0; font-size:0.85rem;">Ramadan 2026 Countdown</p>
+        <h2 id="cd-timer" style="margin:10px 0; font-size:1.8rem;">---</h2>
+        <small id="l-starts">Fasting starts Feb 19, 2026</small>
     </div>
     <div class="card">
-        <h3 style="margin-top:0; color:var(--primary);"><i class="fas fa-clock"></i> Prayer Times</h3>
+        <h3 id="l-pray"><i class="fas fa-clock"></i> Prayer Times</h3>
         <div style="display:flex; flex-direction:column; gap:12px;">
             <div style="display:flex; justify-content:space-between; border-bottom:1px solid #eee; padding-bottom:5px;"><span>Fajr</span><b>5:09 AM</b></div>
             <div style="display:flex; justify-content:space-between; border-bottom:1px solid #eee; padding-bottom:5px;"><span>Dhuhr</span><b>12:24 PM</b></div>
-            <div style="display:flex; justify-content:space-between; border-bottom:1px solid #eee; padding-bottom:5px; color:var(--primary); font-weight:700;"><span>Asr</span><b>3:46 PM</b></div>
+            <div style="display:flex; justify-content:space-between; border-bottom:1px solid #eee; padding-bottom:5px; color:var(--primary); font-weight:bold;"><span>Asr</span><b>3:46 PM</b></div>
             <div style="display:flex; justify-content:space-between; border-bottom:1px solid #eee; padding-bottom:5px; color:var(--gold);"><span>Maghrib</span><b>6:19 PM</b></div>
             <div style="display:flex; justify-content:space-between;"><span>Isha</span><b>7:30 PM</b></div>
         </div>
@@ -111,72 +105,109 @@
 </section>
 
 <section id="quran">
-    <div class="card"><h3><i class="fas fa-book"></i> Quran (All 30 Juz)</h3><div id="juz-list"></div></div>
+    <div class="card"><h3 id="l-quran"><i class="fas fa-book"></i> Quran (30 Juz)</h3><div id="juz-list"></div></div>
 </section>
 
 <section id="duas">
-    <div class="card"><h3><i class="fas fa-heart"></i> 45 Essential Duas</h3><div id="dua-list"></div></div>
+    <div class="card"><h3 id="l-duas"><i class="fas fa-heart"></i> 45 Essential Duas</h3><div id="dua-list"></div></div>
 </section>
 
 <section id="calendar">
-    <div class="card"><h3><i class="fas fa-calendar-alt"></i> Ramadan 2026</h3><div class="cal-grid" id="ram-cal"></div></div>
+    <div class="card"><h3 id="l-cal"><i class="fas fa-calendar-alt"></i> Ramadan 2026</h3><div class="cal-grid" id="ram-cal"></div></div>
 </section>
 
 <section id="qibla">
     <div class="card" style="text-align:center;">
-        <h3>Qibla Finder</h3>
-        <div class="compass-ui"><img id="needle" src="https://i.ibb.co/V99S0m4/qibla-needle.png"></div>
-        <p id="q-deg" style="font-weight:700; color:var(--primary); font-size:1.2rem;">0° North</p>
-        <button onclick="initComp()" style="width:100%; padding:15px; background:var(--primary); color:white; border-radius:15px; border:none; font-weight:bold; cursor:pointer;">ACTIVATE SENSORS</button>
+        <h3 id="l-qibla">Qibla Finder</h3>
+        <div class="compass-ui"><i id="needle" class="fas fa-location-arrow"></i></div>
+        <p id="q-deg" style="font-weight:bold; font-size:1.2rem; color:var(--primary);">0° N</p>
+        <button id="l-sync" onclick="initComp()" style="width:100%; padding:18px; background:var(--primary); color:white; border-radius:15px; border:none; font-weight:bold; cursor:pointer;">ACTIVATE COMPASS</button>
     </div>
 </section>
 
 <section id="bot">
     <div class="card">
-        <h3>Hasanath AI Support</h3>
-        <div id="chat-win" style="height:320px; background:var(--accent); border-radius:15px; padding:15px; overflow-y:auto; margin-bottom:10px;">
-            <p><b>AI:</b> Assalamu Alaikum! Welcome to the Masjidul Hasanath assistant. How can I help you today?</p>
+        <h3 id="l-bot"><i class="fas fa-robot"></i> Hasanath AI Assistant</h3>
+        <div id="chat-win" style="height:350px; background:var(--accent); border-radius:15px; padding:15px; overflow-y:auto; margin-bottom:12px; border:1px solid #eee;">
+            <p><b>AI:</b> Assalamu Alaikum! I am the Hasanath AI. Ask me anything about the app or Islamic timings.</p>
         </div>
-        <div style="display:flex; gap:10px;"><input type="text" id="bot-inp" placeholder="Ask a question..." style="flex:1; padding:15px; border-radius:10px; border:1px solid #ddd; outline:none;"><button onclick="sendMsg()" style="background:var(--primary); color:white; width:50px; border-radius:10px; border:none;"><i class="fas fa-paper-plane"></i></button></div>
+        <div style="display:flex; gap:8px;"><input type="text" id="bot-inp" placeholder="Type here..." style="flex:1; padding:12px; border-radius:10px; border:1px solid #ddd; outline:none;"><button onclick="sendMsg()" style="background:var(--primary); color:white; padding:0 20px; border-radius:10px; border:none;"><i class="fas fa-paper-plane"></i></button></div>
     </div>
 </section>
 
 <nav>
-    <button onclick="tab('home', this)" class="active"><i class="fas fa-house"></i><span>Home</span></button>
-    <button onclick="tab('quran', this)"><i class="fas fa-book-quran"></i><span>Quran</span></button>
-    <button onclick="tab('duas', this)"><i class="fas fa-hands-praying"></i><span>Duas</span></button>
-    <button onclick="tab('calendar', this)"><i class="fas fa-calendar-days"></i><span>Cal</span></button>
-    <button onclick="tab('qibla', this)"><i class="fas fa-compass"></i><span>Qibla</span></button>
+    <button onclick="tab('home', this)" class="active"><i class="fas fa-home"></i><span id="n-home">Home</span></button>
+    <button onclick="tab('quran', this)"><i class="fas fa-book"></i><span id="n-quran">Quran</span></button>
+    <button onclick="tab('duas', this)"><i class="fas fa-hands-praying"></i><span id="n-duas">Duas</span></button>
+    <button onclick="tab('calendar', this)"><i class="fas fa-calendar"></i><span id="n-cal">Cal</span></button>
+    <button onclick="tab('qibla', this)"><i class="fas fa-compass"></i><span id="n-qibla">Qibla</span></button>
+    <button onclick="tab('bot', this)"><i class="fas fa-robot"></i><span id="n-bot">AI</span></button>
 </nav>
 
 <script>
-    function setLang(l) {
-        document.querySelectorAll('.lang-choice').forEach(b => b.classList.remove('selected'));
-        document.getElementById('l-' + l).classList.add('selected');
+    // GOOGLE AUTH INITIALIZATION
+    window.onload = function () {
+        google.accounts.id.initialize({
+            client_id: "318225024149-0hjour8gpcp0in6l9ksb415ba6aqvn03.apps.googleusercontent.com",
+            callback: handleCredentialResponse
+        });
+        google.accounts.id.renderButton(
+            document.getElementById("google-btn-container"),
+            { theme: "outline", size: "large", text: "continue_with" }
+        );
+        initContent();
+    };
+
+    function handleCredentialResponse(response) {
+        console.log("Encoded JWT ID token: " + response.credential);
+        document.getElementById('gatekeeper').style.opacity = '0';
+        setTimeout(() => document.getElementById('gatekeeper').style.display='none', 500);
     }
-    
-    function unlockApp() { 
-        document.getElementById('gatekeeper').style.opacity = '0'; 
-        setTimeout(() => document.getElementById('gatekeeper').style.display='none', 600); 
+
+    const langMap = {
+        en: { home: "Home", quran: "Quran", duas: "Duas", cal: "Calendar", qibla: "Qibla", bot: "AI Chat", pray: "Prayer Times", starts: "Fasting starts Feb 19, 2026", cd: "Ramadan Countdown", sync: "ACTIVATE COMPASS" },
+        si: { home: "නිවස", quran: "කුර්ආනය", duas: "දුආ", cal: "දින දර්ශනය", qibla: "කිබ්ලාව", bot: "AI සහායක", pray: "සලාත් වේලාවන්", starts: "උපවාසය පෙබ 19 ඇරඹේ", cd: "රාමසාන් කවුන්ට්ඩවුන්", sync: "මාලිමාව ක්‍රියාත්මක කරන්න" },
+        ta: { home: "முகப்பு", quran: "குர்ஆன்", duas: "துஆக்கள்", cal: "காலண்டர்", qibla: "கிப்லா", bot: "AI உதவியாளர்", pray: "தொழுகை நேரங்கள்", starts: "நோன்பු பிப் 19 ஆரம்பம்", cd: "ரமலான் கவுண்ட்டவுன்", sync: "திசைகாட்டியை இயக்கு" }
+    };
+
+    function setLang(lang, btn) {
+        document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const t = langMap[lang];
+        document.getElementById('n-home').innerText = t.home;
+        document.getElementById('n-quran').innerText = t.quran;
+        document.getElementById('n-duas').innerText = t.duas;
+        document.getElementById('n-cal').innerText = t.cal;
+        document.getElementById('n-qibla').innerText = t.qibla;
+        document.getElementById('n-bot').innerText = t.bot;
+        document.getElementById('l-cd').innerText = t.cd;
+        document.getElementById('l-starts').innerText = t.starts;
+        document.getElementById('l-pray').innerHTML = `<i class="fas fa-clock"></i> ${t.pray}`;
+        document.getElementById('l-quran').innerHTML = `<i class="fas fa-book"></i> ${t.quran}`;
+        document.getElementById('l-duas').innerHTML = `<i class="fas fa-heart"></i> ${t.duas}`;
+        document.getElementById('l-cal').innerHTML = `<i class="fas fa-calendar-alt"></i> ${t.cal}`;
+        document.getElementById('l-qibla').innerText = t.qibla;
+        document.getElementById('l-bot').innerHTML = `<i class="fas fa-robot"></i> ${t.bot}`;
+        document.getElementById('l-sync').innerText = t.sync;
     }
 
     function tab(id, btn) {
         document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
         document.getElementById(id).classList.add('active');
-        if(btn) { document.querySelectorAll('nav button').forEach(b => b.classList.remove('active')); btn.classList.add('active'); }
+        document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
     }
 
-    function init() {
+    function initContent() {
         // Build Quran
-        let q = ""; for(let i=1; i<=30; i++) { q += `<div class="juz-row"><span><b>Juz ${i}</b></span><button onclick="playA(${i})" style="background:var(--primary); color:white; border:none; padding:8px 12px; border-radius:8px; cursor:pointer;"><i class="fas fa-play"></i></button></div>`; }
+        let q = ""; for(let i=1; i<=30; i++) { q += `<div class="juz-row"><span><b>Juz ${i}</b></span><i class="fas fa-play-circle" onclick="playA(${i})" style="color:var(--primary); font-size:1.6rem; cursor:pointer;"></i></div>`; }
         document.getElementById('juz-list').innerHTML = q;
 
-        // Build Duas (45 Count)
-        let d = ""; const dNames = ["Waking", "Toilet In", "Toilet Out", "Before Wudu", "After Wudu", "Mosque In", "Mosque Out", "Azan", "Morning", "Evening", "Eating", "After Meal", "Leave Home", "Enter Home", "Sleep", "Clothes", "New Clothes", "Mirror", "Travel", "Iftar", "Sick Visit", "Anger", "Sadness", "Knowledge", "Parents", "Debt", "Anxiety", "New Moon", "Thunder", "Rain", "Market", "Cemetery", "Janaza", "Condolence", "After Salah", "Study", "Thanks", "Sneezing", "Evil Eye", "Istikhara", "Good End", "Protection", "Fasting", "Forgiveness", "Final"];
-        dNames.forEach((n, i) => { d += `<div class="dua-tile"><strong>${i+1}. Dua for ${n}</strong><br><small style="color:var(--primary);">Arabic text & Translation for Muruthalawa community.</small></div>`; });
+        // Build Duas
+        let d = ""; for(let i=1; i<=45; i++) { d += `<div class="card" style="margin-bottom:10px; border-left:5px solid var(--primary);"><b>Dua #${i}</b><br><small>Essential daily prayer for Godamuduna community.</small></div>`; }
         document.getElementById('dua-list').innerHTML = d;
 
-        // Build Calendar
+        // Calendar logic (Strict Feb rollover)
         let c = ""; for(let i=1; i<=30; i++) {
             let dNum = 18 + i; let m = "Feb";
             if(dNum > 28) { dNum -= 28; m = "Mar"; }
@@ -191,7 +222,7 @@
         engine.src = `https://server8.mp3quran.net/afs/${n.toString().padStart(3,'0')}.mp3`;
         engine.play();
         document.getElementById('audio-bar').style.display = 'flex';
-        document.getElementById('audio-label').innerText = "Juz " + n + " Reciting";
+        document.getElementById('audio-label').innerText = "Reciting Juz " + n;
         document.getElementById('pause-icon').className = 'fas fa-pause';
     }
     function pausePlay() {
@@ -206,16 +237,18 @@
         const days = Math.floor(diff / 86400000);
         const hrs = Math.floor((diff % 86400000) / 3600000);
         const mins = Math.floor((diff % 3600000) / 60000);
-        document.getElementById('cd-timer').innerText = `${days}d ${hrs}h ${mins}m Remaining`;
+        document.getElementById('cd-timer').innerText = `${days}d ${hrs}h ${mins}m`;
     }
 
     function initComp() {
-        if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-            DeviceOrientationEvent.requestPermission().then(state => { if (state === 'granted') { addComp(); } });
-        } else { addComp(); }
+        if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+            DeviceOrientationEvent.requestPermission().then(state => {
+                if (state === 'granted') { activateSensor(); }
+            });
+        } else { activateSensor(); }
     }
 
-    function addComp() {
+    function activateSensor() {
         window.addEventListener('deviceorientationabsolute', (e) => {
             let h = e.webkitCompassHeading || e.alpha;
             document.getElementById('needle').style.transform = `rotate(${-h}deg)`;
@@ -228,7 +261,7 @@
         let w = document.getElementById('chat-win');
         w.innerHTML += `<p style="text-align:right;"><b>You:</b> ${v}</p>`;
         setTimeout(() => {
-            w.innerHTML += `<p><b>AI:</b> I am processing your request. Masjidul Hasanath is here to help.</p>`;
+            w.innerHTML += `<p><b>AI:</b> I am the Godamuduna Mosque assistant. Your query about "${v}" is being processed.</p>`;
             w.scrollTop = w.scrollHeight;
         }, 800);
         document.getElementById('bot-inp').value = "";
@@ -238,8 +271,6 @@
         const t = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
         document.documentElement.setAttribute('data-theme', t);
     }
-
-    window.onload = init;
 </script>
 </body>
 </html>
