@@ -170,6 +170,48 @@ document.getElementById('hijri-date').innerText=new Intl.DateTimeFormat('en-u-ca
 
 // Notifications
 if("Notification" in window){Notification.requestPermission().then(p=>{if(p==="granted"){setTimeout(()=>{new Notification("Remember to pray on time and recite your duas!");},5000);}});}
+<script>
+function getLocation(){
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      // ✅ If user ALLOWS location
+      (pos) => {
+        const lat = pos.coords.latitude;
+        const lon = pos.coords.longitude;
+
+        document.getElementById('location').innerText =
+          `Lat: ${lat.toFixed(2)}, Lon: ${lon.toFixed(2)}`;
+
+        fetchPrayerTimes(lat, lon);
+        fetchRamadanTimes(lat, lon);
+
+        const angle = getQiblaDirection(lat, lon);
+        document.getElementById('qibla-arrow').style.transform =
+          `rotate(${angle}deg)`;
+      },
+
+      // ✅ If user DENIES location → use Sri Lanka
+      (err) => {
+        const lat = 6.9271;   // Colombo
+        const lon = 79.8612;
+
+        document.getElementById('location').innerText =
+          "Colombo, Sri Lanka";
+
+        fetchPrayerTimes(lat, lon);
+        fetchRamadanTimes(lat, lon);
+
+        const angle = getQiblaDirection(lat, lon);
+        document.getElementById('qibla-arrow').style.transform =
+          `rotate(${angle}deg)`;
+      }
+    );
+  } else {
+    alert("Geolocation not supported on this device.");
+  }
+}
 </script>
+
 </body>
 </html>
+
