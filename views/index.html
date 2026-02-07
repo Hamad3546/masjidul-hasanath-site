@@ -1,247 +1,241 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masjidul Hasanath | Ultimate App</title>
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Masjidul Hasanath | Apex</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #1b5e20; --gold: #c5a021; --white: #ffffff; --bg: #f4f7f2; }
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--bg); color: #333; overflow-x: hidden; }
-        
-        /* Setup Screens */
-        #init-overlay { position: fixed; inset: 0; background: var(--primary); z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; text-align: center; }
-        .setup-card { background: white; padding: 30px; border-radius: 25px; width: 85%; max-width: 380px; color: #333; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        .lang-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 20px 0; }
-        .lang-btn { background: #eee; border: none; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; }
+        :root { --primary: #064e3b; --gold: #d4af37; --bg: #f8fafc; --text: #0f172a; --card: #ffffff; --accent: #f0fdf4; }
+        [data-theme="dark"] { --primary: #10b981; --gold: #fbbf24; --bg: #020617; --text: #f8fafc; --card: #1e293b; --accent: #064e3b; }
 
-        header { background: var(--primary); padding: 15px 25px; color: white; display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid var(--gold); position: sticky; top: 0; z-index: 1000; }
-        .user-pic { width: 38px; height: 38px; border-radius: 50%; border: 2px solid var(--gold); object-fit: cover; }
+        body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Poppins', sans-serif; transition: 0.3s; padding-bottom: 110px; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
         
-        nav { background: white; display: flex; justify-content: space-around; padding: 10px; position: sticky; top: 70px; z-index: 999; box-shadow: 0 2px 10px rgba(0,0,0,0.1); overflow-x: auto; white-space: nowrap; }
-        nav button { background: none; border: none; color: var(--primary); font-size: 1.1rem; cursor: pointer; padding: 10px 15px; }
-        nav button.active { color: var(--gold); border-bottom: 2px solid var(--gold); }
+        header { background: var(--primary); padding: 25px 20px; color: white; border-bottom: 4px solid var(--gold); position: sticky; top: 0; z-index: 1000; border-radius: 0 0 25px 25px; }
+        .head-flex { display: flex; justify-content: space-between; align-items: center; }
 
-        section { padding: 20px 5%; display: none; animation: fadeIn 0.4s ease; }
+        nav { background: var(--card); display: flex; justify-content: space-around; padding: 12px 5px; position: fixed; bottom: 0; width: 100%; z-index: 2000; box-shadow: 0 -5px 25px rgba(0,0,0,0.05); border-radius: 25px 25px 0 0; }
+        nav button { background: none; border: none; color: #94a3b8; font-size: 1.1rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; width: 16%; transition: 0.3s; }
+        nav button.active { color: var(--primary); transform: translateY(-8px); font-weight: bold; }
+        nav span { font-size: 0.55rem; font-weight: 600; }
+
+        section { padding: 20px 15px; display: none; animation: fadeIn 0.4s ease-out; }
         section.active { display: block; }
-        .card { background: white; border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .card { background: var(--card); border-radius: 24px; padding: 20px; margin-bottom: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.04); }
+        .card-h { font-weight: 700; color: var(--primary); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; font-size: 1.1rem; }
 
-        /* Qibla Compass */
-        .compass-container { position: relative; width: 200px; height: 200px; margin: 20px auto; border: 5px solid var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; background: white; }
-        #compass-disc { width: 100%; height: 100%; transition: transform 0.1s linear; }
-        .kaaba-pointer { position: absolute; top: 10px; color: var(--gold); font-size: 1.5rem; z-index: 5; }
+        .tile { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .tile:last-child { border: none; }
 
-        /* Chatbot */
-        #chat-msgs { height: 400px; overflow-y: auto; background: #e5ddd5; padding: 15px; border-radius: 15px; display: flex; flex-direction: column; gap: 10px; }
-        .msg { padding: 12px; border-radius: 15px; max-width: 85%; font-size: 0.9rem; }
-        .msg.bot { background: white; align-self: flex-start; }
-        .msg.user { background: #dcf8c6; align-self: flex-end; }
+        /* RAMADAN COUNTDOWN */
+        .cd-wrap { display: flex; justify-content: space-between; margin-top: 10px; }
+        .cd-box { text-align: center; background: rgba(255,255,255,0.15); padding: 10px; border-radius: 12px; width: 22%; }
+        .cd-num { display: block; font-size: 1.2rem; font-weight: 700; }
+        .cd-lab { font-size: 0.55rem; text-transform: uppercase; font-weight: 600; }
 
-        /* Dua Section */
-        .dua-item { border-bottom: 1px solid #eee; padding: 15px 0; }
-        .dua-item:last-child { border: none; }
-        .dua-ar { font-size: 1.4rem; color: var(--primary); font-weight: bold; margin: 10px 0; display: block; text-align: right; line-height: 1.8; }
+        /* QURAN LIST */
+        .juz-row { background: var(--accent); padding: 15px; border-radius: 18px; margin-bottom: 10px; display: flex; align-items: center; gap: 15px; border-left: 5px solid var(--gold); }
+        .juz-check { width: 22px; height: 22px; accent-color: var(--primary); }
+        .play-btn { background: var(--gold); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; }
         
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .prog-shell { width: 100%; background: rgba(0,0,0,0.1); height: 10px; border-radius: 5px; margin: 12px 0; overflow: hidden; }
+        #prog-fill { height: 100%; background: var(--gold); width: 0%; transition: 0.7s ease; }
+
+        #p-bar { position: fixed; bottom: 95px; left: 15px; right: 15px; background: var(--primary); color: white; padding: 15px 20px; border-radius: 20px; display: none; align-items: center; justify-content: space-between; z-index: 1500; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-<div id="init-overlay">
-    <div class="setup-card" id="lang-screen">
-        <i class="fas fa-mosque fa-3x" style="color:var(--primary); margin-bottom:10px;"></i>
-        <h3>Masjidul Hasanath</h3>
-        <div class="lang-grid">
-            <button class="lang-btn" onclick="selectLang('en')">English</button>
-            <button class="lang-btn" onclick="selectLang('ta')">தமிழ்</button>
-            <button class="lang-btn" onclick="selectLang('si')">සිංහල</button>
-            <button class="lang-btn" onclick="selectLang('ar')">العربية</button>
-        </div>
-    </div>
-    <div class="setup-card" id="login-screen" style="display:none;">
-        <h3>Community Login</h3>
-        <div id="g_id_onload" data-client_id="318225024149-0hjour8gpcp0in6l9ksb415ba6aqvn03.apps.googleusercontent.com" data-callback="onSignIn"></div>
-        <div class="g_id_signin" data-type="standard"></div>
-        <p onclick="onSignIn(null)" style="cursor:pointer; text-decoration:underline; font-size:0.8rem; margin-top:20px;">Guest Mode</p>
-    </div>
-</div>
-
 <header>
-    <div><h2 style="margin:0; font-size:1rem;">Masjidul Hasanath</h2><small id="hijri-head"></small></div>
-    <div class="profile-area">
-        <span id="u-name" style="font-size:0.7rem; font-weight:bold; margin-right:5px;"></span>
-        <img id="u-photo" class="user-pic" src="https://ui-avatars.com/api/?name=User&background=1b5e20&color=fff">
+    <div class="head-flex">
+        <div>
+            <h2 style="margin:0; font-size:1.1rem;">Masjidul Hasanath</h2>
+            <small id="hijri">19 Shaban 1447 AH</small>
+        </div>
+        <i onclick="toggleMode()" class="fas fa-circle-half-stroke" style="cursor:pointer; font-size:1.3rem;"></i>
     </div>
 </header>
 
-<nav>
-    <button onclick="showSec('home', this)" class="active"><i class="fas fa-home"></i></button>
-    <button onclick="showSec('qibla', this)"><i class="fas fa-compass"></i></button>
-    <button onclick="showSec('ramadan', this)"><i class="fas fa-calendar-alt"></i></button>
-    <button onclick="showSec('duas', this)"><i class="fas fa-book-open"></i></button>
-    <button onclick="showSec('chatbot', this)"><i class="fas fa-robot"></i></button>
-</nav>
+<div id="p-bar">
+    <div style="display:flex; align-items:center; gap:10px;"><i class="fas fa-play"></i> <small id="p-label">Juz Recitation</small></div>
+    <audio id="audio-engine"></audio>
+    <div style="display:flex; gap:20px;">
+        <i onclick="pausePlay()" class="fas fa-pause" style="cursor:pointer;"></i>
+        <i onclick="stopPlay()" class="fas fa-stop" style="cursor:pointer;"></i>
+    </div>
+</div>
 
 <section id="home" class="active">
-    <div class="card">
-        <h3><i class="fas fa-clock" style="color:var(--gold)"></i> Prayer Times</h3>
-        <div id="p-times"></div>
+    <div class="card" style="background: linear-gradient(135deg, #d4af37, #b8860b); color:white; border:none;">
+        <div class="card-h" style="color:white; margin-bottom:5px;"><i class="fas fa-moon"></i> Ramadan 2026 Countdown</div>
+        <div class="cd-wrap">
+            <div class="cd-box"><span id="cd-d" class="cd-num">0</span><span class="cd-lab">Days</span></div>
+            <div class="cd-box"><span id="cd-h" class="cd-num">0</span><span class="cd-lab">Hrs</span></div>
+            <div class="cd-box"><span id="cd-m" class="cd-num">0</span><span class="cd-lab">Mins</span></div>
+            <div class="cd-box"><span id="cd-s" class="cd-num">0</span><span class="cd-lab">Secs</span></div>
+        </div>
     </div>
+
+    <div class="card" style="background: var(--primary); color:white; border:none;">
+        <small style="opacity:0.8;">QURAN PROGRESS</small>
+        <h1 id="h-perc" style="margin:5px 0; font-size:2.8rem;">0%</h1>
+        <div class="prog-shell" style="background:rgba(255,255,255,0.2);"><div id="prog-fill" style="width:0%;"></div></div>
+        <p style="font-size:0.8rem; margin:0;"><span id="h-done">0</span> / 30 Juz Completed</p>
+    </div>
+
+    <div class="card">
+        <div class="card-h"><i class="fas fa-clock"></i> Prayer Times</div>
+        <div class="tile"><span>Fajr</span><b>5:09 AM</b></div>
+        <div class="tile"><span>Dhuhr</span><b>12:24 PM</b></div>
+        <div class="tile"><span>Asr</span><b>3:46 PM</b></div>
+        <div class="tile" style="color:var(--gold)"><span>Maghrib</span><b>6:19 PM</b></div>
+        <div class="tile"><span>Isha</span><b>7:30 PM</b></div>
+    </div>
+</section>
+
+<section id="quran"><div class="card"><div class="card-h"><i class="fas fa-book-open"></i> 30 Juz Tracker</div><div id="juz-list"></div></div></section>
+
+<section id="planner">
+    <div class="card">
+        <div class="card-h"><i class="fas fa-calendar-check"></i> Khatam Planner</div>
+        <input type="number" id="k-days" placeholder="Days to finish (e.g. 30)" style="width:100%; padding:15px; border-radius:12px; border:1px solid #ddd; margin-bottom:15px;">
+        <button onclick="runPlan()" style="width:100%; padding:15px; border-radius:12px; background:var(--primary); color:white; border:none; font-weight:bold;">CALCULATE</button>
+        <div id="k-res" style="display:none; margin-top:20px; padding:15px; background:var(--accent); border-radius:12px; text-align:center; color:var(--primary); font-weight:bold;"></div>
+    </div>
+</section>
+
+<section id="wall">
+    <div class="card">
+        <div class="card-h"><i class="fas fa-users"></i> Community Wall</div>
+        <textarea id="w-in" placeholder="Message..." style="width:100%; height:70px; padding:10px; border-radius:10px; border:1px solid #ddd; margin-bottom:10px;"></textarea>
+        <button onclick="addPost()" style="width:100%; padding:12px; border-radius:12px; background:var(--primary); color:white; border:none;">POST</button>
+    </div>
+    <div id="w-feed"></div>
 </section>
 
 <section id="qibla">
-    <h3>Qibla Finder</h3>
-    <div class="card" style="text-align:center">
-        <p style="font-size:0.8rem; color:#666;">Place phone flat. Allow location access.</p>
-        <div class="compass-container">
-            <i class="fas fa-kaaba kaaba-pointer"></i>
-            <img id="compass-disc" src="https://cdn-icons-png.flaticon.com/512/1150/1150172.png" alt="Compass">
+    <div class="card" style="text-align:center;">
+        <div class="card-h"><i class="fas fa-compass"></i> Qibla</div>
+        <div style="position:relative; width:180px; height:180px; margin:20px auto; border:6px solid var(--gold); border-radius:50%;">
+            <i class="fas fa-caret-down" style="position:absolute; top:2px; left:50%; transform:translateX(-50%); color:red; z-index:10;"></i>
+            <img id="needle" src="https://i.imgur.com/83p73mS.png" style="width:100%; transition:0.1s linear;">
         </div>
-        <button onclick="startCompass()" style="background:var(--primary); color:white; border:none; padding:10px 20px; border-radius:20px;">Calibrate Compass</button>
+        <button onclick="initComp()" style="width:100%; padding:15px; background:var(--primary); color:white; border:none; border-radius:12px; font-weight:bold;">SYNC COMPASS</button>
     </div>
 </section>
 
-<section id="ramadan">
-    <h3>Ramadan 2026 (Full 30 Days)</h3>
-    <div class="card" style="overflow-x:auto">
-        <table style="width:100%; border-collapse:collapse; font-size:0.8rem;">
-            <thead><tr style="background:var(--primary); color:white;"><th style="padding:10px;">Ramadan</th><th>Date</th><th>Sahar End</th><th>Iftar</th></tr></thead>
-            <tbody id="ramadan-list"></tbody>
-        </table>
+<section id="dhikr">
+    <div class="card" style="text-align:center; padding:40px 10px;">
+        <h1 id="d-val" style="font-size:6rem; margin:0; color:var(--primary);">0</h1>
+        <button onclick="tapD()" style="width:180px; height:180px; border-radius:50%; background:var(--primary); border:8px solid var(--gold); color:white; font-size:2rem; cursor:pointer;">TAP</button>
+        <br><button onclick="clearD()" style="margin-top:30px; background:none; border:none; color:#ef4444; font-weight:bold; text-decoration:underline;">RESET</button>
     </div>
 </section>
 
-<section id="duas">
-    <h3>Daily Essential Duas</h3>
-    <div id="dua-list" class="card"></div>
-</section>
-
-<section id="chatbot">
-    <h3>Islamic Ilm Assistant</h3>
-    <div class="card">
-        <div id="chat-msgs">
-            <div class="msg bot">Assalamu Alaikum! I am your Islamic AI. Ask me anything about Quran, Hadith, Shariah, or Islamic History.</div>
-        </div>
-        <div style="display:flex; gap:5px; margin-top:10px;">
-            <input type="text" id="chat-in" placeholder="Ask about Islam..." style="flex:1; border-radius:20px; border:1px solid #ddd; padding:12px;">
-            <button onclick="sendChat()" style="background:var(--primary); color:white; border:none; padding:10px 15px; border-radius:20px;"><i class="fas fa-paper-plane"></i></button>
-        </div>
-    </div>
-</section>
-
-<section id="tasbih">
-    <div class="card" style="text-align:center">
-        <h1 id="t-count" style="font-size:5rem; color:var(--primary)">0</h1>
-        <button onclick="addT()" style="width:150px; height:150px; border-radius:50%; background:var(--primary); color:white; border:none; font-size:2rem;">TAP</button>
-        <br><button onclick="resT()" style="background:#ff5252; color:white; border:none; padding:10px 20px; border-radius:20px; margin-top:20px;">Reset</button>
-    </div>
-</section>
+<nav>
+    <button onclick="tab('home', this)" class="active"><i class="fas fa-house"></i><span>Home</span></button>
+    <button onclick="tab('quran', this)"><i class="fas fa-book"></i><span>Quran</span></button>
+    <button onclick="tab('planner', this)"><i class="fas fa-calendar"></i><span>Plan</span></button>
+    <button onclick="tab('wall', this)"><i class="fas fa-users"></i><span>Wall</span></button>
+    <button onclick="tab('qibla', this)"><i class="fas fa-compass"></i><span>Qibla</span></button>
+    <button onclick="tab('dhikr', this)"><i class="fas fa-fingerprint"></i><span>Dhikr</span></button>
+</nav>
 
 <script>
-    // FULL RAMADAN DATA (30 DAYS)
-    const ramadanData = [];
-    for(let i=1; i<=30; i++) {
-        let date = 18 + i; 
-        let m = (date > 28) ? "March" : "February";
-        let dNum = (date > 28) ? date - 28 : date;
-        ramadanData.push({ r: i, d: `${dNum} ${m}`, s: "5:03 AM", i: "6:21 PM" });
-    }
+    let qProg = JSON.parse(localStorage.getItem('apex_q')) || [];
+    let dVal = localStorage.getItem('apex_d') || 0;
+    let posts = JSON.parse(localStorage.getItem('apex_w')) || [];
 
-    // DUAS DATA (SAMPLE OF THE 25)
-    const dailyDuas = [
-        { t: "Before Eating", a: "بِسْمِ اللَّهِ", m: "In the name of Allah." },
-        { t: "After Eating", a: "الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا", m: "Praise be to Allah who fed us." },
-        { t: "Entering Masjid", a: "اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ", m: "O Allah, open the gates of Your mercy for me." },
-        { t: "Waking Up", a: "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا", m: "Praise be to Allah who gave us life after death." },
-        { t: "Seeking Knowledge", a: "رَبِّ زِدْنِي عِلْمًا", m: "My Lord, increase me in knowledge." }
-        // ... (system would render all 25 in the app)
-    ];
-
-    // AI KNOWLEDGE PACK (EXPANDED)
-    const islamicAI = {
-        "allah": "Allah is the One and Only God, the Creator and Sustainer of the universe.",
-        "prophet": "Prophet Muhammad (PBUH) is the final Messenger of Allah, sent as a mercy to all worlds.",
-        "pillars": "The 5 pillars are: Shahadah, Salah, Zakat, Sawm (Fasting), and Hajj.",
-        "iman": "Iman (Faith) has 6 articles: Belief in Allah, Angels, Books, Prophets, Day of Judgment, and Qadr.",
-        "tawheed": "Tawheed is the oneness of Allah, the core message of Islam.",
-        "sunnah": "Sunnah is the way of life of the Prophet (PBUH) which we follow for success.",
-        "zakat": "Zakat is a compulsory 2.5% charity on wealth for those who meet the Nisab.",
-        "ramadan": "Ramadan is the month of fasting, prayer, and Quran, where doors of Jannah are opened."
-    };
-
-    function selectLang(l) {
-        document.getElementById('lang-screen').style.display='none';
-        document.getElementById('login-screen').style.display='block';
-    }
-
-    function onSignIn(resp) {
-        if(resp) {
-            const user = JSON.parse(atob(resp.credential.split('.')[1]));
-            document.getElementById('u-name').innerText = user.given_name;
-            document.getElementById('u-photo').src = user.picture;
+    function init() {
+        document.getElementById('d-val').innerText = dVal;
+        let html = "";
+        for(let i=1; i<=30; i++) {
+            html += `<div class="juz-row">
+                <input type="checkbox" class="juz-check" ${qProg.includes(i)?'checked':''} onclick="mark(${i})">
+                <div style="flex:1"><b>Juz ${i}</b></div>
+                <button class="play-btn" onclick="playJ(${i})"><i class="fas fa-play"></i></button>
+            </div>`;
         }
-        document.getElementById('init-overlay').style.display='none';
-        initApp();
+        document.getElementById('juz-list').innerHTML = html;
+        upUI(); renderWall(); setInterval(updateCD, 1000);
     }
 
-    function initApp() {
-        // Load Ramadan
-        let rHtml = "";
-        ramadanData.forEach(day => {
-            rHtml += `<tr><td style="padding:8px;">Day ${day.r}</td><td>${day.d}</td><td>${day.s}</td><td>${day.i}</td></tr>`;
-        });
-        document.getElementById('ramadan-list').innerHTML = rHtml;
-
-        // Load Duas
-        let dHtml = "";
-        dailyDuas.forEach(d => {
-            dHtml += `<div class="dua-item"><strong>${d.t}</strong><span class="dua-ar">${d.a}</span><small>${d.m}</small></div>`;
-        });
-        document.getElementById('dua-list').innerHTML = dHtml;
-
-        document.getElementById('p-times').innerHTML = "Fajr: 5:09 AM<br>Dhuhr: 12:24 PM<br>Asr: 3:46 PM<br>Maghrib: 6:19 PM<br>Isha: 7:30 PM";
-        document.getElementById('hijri-head').innerText = "19 Shaban 1447H";
+    function updateCD() {
+        const diff = new Date("March 19, 2026 00:00:00") - new Date();
+        document.getElementById("cd-d").innerText = Math.floor(diff / 86400000);
+        document.getElementById("cd-h").innerText = Math.floor((diff % 86400000) / 3600000);
+        document.getElementById("cd-m").innerText = Math.floor((diff % 3600000) / 60000);
+        document.getElementById("cd-s").innerText = Math.floor((diff % 60000) / 1000);
     }
 
-    // QIBLA LOGIC
-    function startCompass() {
-        if (window.DeviceOrientationEvent) {
-            window.addEventListener('deviceorientationabsolute', (e) => {
-                let heading = e.alpha;
-                // Qibla from Sri Lanka is approx 296 degrees
-                document.getElementById('compass-disc').style.transform = `rotate(${-heading}deg)`;
-            }, true);
-        } else {
-            alert("Compass not supported on this device.");
-        }
+    function mark(n) {
+        if(qProg.includes(n)) qProg = qProg.filter(x => x !== n); else qProg.push(n);
+        localStorage.setItem('apex_q', JSON.stringify(qProg)); upUI();
     }
 
-    function sendChat() {
-        const input = document.getElementById('chat-in');
-        const box = document.getElementById('chat-msgs');
-        if(!input.value) return;
-        box.innerHTML += `<div class="msg user">${input.value}</div>`;
-        let q = input.value.toLowerCase();
-        input.value = "";
-        setTimeout(() => {
-            let res = "I am the Hasanath AI. Hamad built me with deep knowledge of Islam. Ask me about the 5 pillars, Iman, or Quran!";
-            for(let k in islamicAI) { if(q.includes(k)) res = islamicAI[k]; }
-            box.innerHTML += `<div class="msg bot">${res}</div>`;
-            box.scrollTop = box.scrollHeight;
-        }, 600);
+    function upUI() {
+        let p = Math.round((qProg.length / 30) * 100);
+        document.getElementById('h-perc').innerText = p + "%";
+        document.getElementById('prog-fill').style.width = p + "%";
+        document.getElementById('h-done').innerText = qProg.length;
     }
 
-    function showSec(id, btn) {
+    const eng = document.getElementById('audio-engine');
+    function playJ(n) {
+        eng.src = `https://server8.mp3quran.net/afs/${n.toString().padStart(3,'0')}.mp3`;
+        eng.play(); document.getElementById('p-bar').style.display = 'flex';
+        document.getElementById('p-label').innerText = "Juz " + n;
+    }
+    function pausePlay() { if(eng.paused) eng.play(); else eng.pause(); }
+    function stopPlay() { eng.pause(); document.getElementById('p-bar').style.display = 'none'; }
+
+    function tab(id, b) {
         document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
-        document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        btn.classList.add('active');
+        document.querySelectorAll('nav button').forEach(nb => nb.classList.remove('active'));
+        document.getElementById(id).classList.add('active'); b.classList.add('active');
     }
 
-    let t = 0;
-    function addT() { t++; document.getElementById('t-count').innerText = t; }
-    function resT() { t = 0; document.getElementById('t-count').innerText = 0; }
+    function addPost() {
+        let v = document.getElementById('w-in').value; if(!v) return;
+        posts.unshift({t:v, d:new Date().toLocaleTimeString()});
+        localStorage.setItem('apex_w', JSON.stringify(posts));
+        document.getElementById('w-in').value = ""; renderWall();
+    }
+    function renderWall() {
+        let h = ""; posts.slice(0,5).forEach(m => {
+            h += `<div class="card" style="background:var(--accent); border:none; padding:12px; margin-bottom:8px;">
+                    <p style="margin:0; font-size:0.85rem;">${m.t}</p><small style="opacity:0.5;">${m.d}</small>
+                  </div>`;
+        });
+        document.getElementById('w-feed').innerHTML = h;
+    }
+
+    function initComp() {
+        if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+            DeviceOrientationEvent.requestPermission().then(s => { if(s=='granted') window.addEventListener('deviceorientation', rotate); });
+        } else { window.addEventListener('deviceorientationabsolute', rotate); }
+    }
+    function rotate(e) {
+        let h = e.webkitCompassHeading || e.alpha;
+        document.getElementById('needle').style.transform = `rotate(${-h}deg)`;
+    }
+
+    function toggleMode() {
+        const t = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', t);
+    }
+    function tapD() { dVal++; document.getElementById('d-val').innerText = dVal; localStorage.setItem('apex_d', dVal); }
+    function clearD() { dVal = 0; document.getElementById('d-num').innerText = 0; localStorage.setItem('apex_d', 0); }
+    function runPlan() {
+        let d = document.getElementById('k-days').value; if(!d) return;
+        document.getElementById('k-res').style.display = 'block';
+        document.getElementById('k-res').innerText = ((30 - qProg.length) / d).toFixed(1) + " Juz / Day";
+    }
+
+    window.onload = init;
 </script>
 </body>
 </html>
