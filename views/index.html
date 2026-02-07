@@ -106,7 +106,31 @@ ar:{title:"مسجد الحسنات", prayer:"مواقيت الصلاة", ramadan
 ur:{title:"مسجد الحسنات", prayer:"نمازی اوقات", ramadan:"رمضان کا جدول", dua:"روزانہ کی دعائیں", load:"مزید دکھائیں"}
 };
 
-function initApp(){currentLang=document.getElementById('lang-select').value;document.getElementById('setup-modal').style.display='none';updateUIText();getLocation();loadDuas();}
+function initApp() {
+  // get selected language
+  currentLang = document.getElementById('lang-select').value;
+
+  // close welcome screen FIRST
+  document.getElementById('setup-modal').style.display = 'none';
+
+  // update texts safely
+  updateUIText();
+
+  // load duas safely
+  setTimeout(() => {
+    loadDuas();
+  }, 300);
+
+  // ask location safely (won't block)
+  setTimeout(() => {
+    try {
+      getLocation();
+    } catch (e) {
+      console.log("Location skipped");
+    }
+  }, 600);
+}
+
 
 function updateUIText(){const t=uiTexts[currentLang];document.getElementById('site-title').innerText=t.title;document.getElementById('prayer-heading').innerText=t.prayer;document.getElementById('ramadan-heading').innerText=t.ramadan;document.getElementById('dua-heading').innerText=t.dua;document.getElementById('load-more-btn').innerText=t.load;}
 
@@ -214,4 +238,5 @@ function getLocation(){
 
 </body>
 </html>
+
 
