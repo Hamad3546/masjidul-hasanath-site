@@ -3,228 +3,188 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masjidul Hasanath | Global Ummah 2026</title>
+    <title>Masjidul Hasanath | Ultimate Ummah 2026</title>
 
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#1b5e20">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <style>
-        :root { 
-            --primary: #1b5e20; 
-            --secondary: #f4f7f2; 
-            --gold: #c5a021; 
-            --dark: #121212;
-            --glass: rgba(255, 255, 255, 0.9);
-        }
-
-        body { 
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; 
-            margin: 0; background: #fff; color: #333; scroll-behavior: smooth; 
-            display: flex; flex-direction: column; min-height: 100vh;
-        }
-
-        /* Modern Nav */
-        nav { 
-            background: var(--primary); padding: 15px 5%; display: flex; 
-            justify-content: space-between; align-items: center; 
-            position: sticky; top: 0; z-index: 1000; color: white;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        nav a { color: white; text-decoration: none; margin-left: 15px; font-size: 0.9rem; font-weight: 600; }
-
-        /* Dashboard/Hero */
-        .hero { 
-            background: linear-gradient(rgba(27, 94, 32, 0.9), rgba(27, 94, 32, 0.9)), 
-                        url('https://images.unsplash.com/photo-1542610103-6058e0a4f5f5?auto=format&fit=crop&q=80');
-            background-size: cover; color: white; text-align: center; padding: 60px 10%; 
-            border-bottom-left-radius: 40px; border-bottom-right-radius: 40px;
-        }
-
-        /* Feature Grids */
-        section { padding: 40px 10%; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        :root { --primary: #1b5e20; --secondary: #f4f7f2; --gold: #c5a021; --white: #ffffff; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #fdfdfd; transition: 0.3s; }
         
-        .card { 
-            background: var(--secondary); padding: 20px; border-radius: 20px; 
-            transition: transform 0.3s; border: 1px solid #e0e0e0;
-            position: relative; overflow: hidden;
-        }
-        .card:hover { transform: translateY(-5px); }
-        .card h3 { color: var(--primary); margin-top: 0; display: flex; align-items: center; gap: 10px; }
+        /* Language Overlay */
+        #lang-overlay { position: fixed; inset: 0; background: var(--primary); z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; }
+        .lang-btn { background: white; color: var(--primary); border: none; padding: 15px; margin: 8px; border-radius: 50px; width: 260px; font-weight: bold; cursor: pointer; font-size: 1.1rem; }
 
-        /* Prayer Table */
-        .prayer-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #ddd; }
-        .current-prayer { background: var(--primary); color: white; padding: 5px 15px; border-radius: 50px; }
+        /* Navigation */
+        header { background: var(--primary); padding: 20px; text-align: center; color: white; border-bottom: 4px solid var(--gold); }
+        nav { background: var(--white); display: flex; justify-content: space-around; padding: 12px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        nav button { background: none; border: none; color: var(--primary); font-size: 1.3rem; cursor: pointer; }
 
-        /* AR Qibla Placeholder */
-        #qibla-container { 
-            height: 200px; background: #eee; border-radius: 15px; 
-            display: flex; align-items: center; justify-content: center; 
-            flex-direction: column; border: 2px dashed var(--gold);
-        }
+        /* Sections */
+        section { padding: 30px 8%; display: none; min-height: 70vh; }
+        section.active { display: block; animation: fadeIn 0.5s ease; }
+        .card { background: var(--secondary); border-radius: 20px; padding: 20px; margin-bottom: 20px; border: 1px solid #eee; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
 
-        /* Tasbih UI */
-        .tasbih-box { text-align: center; padding: 20px; }
-        #count { font-size: 4rem; font-weight: bold; color: var(--primary); }
-        .btn-circle { 
-            width: 100px; height: 100px; border-radius: 50%; border: none; 
-            background: var(--primary); color: white; font-size: 1.5rem; 
-            cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
+        /* AI Vision */
+        .vision-box { width: 100%; height: 250px; background: #000; border-radius: 20px; display: flex; align-items: center; justify-content: center; color: white; position: relative; overflow: hidden; }
+        .scan-line { position: absolute; width: 100%; height: 2px; background: var(--gold); top: 0; animation: scan 3s infinite linear; }
+        @keyframes scan { from { top: 0; } to { top: 100%; } }
 
-        /* AI Chatbot Floating Button */
-        .ai-chat-btn { 
-            position: fixed; bottom: 30px; right: 30px; 
-            background: var(--gold); color: white; width: 60px; height: 60px; 
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2); cursor: pointer; z-index: 999;
-        }
+        /* Chatbot */
+        #chat-window { position: fixed; bottom: 90px; right: 20px; width: 320px; height: 450px; background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); display: none; flex-direction: column; z-index: 2000; overflow: hidden; }
+        .chat-header { background: var(--primary); color: white; padding: 15px; font-weight: bold; display: flex; justify-content: space-between; }
+        .chat-msgs { flex: 1; padding: 15px; overflow-y: auto; background: #f0f0f0; }
+        .msg { margin-bottom: 10px; padding: 10px; border-radius: 15px; max-width: 80%; font-size: 0.9rem; }
+        .msg.bot { background: white; align-self: flex-start; }
+        .msg.user { background: #dcf8c6; align-self: flex-end; margin-left: auto; }
+        .floating-bot { position: fixed; bottom: 20px; right: 20px; background: var(--gold); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; cursor: pointer; z-index: 2001; }
 
-        footer { text-align: center; padding: 40px; background: var(--dark); color: #888; margin-top: auto; }
-        .badge { background: var(--gold); color: white; padding: 3px 8px; border-radius: 5px; font-size: 0.7rem; }
+        /* Tasbih */
+        .tasbih-display { font-size: 5rem; font-weight: bold; color: var(--primary); text-align: center; margin: 20px 0; }
+        .tasbih-btn { width: 140px; height: 140px; border-radius: 50%; background: var(--primary); color: white; border: none; font-size: 2.5rem; cursor: pointer; display: block; margin: 0 auto; box-shadow: 0 8px 15px rgba(0,0,0,0.2); }
 
-        @media (max-width: 600px) { section { padding: 20px 5%; } .hero { padding: 40px 5%; } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .rtl { direction: rtl; text-align: right; }
     </style>
 </head>
 <body>
 
-<nav>
-    <div style="font-size: 1.1rem; font-weight: 800; letter-spacing: 1px;">MASJIDUL HASANATH</div>
-    <div>
-        <a href="#dashboard"><i class="fas fa-home"></i></a>
-        <a href="#tools">Tools</a>
-        <a href="#tracker">Tracker</a>
-    </div>
-</nav>
-
-<section class="hero" id="dashboard">
-    <div id="hijri-date" style="font-weight: 600; color: var(--gold);">Loading...</div>
-    <h1 style="margin: 10px 0;">Assalamu Alaikum</h1>
-    <p>Your Spiritual Companion for the 2026 Journey</p>
-    <div style="margin-top: 20px; display: inline-block; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 50px; backdrop-filter: blur(5px);">
-        Next Prayer: <strong>Asr</strong> in 45 mins
-    </div>
-</section>
-
-<section id="tools">
-    <div class="grid">
-        <div class="card">
-            <h3><i class="fas fa-clock"></i> Prayer Times <span class="badge">GPS Local</span></h3>
-            <div class="prayer-row"><span>Fajr</span><span>05:12 AM</span></div>
-            <div class="prayer-row"><span>Dhuhr</span><span>12:28 PM</span></div>
-            <div class="prayer-row current-prayer"><span>Asr</span><span>03:45 PM</span></div>
-            <div class="prayer-row"><span>Maghrib</span><span>06:32 PM</span></div>
-            <div class="prayer-row"><span>Isha</span><span>07:55 PM</span></div>
-            <p style="font-size: 0.8rem; margin-top: 10px; color: #666;">Calculation: MWL (Standard)</p>
-        </div>
-
-        <div class="card">
-            <h3><i class="fas fa-compass"></i> AR Qibla Finder</h3>
-            <div id="qibla-container">
-                <i class="fas fa-kaaba fa-3x" style="color: var(--primary); margin-bottom: 10px;"></i>
-                <button onclick="startAR()" style="background: var(--gold); border: none; padding: 8px 15px; border-radius: 5px; color: white; cursor: pointer;">Enable AR View</button>
-            </div>
-            <p style="font-size: 0.8rem; text-align: center; margin-top: 10px;">Point your phone towards the horizon.</p>
-        </div>
-
-        <div class="card tasbih-box">
-            <h3><i class="fas fa-fingerprint"></i> Smart Tasbih</h3>
-            <div id="count">0</div>
-            <button class="btn-circle" onclick="countDhikr()"><i class="fas fa-plus"></i></button>
-            <br>
-            <button onclick="resetDhikr()" style="margin-top: 10px; background: none; border: none; color: #d32f2f; cursor: pointer; text-decoration: underline;">Reset Session</button>
-        </div>
-    </div>
-</section>
-
-<section id="tracker" style="background: #f9f9f9;">
-    <h2><i class="fas fa-chart-line"></i> Spiritual Activity</h2>
-    <div class="grid">
-        <div class="card">
-            <h3><i class="fas fa-ring"></i> Daily Progress</h3>
-            <div style="display: flex; justify-content: space-around; padding: 20px 0;">
-                <div style="text-align: center;"><i class="fas fa-pray fa-2x" style="color: var(--primary);"></i><br><small>Salah</small></div>
-                <div style="text-align: center;"><i class="fas fa-book-open fa-2x" style="color: #444;"></i><br><small>Quran</small></div>
-                <div style="text-align: center;"><i class="fas fa-hand-holding-heart fa-2x" style="color: #444;"></i><br><small>Sadaqah</small></div>
-            </div>
-            <p style="font-size: 0.8rem; color: #666; text-align: center;">You are on a 5-day prayer streak!</p>
-        </div>
-
-        <div class="card">
-            <h3><i class="fas fa-calculator"></i> Zakat Tracker</h3>
-            <div style="background: white; padding: 15px; border-radius: 10px; margin-bottom: 10px;">
-                <small>Current Gold Price</small>
-                <div style="font-weight: bold; color: var(--gold);">$62.50 /g</div>
-            </div>
-            <button style="width: 100%; background: var(--primary); color: white; border: none; padding: 10px; border-radius: 10px; cursor: pointer;">Calculate My Zakat</button>
-        </div>
-    </div>
-</section>
-
-<div class="ai-chat-btn" onclick="toggleAIChat()" title="Ask Ethical AI">
-    <i class="fas fa-robot fa-lg"></i>
+<div id="lang-overlay">
+    <i class="fas fa-mosque fa-3x" style="margin-bottom: 20px; color: var(--gold);"></i>
+    <h2>Select Your Language</h2>
+    <button class="lang-btn" onclick="initApp('en')">English</button>
+    <button class="lang-btn" onclick="initApp('ta')">தமிழ் (Tamil)</button>
+    <button class="lang-btn" onclick="initApp('si')">සිංහල (Sinhala)</button>
+    <button class="lang-btn" onclick="initApp('ar')">العربية (Arabic)</button>
+    <button class="lang-btn" onclick="initApp('ur')">اردو (Urdu)</button>
 </div>
 
-<section id="developer" style="background: var(--secondary); text-align: center;">
-    <div style="max-width: 600px; margin: auto;">
-        <h3>The Amanah (Privacy Commitment)</h3>
-        <p style="font-size: 0.9rem; color: #555;">
-            "This app is built as a Waqf (endowment) for the community. We strictly follow a <strong>Privacy-First</strong> policy: No ads, no data tracking, and no third-party sales. Everything you do here is between you and Allah."
-        </p>
-        <p style="font-style: italic; margin-top: 20px;">Built with dedication by <strong>HAMAD</strong>. Please include me and my family in your Duas.</p>
+<header>
+    <h1 id="main-title">Masjidul Hasanath</h1>
+    <p id="hijri-display" style="color: var(--gold);"></p>
+</header>
+
+<nav>
+    <button onclick="showSec('home')"><i class="fas fa-home"></i></button>
+    <button onclick="showSec('ramadan')"><i class="fas fa-moon"></i></button>
+    <button onclick="showSec('ai')"><i class="fas fa-robot"></i></button>
+    <button onclick="showSec('wellness')"><i class="fas fa-heart"></i></button>
+    <button onclick="showSec('tasbih')"><i class="fas fa-fingerprint"></i></button>
+</nav>
+
+<section id="home" class="active">
+    <h2 id="txt-prayer">Prayer Times</h2>
+    <div class="card" id="loc-status">📍 Requesting GPS...</div>
+    <div class="card">
+        <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #ddd;"><span>Fajr</span><strong>05:12 AM</strong></div>
+        <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #ddd; color:var(--primary); font-weight:bold;"><span>Dhuhr</span><strong>12:28 PM</strong></div>
+        <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #ddd;"><span>Asr</span><strong>03:45 PM</strong></div>
+        <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #ddd;"><span>Maghrib</span><strong>06:32 PM</strong></div>
+        <div style="display:flex; justify-content:space-between; padding:10px 0;"><span>Isha</span><strong>07:55 PM</strong></div>
     </div>
 </section>
 
-<footer>
-    <p>MASJIDUL HASANATH &copy; 2026</p>
-    <p style="font-size: 0.7rem; letter-spacing: 2px;">AUTHENTIC • ETHICAL • OPEN SOURCE</p>
+<section id="ramadan">
+    <h2 id="txt-ramadan">Ramadan 2026</h2>
+    <div class="card" style="background:var(--primary); color:white;">
+        <h3>Today's Times</h3>
+        <p>Sehri: 04:52 AM | Iftar: 06:24 PM</p>
+    </div>
+</section>
+
+<section id="ai">
+    <h2>AI Motion & Voice</h2>
+    <div class="card">
+        <h3>Salah Tracker</h3>
+        <div class="vision-box"><div class="scan-line"></div><i class="fas fa-camera fa-2x"></i></div>
+        <button class="lang-btn" style="width:100%; margin-top:15px;" onclick="alert('Starting AI Motion Tracking...')">Activate Camera</button>
+    </div>
+</section>
+
+<section id="wellness">
+    <h2>Mindfulness</h2>
+    <div class="card">
+        <h3>How are you feeling?</h3>
+        <input type="range" min="1" max="5" style="width:100%; accent-color:var(--primary);" oninput="updateMood(this.value)">
+        <p id="mood-label" style="text-align:center; font-weight:bold; color:var(--primary);">Neutral</p>
+    </div>
+</section>
+
+<section id="tasbih">
+    <h2>Smart Tasbih</h2>
+    <div class="card">
+        <div class="tasbih-display" id="count">0</div>
+        <button class="tasbih-btn" onclick="addCount()"><i class="fas fa-plus"></i></button>
+        <button onclick="resetCount()" style="display:block; margin:20px auto; color:red; border:none; background:none; cursor:pointer;">Reset</button>
+    </div>
+</section>
+
+<div id="chat-window">
+    <div class="chat-header"><span>Ilm Assistant</span><span onclick="toggleChat()" style="cursor:pointer;">&times;</span></div>
+    <div class="chat-msgs" id="chat-msgs"><div class="msg bot">Assalamu Alaikum! I am your AI assistant. How can I help?</div></div>
+    <div style="display:flex; padding:10px; border-top:1px solid #ddd;">
+        <input type="text" id="chat-input" style="flex:1; border-radius:20px; border:1px solid #ddd; padding:5px 10px;" placeholder="Ask...">
+        <button onclick="sendChat()" style="border:none; background:none; color:var(--primary); margin-left:5px;"><i class="fas fa-paper-plane"></i></button>
+    </div>
+</div>
+<div class="floating-bot" onclick="toggleChat()"><i class="fas fa-comment-dots"></i></div>
+
+<footer style="text-align:center; padding:40px; background:var(--secondary);">
+    <p><strong>Hand-coded with ❤️ by HAMAD</strong></p>
+    <p>Please remember me and my family in your Duas.</p>
 </footer>
 
 <script>
-    // 1. Digital Tasbih with Haptic Feedback
+    const translations = {
+        en: { title: "Masjidul Hasanath", prayer: "Prayer Times", ramadan: "Ramadan 2026" },
+        ta: { title: "மஸ்ஜிதுல் ஹஸனாத்", prayer: "தொழுகை நேரங்கள்", ramadan: "ரமலான் 2026" },
+        si: { title: "මස්ජිදුල් හසනාත්", prayer: "සලාත් වේලාවන්", ramadan: "රාමසාන් 2026" },
+        ar: { title: "مسجد الحسنات", prayer: "أوقات الصلاة", ramadan: "رمضان ٢٠٢٦" },
+        ur: { title: "مسجد الحسنات", prayer: "نماز کے اوقات", ramadan: "رمضان ۲۰۲۶" }
+    };
+
+    function initApp(lang) {
+        document.getElementById('lang-overlay').style.display = 'none';
+        const t = translations[lang];
+        document.getElementById('main-title').innerText = t.title;
+        document.getElementById('txt-prayer').innerText = t.prayer;
+        document.getElementById('txt-ramadan').innerText = t.ramadan;
+        if(lang==='ar' || lang==='ur') document.body.classList.add('rtl');
+        
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(p => {
+                document.getElementById('loc-status').innerText = `📍 Location: ${p.coords.latitude.toFixed(2)}, ${p.coords.longitude.toFixed(2)}`;
+            });
+        }
+        document.getElementById('hijri-display').innerText = new Intl.DateTimeFormat('en-u-ca-islamic-umalqura', {day:'numeric', month:'long', year:'numeric'}).format(new Date());
+    }
+
+    function showSec(id) {
+        document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    function toggleChat() {
+        const c = document.getElementById('chat-window');
+        c.style.display = c.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    function sendChat() {
+        const i = document.getElementById('chat-input');
+        const m = document.getElementById('chat-msgs');
+        if(!i.value) return;
+        m.innerHTML += `<div class="msg user">${i.value}</div>`;
+        setTimeout(() => { m.innerHTML += `<div class="msg bot">SubhanAllah, that is a great question. I am here to help with all app features!</div>`; m.scrollTop = m.scrollHeight; }, 1000);
+        i.value = "";
+    }
+
     let count = 0;
-    function countDhikr() {
-        count++;
-        document.getElementById('count').innerText = count;
-        // Vibration Feedback (Modern UX)
-        if (navigator.vibrate) {
-            navigator.vibrate(50); 
-        }
-    }
-    function resetDhikr() {
-        if(confirm("Start a new session?")) {
-            count = 0;
-            document.getElementById('count').innerText = count;
-        }
-    }
-
-    // 2. Hijri Date Logic (2026 Compatible)
-    const options = { day: 'numeric', month: 'long', year: 'numeric' };
-    const hijriDate = new Intl.DateTimeFormat('en-u-ca-islamic-umalqura', options).format(new Date());
-    document.getElementById('hijri-date').innerText = hijriDate;
-
-    // 3. AR Qibla Interaction Placeholder
-    function startAR() {
-        alert("Accessing Camera for AR Qibla... (In a real app, this launches the ARKit/ARCore camera view to show the Kaaba overlay).");
-    }
-
-    // 4. AI Chatbot Toggle
-    function toggleAIChat() {
-        alert("Launching Ethical AI Assistant... \n\nTrained on verified Sahih sources to help you with Tajweed, Hadith search, and Fiqh basics.");
-    }
-
-    // 5. Service Worker Registration (Offline functionality)
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/sw.js')
-            .then(reg => console.log('Spiritual Service Worker: Active'))
-            .catch(err => console.log('SW Failed', err));
-        });
-    }
+    function addCount() { count++; document.getElementById('count').innerText = count; if(navigator.vibrate) navigator.vibrate(50); }
+    function resetCount() { count = 0; document.getElementById('count').innerText = 0; }
+    function updateMood(v) { const l = ["Anxious", "Stressed", "Neutral", "Grateful", "Peaceful"]; document.getElementById('mood-label').innerText = l[v-1]; }
 </script>
-
 </body>
 </html>
