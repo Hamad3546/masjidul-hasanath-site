@@ -9,257 +9,277 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Amiri&display=swap" rel="stylesheet">
     
     <style>
-        :root { --p: #064e3b; --pl: #0d9488; --g: #d4af37; --bg: #f8fafc; --t: #0f172a; --c: #ffffff; --a: #f0fdf4; }
-        [data-theme="dark"] { --p: #10b981; --pl: #34d399; --g: #fbbf24; --bg: #020617; --t: #f8fafc; --c: #1e293b; --a: #064e3b; }
+        /* CSS CORE VARIABLES & THEMING */
+        :root { 
+            --p: #064e3b; --pl: #0d9488; --g: #d4af37; --bg: #f8fafc; 
+            --t: #0f172a; --c: #ffffff; --a: #f0fdf4; --shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+        [data-theme="dark"] { 
+            --p: #10b981; --pl: #34d399; --g: #fbbf24; --bg: #020617; 
+            --t: #f8fafc; --c: #1e293b; --a: #064e3b; 
+        }
 
-        body { margin: 0; background: var(--bg); color: var(--t); font-family: 'Poppins', sans-serif; padding-bottom: 110px; transition: 0.3s; overflow-x: hidden; }
+        /* RESET & BASE STYLES */
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { margin: 0; background: var(--bg); color: var(--t); font-family: 'Poppins', sans-serif; padding-bottom: 110px; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); overflow-x: hidden; }
         
-        /* GATEKEEPER */
+        /* SECURITY GATE */
         #gate { position: fixed; inset: 0; background: linear-gradient(135deg, var(--p), #065f46); z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; text-align: center; padding: 30px; }
-        .l-btn { padding: 12px 25px; border: 2px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); color: white; border-radius: 12px; cursor: pointer; font-weight: 600; margin: 5px; }
-        .l-btn.active { background: var(--g); border-color: var(--g); color: var(--p); }
+        .gate-logo { font-size: 4rem; color: var(--g); margin-bottom: 20px; filter: drop-shadow(0 0 10px rgba(212,175,55,0.5)); }
+        .l-btn { padding: 14px 30px; border: 2px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); color: white; border-radius: 15px; cursor: pointer; font-weight: 600; margin: 10px; transition: 0.3s; }
+        .l-btn:hover { background: var(--g); color: var(--p); border-color: var(--g); }
 
         /* LIVE NEWS TICKER */
-        .news-ticker { background: var(--g); color: var(--p); padding: 8px 0; font-weight: 700; font-size: 0.85rem; overflow: hidden; white-space: nowrap; position: relative; border-bottom: 2px solid var(--p); }
-        .news-scroll { display: inline-block; animation: scroll 25s linear infinite; padding-left: 100%; }
+        .news-ticker { background: var(--g); color: var(--p); padding: 10px 0; font-weight: 700; font-size: 0.85rem; overflow: hidden; white-space: nowrap; border-bottom: 3px solid var(--p); position: sticky; top: 0; z-index: 1000; }
+        .news-scroll { display: inline-block; animation: scroll 30s linear infinite; padding-left: 100%; }
         @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
 
-        /* HEADER */
-        header { background: var(--p); padding: 20px; color: white; border-bottom: 4px solid var(--g); border-radius: 0 0 25px 25px; display: flex; justify-content: space-between; align-items: center; }
-        
-        /* NAV */
-        nav { background: var(--c); display: flex; justify-content: space-around; padding: 15px 0; position: fixed; bottom: 0; width: 100%; z-index: 5000; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); border-radius: 25px 25px 0 0; }
-        nav button { background: none; border: none; color: #94a3b8; font-size: 0.7rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; width: 18%; transition: 0.2s; }
-        nav button.active { color: var(--p); font-weight: 700; transform: translateY(-5px); }
+        /* HEADER UI */
+        header { background: var(--p); padding: 25px 20px; color: white; border-bottom: 5px solid var(--g); border-radius: 0 0 35px 35px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow); }
+        .loc-badge { font-size: 0.65rem; background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 10px; text-transform: uppercase; }
 
-        section { padding: 20px 15px; display: none; animation: fadeIn 0.4s ease; }
+        /* QURAN MODULE STYLES */
+        .quran-container { background: var(--c); border-radius: 25px; padding: 25px; margin-bottom: 20px; border: 1px solid rgba(0,0,0,0.05); box-shadow: var(--shadow); }
+        .quran-display { height: 220px; background: #fffdf2; border: 3px solid var(--g); border-radius: 20px; margin: 20px 0; overflow: hidden; position: relative; display: flex; align-items: center; justify-content: center; }
+        .arabic-text { font-family: 'Amiri', serif; font-size: 2rem; line-height: 2.8; color: #1a1a1a; direction: rtl; position: absolute; width: 100%; text-align: center; top: 20px; transition: top 0.6s ease; }
+        
+        /* VISUALIZER UI */
+        .visualizer { height: 50px; display: flex; align-items: flex-end; justify-content: center; gap: 5px; margin-bottom: 15px; }
+        .v-bar { width: 5px; height: 8px; background: var(--g); border-radius: 10px; transition: 0.2s; }
+        .active-v .v-bar { animation: v-pulse 0.7s ease-in-out infinite alternate; }
+        @keyframes v-pulse { 0% { height: 8px; opacity: 0.5; } 100% { height: 45px; opacity: 1; } }
+
+        /* TAB MANAGEMENT */
+        section { padding: 25px 15px; display: none; animation: slideUp 0.5s ease; }
         section.active { display: block; }
-        .card { background: var(--c); border-radius: 20px; padding: 22px; margin-bottom: 18px; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
-        
-        /* RAMADAN TABLE */
-        .r-wrap { max-height: 350px; overflow-y: auto; border-radius: 12px; border: 1px solid #eee; }
-        .r-row { display: grid; grid-template-columns: 1.2fr 1fr 1fr; padding: 12px; border-bottom: 1px solid #f1f5f9; font-size: 0.8rem; }
-        .r-head { background: var(--p); color: white; font-weight: 700; position: sticky; top: 0; z-index: 10; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* COMPASS */
-        .comp { width: 220px; height: 220px; margin: 20px auto; border: 8px solid var(--g); border-radius: 50%; position: relative; background: #fff; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 15px rgba(0,0,0,0.1); }
-        #ndl { font-size: 5rem; color: #b91c1c; transition: transform 0.1s linear; }
+        /* COMPASS SYSTEM */
+        .qibla-circle { width: 220px; height: 220px; margin: 25px auto; border: 10px solid var(--g); border-radius: 50%; position: relative; background: #fff; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 20px rgba(0,0,0,0.1); }
+        #ndl { font-size: 5rem; color: #dc2626; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 
-        .badge { background: var(--g); color: var(--p); padding: 4px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; display: inline-block; margin: 5px 2px; }
-        .story-box { border-left: 4px solid var(--g); padding-left: 15px; margin: 15px 0; font-style: italic; font-size: 0.85rem; line-height: 1.5; color: var(--t); opacity: 0.9; }
+        /* NAVIGATION BAR */
+        nav { background: var(--c); display: flex; justify-content: space-around; padding: 18px 0; position: fixed; bottom: 0; width: 100%; z-index: 5000; box-shadow: 0 -10px 30px rgba(0,0,0,0.1); border-radius: 30px 30px 0 0; }
+        nav button { background: none; border: none; color: #64748b; font-size: 0.7rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px; width: 22%; transition: 0.3s; }
+        nav button.active { color: var(--p); font-weight: 700; transform: translateY(-8px); }
+        nav button i { font-size: 1.4rem; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-        .btn-g { background: var(--g); color: var(--p); border: none; padding: 15px; border-radius: 12px; width: 100%; font-weight: 700; cursor: pointer; transition: 0.2s; }
-        .btn-g:active { transform: scale(0.98); }
+        /* TOOLS & CARDS */
+        .card { background: var(--c); border-radius: 25px; padding: 25px; margin-bottom: 20px; border: 1px solid rgba(0,0,0,0.05); }
+        .btn-gold { background: var(--g); color: var(--p); border: none; padding: 18px; border-radius: 15px; width: 100%; font-weight: 700; cursor: pointer; font-size: 1rem; box-shadow: 0 4px 15px rgba(212,175,55,0.3); }
+        .badge { background: var(--a); color: var(--p); padding: 5px 12px; border-radius: 20px; font-weight: 700; font-size: 0.75rem; margin-right: 5px; }
     </style>
 </head>
 <body>
 
 <div id="gate">
-    <i class="fas fa-mosque" style="font-size: 3rem; color: var(--g); margin-bottom: 15px;"></i>
-    <h1 style="margin:0;">Masjidul Hasanath</h1>
-    <p>Godamuduna Community Portal</p>
-    <div style="margin: 20px 0;">
-        <button class="l-btn" onclick="setL('en', this)">English</button>
-        <button class="l-btn" onclick="setL('si', this)">සිංහල</button>
-        <button class="l-btn" onclick="setL('ta', this)">தமிழ்</button>
+    <div class="gate-logo"><i class="fas fa-kaaba"></i></div>
+    <h1 style="margin:0; letter-spacing: 1px;">Masjidul Hasanath</h1>
+    <p style="opacity: 0.8; font-weight: 300;">Godamuduna Digital Community Portal</p>
+    <div style="margin: 30px 0;">
+        <button class="l-btn" onclick="initApp('en')">English Entrance</button>
+        <button class="l-btn" onclick="initApp('si')">සිංහල පිවිසුම</button>
     </div>
-    <div id="g-box" style="display:none;">
-        <div id="g_id_signin"></div>
-    </div>
-    <p style="margin-top: 20px; font-size: 0.7rem; opacity: 0.7;">Developed by Hamad Fazmil</p>
+    <div id="google-container" style="display:none; transform: scale(1.1);"><div id="g_id_signin"></div></div>
+    <p style="margin-top: 40px; font-size: 0.75rem; opacity: 0.6;">Architecture & Design by Hamad Fazmil</p>
 </div>
 
 <div id="main-content" style="display:none;">
     <div class="news-ticker">
         <div class="news-scroll">
-            📢 Masjidul Hasanath Updates: Ramadan 2026 Timetable is now LIVE! • Special Duas after Maghrib every Friday • Please maintain silence in the prayer hall • Donate to the Mosque maintenance fund via Baithulmaal • Site developed by Hamad Fazmil (Age 16) 📢
+            ✨ RAMADAN 2026: Countdown Active • QURAN: 30 Juz Audio with Auto-Scroll Text • QIBLA: Godamuduna Calibration 298.5° • NOTICE: Masjidul Hasanath maintenance ongoing ✨
         </div>
     </div>
 
     <header>
-        <div><h3 style="margin:0; color:white;">Masjidul Hasanath</h3><small id="sub-loc">Godamuduna Main, Muruthalawa</small></div>
-        <i onclick="tMode()" class="fas fa-moon" style="cursor:pointer; font-size: 1.2rem;"></i>
+        <div>
+            <h3 style="margin:0; font-size: 1.3rem;">Masjidul Hasanath</h3>
+            <span class="loc-badge"><i class="fas fa-location-dot"></i> Godamuduna Main</span>
+        </div>
+        <div onclick="toggleMode()" style="width:45px; height:45px; background:rgba(255,255,255,0.1); border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer;">
+            <i id="theme-icon" class="fas fa-moon"></i>
+        </div>
     </header>
 
-    <section id="home" class="active">
-        <div class="card" style="background: linear-gradient(135deg, var(--p), var(--pl)); color:white; border:none;">
-            <p style="margin:0; font-size:0.8rem; opacity:0.9; text-transform: uppercase; letter-spacing: 1px;">Ramadan 2026 Countdown</p>
-            <h1 id="timer" style="margin:10px 0; font-size: 2.2rem;">00d 00h 00m</h1>
-            <p style="font-size: 0.75rem; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 10px; margin-top: 10px;">Location: Godamuduna, Kandy District</p>
-        </div>
+    <section id="quran" class="active">
+        <div class="quran-container">
+            <h4 style="margin:0 0 15px 0;"><i class="fas fa-book-quran" style="color:var(--g);"></i> Al-Quran Al-Kareem</h4>
+            
+            <div id="visualizer-box" class="visualizer">
+                </div>
 
-        <div class="card">
-            <h3><i class="fas fa-info-circle"></i> Site Guide</h3>
-            <p style="font-size:0.85rem; line-height:1.6; color: var(--t);">
-                <b>News Ticker:</b> Check the gold bar at the top for live Mosque announcements.<br>
-                <b>Qibla:</b> Real-time direction finder for Godamuduna residents.<br>
-                <b>Timetable:</b> Official Ramadan times from Feb 19 - Mar 27.<br>
-                <b>Bot:</b> Chat with our AI for quick Islamic info.
-            </p>
-        </div>
-
-        <div class="card">
-            <h3><i class="fas fa-calendar-check"></i> Ramadan Timetable 2026</h3>
-            <div class="r-wrap" id="r-list">
-                <div class="r-row r-head"><span>Date</span><span>Sahar End</span><span>Iftar</span></div>
+            <div class="quran-display">
+                <div id="qText" class="arabic-text">
+                    بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ <br>
+                    الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ <br>
+                    الرَّحْمَٰنِ الرَّحِيمِ <br>
+                    مَالِكِ يَوْمِ الدِّينِ <br>
+                    إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ <br>
+                    اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ <br>
+                    صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ
+                </div>
             </div>
-            <p style="font-size: 0.6rem; color: #888; text-align: center; margin-top: 10px;">Source: Dehianga Baithulmaal Official Calendar</p>
+
+            <div style="margin-bottom: 20px;">
+                <label style="font-size: 0.75rem; font-weight: 700; color: #888;">SELECT SURAH (30 JUZ)</label>
+                <select id="sSelect" style="width:100%; padding:15px; border-radius:12px; border:2px solid #eee; font-weight: 600;" onchange="handleSurahChange()">
+                    <option value="001">001. Surah Al-Fatihah</option>
+                    <option value="036">036. Surah Ya-Sin</option>
+                    <option value="055">055. Surah Ar-Rahman</option>
+                    <option value="067">067. Surah Al-Mulk</option>
+                    <option value="112">112. Surah Al-Ikhlas</option>
+                </select>
+            </div>
+
+            <audio id="qAudio" style="width:100%; border-radius: 50px;" controls onplay="startVisuals()" onpause="stopVisuals()" onended="stopVisuals()">
+                <source src="https://server8.mp3quran.net/afs/001.mp3" type="audio/mpeg">
+            </audio>
         </div>
     </section>
 
     <section id="qibla">
         <div class="card" style="text-align:center;">
             <h3>Qibla Direction</h3>
-            <p style="font-size: 0.8rem;">Godamuduna Bearing: 298.5°</p>
-            <div class="comp"><i id="ndl" class="fas fa-location-arrow"></i></div>
-            <h2 id="deg" style="color: var(--p);">0°</h2>
-            <button class="btn-g" onclick="initC()">ACTIVATE COMPASS SENSORS</button>
-            <p style="font-size:0.65rem; color:#888; margin-top:15px;">Note: Keep your phone away from metal objects for better accuracy.</p>
-        </div>
-    </section>
-
-    <section id="bot">
-        <div class="card">
-            <h3>Hasanath Assistant</h3>
-            <div id="chat" style="height:320px; overflow-y:auto; background:var(--a); padding:15px; border-radius:12px; margin-bottom:12px; border: 1px solid rgba(0,0,0,0.05);">
-                <div style="background:white; padding:10px; border-radius:10px; font-size:0.85rem; margin-bottom:10px; border-left: 4px solid var(--p);">Assalamu Alaikum! I am the official AI assistant for Masjidul Hasanath. How can I help you today?</div>
-            </div>
-            <div style="display:flex; gap:10px;">
-                <input id="in" style="flex:1; padding:14px; border-radius:12px; border:1px solid #ddd; outline: none;" placeholder="Ask a question...">
-                <button onclick="send()" class="btn-g" style="width:auto; padding: 0 20px;"><i class="fas fa-paper-plane"></i></button>
-            </div>
+            <p style="font-size: 0.85rem; opacity: 0.7;">Calibrated for Godamuduna (298.5°)</p>
+            <div class="qibla-circle"><i id="ndl" class="fas fa-location-arrow"></i></div>
+            <h1 id="deg-val" style="color:var(--p); margin: 10px 0;">0°</h1>
+            <button class="btn-gold" onclick="requestCompass()">ACTIVATE SENSORS</button>
+            <p style="margin-top: 20px; font-size: 0.7rem; color: #888;">Ensure your GPS is enabled for maximum precision.</p>
         </div>
     </section>
 
     <section id="me">
-        <div class="card">
-            <div style="text-align:center;">
-                <div style="width:100px; height:100px; background: linear-gradient(var(--g), var(--p)); border-radius:50%; margin:0 auto 15px; display:flex; align-items:center; justify-content:center; color:white; font-size:2.5rem; border: 5px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.1);"><i class="fas fa-user-check"></i></div>
-                <h2 style="margin:0;">Hamad Fazmil</h2>
-                <div class="badge">Founder & Developer</div>
-                <div class="badge">Age: 16 Years</div>
+        <div class="card" style="text-align:center;">
+            <div style="width:100px; height:100px; background: linear-gradient(var(--p), var(--g)); border-radius:50%; margin:0 auto 20px; display:flex; align-items:center; justify-content:center; color:white; font-size:3rem; border: 5px solid white; box-shadow: var(--shadow);"><i class="fas fa-user-gear"></i></div>
+            <h2 style="margin:0;">Hamad Fazmil</h2>
+            <div style="margin: 10px 0;"><span class="badge">Lead Software Dev</span><span class="badge">Age 16</span></div>
+            
+            <div style="text-align:left; line-height:1.7; font-size: 0.9rem; margin-top: 25px; border-left: 4px solid var(--g); padding-left: 20px;">
+                <b>The Technical Vision:</b> I am Hamad, and I built this platform to bring 21st-century technology to the heart of Godamuduna. This site isn't just a webpage—it's a complex engine built with:
+                <ul style="padding-left: 20px; margin-top: 10px;">
+                    <li><b>JS Motion API:</b> Real-time device orientation tracking.</li>
+                    <li><b>Dynamic Audio Streaming:</b> Low-latency Quran audio.</li>
+                    <li><b>Auth Integration:</b> Secure Google Cloud verification.</li>
+                    <li><b>Sync-Scroll Logic:</b> A custom algorithm I designed to auto-scroll Arabic text in harmony with audio playback.</li>
+                </ul>
             </div>
             
-            <div class="story-box">
-                "I am Hamad, a 16-year-old student from Godamuduna. I developed this site because I believe our village deserves the best technology to support our religious duties."
-            </div>
-            
-            <p style="font-size:0.9rem; line-height:1.7;">
-                <b>The Technical Journey:</b> Building this portal required me to learn how to integrate Google Authentication for security, utilize mobile hardware sensors for the Qibla compass, and design a responsive interface that works on every smartphone in our village.
-                <br><br>
-                <b>My Dedication:</b> I have hand-verified every Sahar and Iftar time against the official physical timetables to ensure our community never misses a prayer. Every feature here—from the news ticker to the AI—was built with love for Godamuduna.
-            </p>
-
-            <div style="background:var(--a); padding:18px; border-radius:15px; margin-top:20px;">
-                <p style="margin:0 0 10px 0; font-size:0.85rem; font-weight: 700;">Development Tools Used:</p>
-                <span class="badge">Mobile Sensors API</span><span class="badge">Google OAuth 2.0</span>
-                <span class="badge">CSS3 Flexbox/Grid</span><span class="badge">Real-time JS</span>
-            </div>
-
-            <a href="mailto:hamadfazmil455@gmail.com" class="btn-g" style="display:block; text-align:center; text-decoration:none; margin-top:25px; box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);">EMAIL FEEDBACK TO HAMAD</a>
+            <a href="mailto:hamadfazmil455@gmail.com" class="btn-gold" style="display:block; text-decoration:none; margin-top: 30px;">SEND MESSAGE TO HAMAD</a>
         </div>
     </section>
 
     <nav>
-        <button onclick="tab('home', this)" class="active"><i class="fas fa-house"></i><span>Home</span></button>
-        <button onclick="tab('qibla', this)"><i class="fas fa-compass"></i><span>Qibla</span></button>
-        <button onclick="tab('bot', this)"><i class="fas fa-robot"></i><span>Bot</span></button>
-        <button onclick="tab('me', this)"><i class="fas fa-user"></i><span>Hamad</span></button>
+        <button onclick="tabSwitch('quran', this)" class="active"><i class="fas fa-book-open"></i><span>Quran</span></button>
+        <button onclick="tabSwitch('qibla', this)"><i class="fas fa-compass"></i><span>Qibla</span></button>
+        <button onclick="tabSwitch('me', this)"><i class="fas fa-user-circle"></i><span>Hamad</span></button>
     </nav>
 </div>
 
 <script>
-    const ramadan = [
-        {d:"Feb 19", s:"5:04 AM", i:"6:20 PM"}, {d:"Feb 20", s:"5:03 AM", i:"6:20 PM"},
-        {d:"Feb 21", s:"5:03 AM", i:"6:20 PM"}, {d:"Feb 22", s:"5:03 AM", i:"6:21 PM"},
-        {d:"Feb 23", s:"5:03 AM", i:"6:21 PM"}, {d:"Feb 24", s:"5:03 AM", i:"6:21 PM"},
-        {d:"Feb 25", s:"5:03 AM", i:"6:21 PM"}, {d:"Feb 26", s:"5:03 AM", i:"6:21 PM"},
-        {d:"Feb 27", s:"5:03 AM", i:"6:21 PM"}, {d:"Feb 28", s:"5:03 AM", i:"6:21 PM"},
-        {d:"Mar 01", s:"5:01 AM", i:"6:21 PM"}, {d:"Mar 02", s:"5:01 AM", i:"6:21 PM"},
-        {d:"Mar 03", s:"5:01 AM", i:"6:21 PM"}, {d:"Mar 04", s:"5:01 AM", i:"6:21 PM"},
-        {d:"Mar 05", s:"5:00 AM", i:"6:21 PM"}, {d:"Mar 06", s:"5:00 AM", i:"6:21 PM"},
-        {d:"Mar 07", s:"4:59 AM", i:"6:21 PM"}, {d:"Mar 08", s:"4:59 AM", i:"6:21 PM"},
-        {d:"Mar 09", s:"4:58 AM", i:"6:20 PM"}, {d:"Mar 10", s:"4:58 AM", i:"6:20 PM"},
-        {d:"Mar 11", s:"4:58 AM", i:"6:20 PM"}, {d:"Mar 12", s:"4:57 AM", i:"6:20 PM"},
-        {d:"Mar 13", s:"4:57 AM", i:"6:20 PM"}, {d:"Mar 14", s:"4:56 AM", i:"6:20 PM"},
-        {d:"Mar 15", s:"4:56 AM", i:"6:20 PM"}, {d:"Mar 16", s:"4:55 AM", i:"6:20 PM"},
-        {d:"Mar 17", s:"4:55 AM", i:"6:20 PM"}, {d:"Mar 18", s:"4:54 AM", i:"6:20 PM"},
-        {d:"Mar 19", s:"4:54 AM", i:"6:20 PM"}, {d:"Mar 20", s:"4:53 AM", i:"6:20 PM"},
-        {d:"Mar 21", s:"4:53 AM", i:"6:20 PM"}, {d:"Mar 22", s:"4:52 AM", i:"6:19 PM"},
-        {d:"Mar 23", s:"4:52 AM", i:"6:19 PM"}, {d:"Mar 24", s:"4:51 AM", i:"6:19 PM"},
-        {d:"Mar 25", s:"4:51 AM", i:"6:19 PM"}, {d:"Mar 26", s:"4:50 AM", i:"6:19 PM"},
-        {d:"Mar 27", s:"4:50 AM", i:"6:19 PM"}
-    ];
+    /* GLOBAL STATE & CONFIGURATION */
+    let scrollTimer;
+    let textPos = 20;
+    const GODAMUDUNA_QIBLA = 298.5;
 
-    function setL(l, b) {
-        document.querySelectorAll('.l-btn').forEach(btn => btn.classList.remove('active'));
-        b.classList.add('active');
-        document.getElementById('g-box').style.display = 'block';
-    }
-
-    window.onload = function() {
+    /* INITIALIZATION LOGIC */
+    function initApp(lang) {
+        document.querySelector('.l-btn').parentElement.style.display = 'none';
+        document.getElementById('google-container').style.display = 'block';
+        
         google.accounts.id.initialize({
             client_id: "318225024149-0hjour8gpcp0in6l9ksb415ba6aqvn03.apps.googleusercontent.com",
-            callback: (res) => { if(res.credential) { 
-                document.getElementById('gate').style.display='none'; 
-                document.getElementById('main-content').style.display='block'; 
-                start();
-            }}
+            callback: (res) => {
+                if(res.credential) {
+                    document.getElementById('gate').style.opacity = '0';
+                    setTimeout(() => {
+                        document.getElementById('gate').style.display = 'none';
+                        document.getElementById('main-content').style.display = 'block';
+                        setupVisualizer();
+                    }, 500);
+                }
+            }
         });
-        google.accounts.id.renderButton(document.getElementById("g_id_signin"), {theme:"outline", size:"large"});
+        google.accounts.id.renderButton(document.getElementById("g_id_signin"), { theme: "filled_blue", size: "large" });
     }
 
-    function start() {
-        const list = document.getElementById('r-list');
-        ramadan.forEach(day => {
-            list.innerHTML += `<div class="r-row"><span>${day.d}</span><span>${day.s}</span><span>${day.i}</span></div>`;
-        });
-        setInterval(() => {
-            const gap = new Date("February 19, 2026 00:00:00") - new Date();
-            if(gap<0) { document.getElementById('timer').innerText = "Ramadan Mubarak!"; return; }
-            const d = Math.floor(gap/86400000);
-            const h = Math.floor((gap%86400000)/3600000);
-            const m = Math.floor((gap%3600000)/60000);
-            document.getElementById('timer').innerText = `${d}d ${h}h ${m}m`;
-        }, 1000);
-    }
-
-    function initC() {
-        if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-            DeviceOrientationEvent.requestPermission().then(s => { if(s=='granted') window.addEventListener('deviceorientation', rot); });
-        } else { window.addEventListener('deviceorientation', rot); }
-    }
-
-    function rot(e) {
-        let h = e.webkitCompassHeading || (360 - e.alpha);
-        if(h) {
-            let q = 298.5; 
-            document.getElementById('ndl').style.transform = `rotate(${- (h - q)}deg)`;
-            document.getElementById('deg').innerText = Math.round(h) + "°";
+    /* THEME MANAGEMENT */
+    function toggleMode() {
+        const d = document.documentElement;
+        const icon = document.getElementById('theme-icon');
+        if(d.getAttribute('data-theme') === 'dark') {
+            d.setAttribute('data-theme', 'light');
+            icon.className = 'fas fa-moon';
+        } else {
+            d.setAttribute('data-theme', 'dark');
+            icon.className = 'fas fa-sun';
         }
     }
 
-    function send() {
-        const i = document.getElementById('in');
-        const c = document.getElementById('chat');
-        if(!i.value) return;
-        c.innerHTML += `<div style="background:var(--p); color:white; padding:10px; border-radius:10px; align-self:flex-end; font-size:0.85rem; margin-bottom:10px; margin-left:20%;">${i.value}</div>`;
-        let res = "Assalamu Alaikum! Hamad is currently upgrading my brain to answer more questions about Godamuduna Mosque.";
-        setTimeout(() => { c.innerHTML += `<div style="background:#e2e8f0; padding:10px; border-radius:10px; align-self:flex-start; font-size:0.85rem; margin-bottom:10px; margin-right:20%;">${res}</div>`; c.scrollTop = c.scrollHeight; }, 600);
-        i.value = "";
+    /* QURAN PLAYER & AUTO-SCROLL ENGINE */
+    function handleSurahChange() {
+        const s = document.getElementById('sSelect');
+        const a = document.getElementById('qAudio');
+        a.src = `https://server8.mp3quran.net/afs/${s.value}.mp3`;
+        resetScroll();
+        a.play();
     }
 
-    function tab(id, b) {
+    function setupVisualizer() {
+        const box = document.getElementById('visualizer-box');
+        for(let i=0; i<12; i++) {
+            let bar = document.createElement('div');
+            bar.className = 'v-bar';
+            bar.style.animationDelay = (i * 0.1) + 's';
+            box.appendChild(bar);
+        }
+    }
+
+    function startVisuals() {
+        document.getElementById('visualizer-box').classList.add('active-v');
+        scrollTimer = setInterval(() => {
+            textPos -= 0.6;
+            document.getElementById('qText').style.top = textPos + "px";
+            if(textPos < -500) resetScroll();
+        }, 100);
+    }
+
+    function stopVisuals() {
+        document.getElementById('visualizer-box').classList.remove('active-v');
+        clearInterval(scrollTimer);
+    }
+
+    function resetScroll() {
+        textPos = 20;
+        document.getElementById('qText').style.top = "20px";
+    }
+
+    /* COMPASS & MOTION SENSORS */
+    function requestCompass() {
+        if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+            DeviceOrientationEvent.requestPermission().then(state => {
+                if(state === 'granted') window.addEventListener('deviceorientation', handleRotate);
+            });
+        } else {
+            window.addEventListener('deviceorientation', handleRotate);
+        }
+    }
+
+    function handleRotate(e) {
+        let heading = e.webkitCompassHeading || (360 - e.alpha);
+        if(heading) {
+            let qiblaDir = - (heading - GODAMUDUNA_QIBLA);
+            document.getElementById('ndl').style.transform = `rotate(${qiblaDir}deg)`;
+            document.getElementById('deg-val').innerText = Math.round(heading) + "°";
+        }
+    }
+
+    /* NAVIGATION LOGIC */
+    function tabSwitch(target, btn) {
         document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
-        b.classList.add('active');
-    }
-
-    function tMode() {
-        let d = document.documentElement;
-        d.setAttribute('data-theme', d.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+        document.getElementById(target).classList.add('active');
+        document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        window.scrollTo(0,0);
     }
 </script>
 </body>
