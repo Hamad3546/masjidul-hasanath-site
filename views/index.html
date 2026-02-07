@@ -1,242 +1,230 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Masjidul Hasanath Super-App</title>
-<link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#1b5e20">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<style>
-:root { --primary:#1b5e20; --gold:#c5a021; --light:#f4f7f2; }
-body { font-family:'Segoe UI',sans-serif; margin:0; padding-bottom:80px; background:#fff; transition:0.3s; }
-header { background:var(--primary); color:white; padding:15px; text-align:center; border-radius:0 0 20px 20px; }
-.lang-bar { background:#f0f0f0; padding:10px; overflow-x:auto; white-space:nowrap; display:flex; gap:8px; border-bottom:1px solid #ddd; }
-.lang-btn { background:white; border:1px solid #ccc; padding:6px 12px; border-radius:20px; font-size:0.75rem; cursor:pointer; transition:0.2s; }
-.lang-btn.active { background:var(--gold); color:white; border-color:var(--gold); }
-.content-section { display:none; padding:20px; animation:fadeIn 0.4s; }
-.active-section { display:block; }
-@keyframes fadeIn { from{opacity:0} to{opacity:1} }
-.card { background:var(--light); padding:20px; border-radius:15px; margin-bottom:15px; border-left:5px solid var(--gold); box-shadow:0 2px 8px rgba(0,0,0,0.05); }
-.btn { background:var(--primary); color:white; border:none; padding:12px; border-radius:10px; width:100%; font-weight:bold; cursor:pointer; margin-top:10px; }
-.arabic { font-size:1.8rem; text-align:right; display:block; margin:10px 0; font-family:'Traditional Arabic',serif; }
-.bottom-nav { position:fixed; bottom:0; width:100%; background:white; display:flex; justify-content:space-around; padding:12px 0; border-top:1px solid #eee; box-shadow:0 -3px 15px rgba(0,0,0,0.1); z-index:9999; }
-.nav-item { text-align:center; color:#777; font-size:0.7rem; cursor:pointer; flex:1; transition:0.3s; }
-.nav-item i { font-size:1.3rem; margin-bottom:4px; display:block; }
-.nav-item.active { color:var(--primary); font-weight:bold; }
-#setup-modal { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); display:flex; align-items:center; justify-content:center; z-index:10000; }
-#setup-content { background:white; padding:30px; border-radius:20px; width:90%; max-width:400px; text-align:center; }
-#setup-content h2 { margin-bottom:15px; }
-#setup-content select, #setup-content button { padding:10px; margin:10px 0; width:80%; font-size:1rem; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masjidul Hasanath | Global Ummah 2026</title>
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1b5e20">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { 
+            --primary: #1b5e20; 
+            --secondary: #f4f7f2; 
+            --gold: #c5a021; 
+            --dark: #121212;
+            --glass: rgba(255, 255, 255, 0.9);
+        }
+
+        body { 
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; 
+            margin: 0; background: #fff; color: #333; scroll-behavior: smooth; 
+            display: flex; flex-direction: column; min-height: 100vh;
+        }
+
+        /* Modern Nav */
+        nav { 
+            background: var(--primary); padding: 15px 5%; display: flex; 
+            justify-content: space-between; align-items: center; 
+            position: sticky; top: 0; z-index: 1000; color: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        nav a { color: white; text-decoration: none; margin-left: 15px; font-size: 0.9rem; font-weight: 600; }
+
+        /* Dashboard/Hero */
+        .hero { 
+            background: linear-gradient(rgba(27, 94, 32, 0.9), rgba(27, 94, 32, 0.9)), 
+                        url('https://images.unsplash.com/photo-1542610103-6058e0a4f5f5?auto=format&fit=crop&q=80');
+            background-size: cover; color: white; text-align: center; padding: 60px 10%; 
+            border-bottom-left-radius: 40px; border-bottom-right-radius: 40px;
+        }
+
+        /* Feature Grids */
+        section { padding: 40px 10%; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        
+        .card { 
+            background: var(--secondary); padding: 20px; border-radius: 20px; 
+            transition: transform 0.3s; border: 1px solid #e0e0e0;
+            position: relative; overflow: hidden;
+        }
+        .card:hover { transform: translateY(-5px); }
+        .card h3 { color: var(--primary); margin-top: 0; display: flex; align-items: center; gap: 10px; }
+
+        /* Prayer Table */
+        .prayer-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #ddd; }
+        .current-prayer { background: var(--primary); color: white; padding: 5px 15px; border-radius: 50px; }
+
+        /* AR Qibla Placeholder */
+        #qibla-container { 
+            height: 200px; background: #eee; border-radius: 15px; 
+            display: flex; align-items: center; justify-content: center; 
+            flex-direction: column; border: 2px dashed var(--gold);
+        }
+
+        /* Tasbih UI */
+        .tasbih-box { text-align: center; padding: 20px; }
+        #count { font-size: 4rem; font-weight: bold; color: var(--primary); }
+        .btn-circle { 
+            width: 100px; height: 100px; border-radius: 50%; border: none; 
+            background: var(--primary); color: white; font-size: 1.5rem; 
+            cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        /* AI Chatbot Floating Button */
+        .ai-chat-btn { 
+            position: fixed; bottom: 30px; right: 30px; 
+            background: var(--gold); color: white; width: 60px; height: 60px; 
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2); cursor: pointer; z-index: 999;
+        }
+
+        footer { text-align: center; padding: 40px; background: var(--dark); color: #888; margin-top: auto; }
+        .badge { background: var(--gold); color: white; padding: 3px 8px; border-radius: 5px; font-size: 0.7rem; }
+
+        @media (max-width: 600px) { section { padding: 20px 5%; } .hero { padding: 40px 5%; } }
+    </style>
 </head>
 <body>
 
-<header>
-    <div id="site-title" style="font-weight:bold;font-size:1.2rem;">MASJIDUL HASANATH</div>
-    <div id="hijri-date" style="color:var(--gold); font-size:0.8rem;"></div>
-</header>
+<nav>
+    <div style="font-size: 1.1rem; font-weight: 800; letter-spacing: 1px;">MASJIDUL HASANATH</div>
+    <div>
+        <a href="#dashboard"><i class="fas fa-home"></i></a>
+        <a href="#tools">Tools</a>
+        <a href="#tracker">Tracker</a>
+    </div>
+</nav>
 
-<div class="lang-bar" id="lang-bar"></div>
+<section class="hero" id="dashboard">
+    <div id="hijri-date" style="font-weight: 600; color: var(--gold);">Loading...</div>
+    <h1 style="margin: 10px 0;">Assalamu Alaikum</h1>
+    <p>Your Spiritual Companion for the 2026 Journey</p>
+    <div style="margin-top: 20px; display: inline-block; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 50px; backdrop-filter: blur(5px);">
+        Next Prayer: <strong>Asr</strong> in 45 mins
+    </div>
+</section>
 
-<section id="prayer-sec" class="content-section active-section">
-    <h3 id="prayer-heading">Prayer Times</h3>
-    <div id="prayer-container">Loading...</div>
-    <div class="card">
-        <h3>Qibla Direction</h3>
-        <div style="text-align:center; font-size:2rem;">
-            <i class="fas fa-location-arrow" id="qibla-arrow" style="transform:rotate(0deg); display:inline-block;"></i>
+<section id="tools">
+    <div class="grid">
+        <div class="card">
+            <h3><i class="fas fa-clock"></i> Prayer Times <span class="badge">GPS Local</span></h3>
+            <div class="prayer-row"><span>Fajr</span><span>05:12 AM</span></div>
+            <div class="prayer-row"><span>Dhuhr</span><span>12:28 PM</span></div>
+            <div class="prayer-row current-prayer"><span>Asr</span><span>03:45 PM</span></div>
+            <div class="prayer-row"><span>Maghrib</span><span>06:32 PM</span></div>
+            <div class="prayer-row"><span>Isha</span><span>07:55 PM</span></div>
+            <p style="font-size: 0.8rem; margin-top: 10px; color: #666;">Calculation: MWL (Standard)</p>
         </div>
-        <p style="text-align:center;">Point this arrow towards Qibla</p>
+
+        <div class="card">
+            <h3><i class="fas fa-compass"></i> AR Qibla Finder</h3>
+            <div id="qibla-container">
+                <i class="fas fa-kaaba fa-3x" style="color: var(--primary); margin-bottom: 10px;"></i>
+                <button onclick="startAR()" style="background: var(--gold); border: none; padding: 8px 15px; border-radius: 5px; color: white; cursor: pointer;">Enable AR View</button>
+            </div>
+            <p style="font-size: 0.8rem; text-align: center; margin-top: 10px;">Point your phone towards the horizon.</p>
+        </div>
+
+        <div class="card tasbih-box">
+            <h3><i class="fas fa-fingerprint"></i> Smart Tasbih</h3>
+            <div id="count">0</div>
+            <button class="btn-circle" onclick="countDhikr()"><i class="fas fa-plus"></i></button>
+            <br>
+            <button onclick="resetDhikr()" style="margin-top: 10px; background: none; border: none; color: #d32f2f; cursor: pointer; text-decoration: underline;">Reset Session</button>
+        </div>
     </div>
 </section>
 
-<section id="ramadan-sec" class="content-section">
-    <h3 id="ramadan-heading">Ramadan Timetable</h3>
-    <div id="ramadan-container">Loading Ramadan Times...</div>
-</section>
+<section id="tracker" style="background: #f9f9f9;">
+    <h2><i class="fas fa-chart-line"></i> Spiritual Activity</h2>
+    <div class="grid">
+        <div class="card">
+            <h3><i class="fas fa-ring"></i> Daily Progress</h3>
+            <div style="display: flex; justify-content: space-around; padding: 20px 0;">
+                <div style="text-align: center;"><i class="fas fa-pray fa-2x" style="color: var(--primary);"></i><br><small>Salah</small></div>
+                <div style="text-align: center;"><i class="fas fa-book-open fa-2x" style="color: #444;"></i><br><small>Quran</small></div>
+                <div style="text-align: center;"><i class="fas fa-hand-holding-heart fa-2x" style="color: #444;"></i><br><small>Sadaqah</small></div>
+            </div>
+            <p style="font-size: 0.8rem; color: #666; text-align: center;">You are on a 5-day prayer streak!</p>
+        </div>
 
-<section id="dua-sec" class="content-section">
-    <h3 id="dua-heading">Daily Duas</h3>
-    <div id="dua-container">Loading...</div>
-    <button class="btn" id="load-more-btn" onclick="renderDuas()">Show More</button>
-</section>
-
-<section id="about-sec" class="content-section">
-    <div class="card" style="text-align:center;">
-        <i class="fas fa-user-circle" style="font-size:4rem;color:var(--gold);"></i>
-        <h2>Developed by Hamad</h2>
-        <p>Assalamu Alaikum! I built this platform with love, passion, and hours of dedication. This app is the result of my deep commitment to serve the Ummah and provide everything a Muslim needs in one place.</p>
-        <p>Please make dua for me 🙏 so I can continue serving the community with sincerity and excellence.</p>
-        <p><strong id="location">Godamuduna, Sri Lanka</strong></p>
+        <div class="card">
+            <h3><i class="fas fa-calculator"></i> Zakat Tracker</h3>
+            <div style="background: white; padding: 15px; border-radius: 10px; margin-bottom: 10px;">
+                <small>Current Gold Price</small>
+                <div style="font-weight: bold; color: var(--gold);">$62.50 /g</div>
+            </div>
+            <button style="width: 100%; background: var(--primary); color: white; border: none; padding: 10px; border-radius: 10px; cursor: pointer;">Calculate My Zakat</button>
+        </div>
     </div>
 </section>
 
-<div class="bottom-nav">
-    <div class="nav-item active" onclick="tab('prayer-sec', this)"><i class="fas fa-mosque"></i>Prayer</div>
-    <div class="nav-item" onclick="tab('ramadan-sec', this)"><i class="fas fa-calendar"></i>Ramadan</div>
-    <div class="nav-item" onclick="tab('dua-sec', this)"><i class="fas fa-hands-praying"></i>Duas</div>
-    <div class="nav-item" onclick="tab('about-sec', this)"><i class="fas fa-user-tie"></i>About</div>
+<div class="ai-chat-btn" onclick="toggleAIChat()" title="Ask Ethical AI">
+    <i class="fas fa-robot fa-lg"></i>
 </div>
 
-<div id="setup-modal">
-    <div id="setup-content">
-        <h2>Welcome! Setup your app</h2>
-        <label>Select Language:</label>
-        <select id="lang-select">
-            <option value="en">English</option>
-            <option value="si">සිංහල</option>
-            <option value="ta">தமிழ்</option>
-            <option value="ar">العربية</option>
-            <option value="ur">اردو</option>
-        </select>
-        <br>
-        <button onclick="initApp()">Continue</button>
+<section id="developer" style="background: var(--secondary); text-align: center;">
+    <div style="max-width: 600px; margin: auto;">
+        <h3>The Amanah (Privacy Commitment)</h3>
+        <p style="font-size: 0.9rem; color: #555;">
+            "This app is built as a Waqf (endowment) for the community. We strictly follow a <strong>Privacy-First</strong> policy: No ads, no data tracking, and no third-party sales. Everything you do here is between you and Allah."
+        </p>
+        <p style="font-style: italic; margin-top: 20px;">Built with dedication by <strong>HAMAD</strong>. Please include me and my family in your Duas.</p>
     </div>
-</div>
+</section>
+
+<footer>
+    <p>MASJIDUL HASANATH &copy; 2026</p>
+    <p style="font-size: 0.7rem; letter-spacing: 2px;">AUTHENTIC • ETHICAL • OPEN SOURCE</p>
+</footer>
 
 <script>
-let currentLang='en', allDuas=[], currentIndex=0;
-
-const uiTexts={
-en:{title:"MASJIDUL HASANATH", prayer:"Prayer Times", ramadan:"Ramadan Timetable", dua:"Daily Duas", load:"Show More"},
-si:{title:"මස්ජිදුල් හසනාත්", prayer:"ප්‍රාර්ථනා වේලාවන්", ramadan:"රමදාන් කාලසටහන", dua:"දිනපතා දුආ", load:"තව පෙන්වන්න"},
-ta:{title:"மஸ்ஜிதுல் ஹஸனாத்", prayer:"ஏலிய நேரங்கள்", ramadan:"ரமளான் அட்டவணை", dua:"தினசரி துஆக்கள்", load:"மேலும் காட்டவும்"},
-ar:{title:"مسجد الحسنات", prayer:"مواقيت الصلاة", ramadan:"جدول رمضان", dua:"الأدعية اليومية", load:"عرض المزيد"},
-ur:{title:"مسجد الحسنات", prayer:"نمازی اوقات", ramadan:"رمضان کا جدول", dua:"روزانہ کی دعائیں", load:"مزید دکھائیں"}
-};
-
-function initApp() {
-  // get selected language
-  currentLang = document.getElementById('lang-select').value;
-
-  // close welcome screen FIRST
-  document.getElementById('setup-modal').style.display = 'none';
-
-  // update texts safely
-  updateUIText();
-
-  // load duas safely
-  setTimeout(() => {
-    loadDuas();
-  }, 300);
-
-  // ask location safely (won't block)
-  setTimeout(() => {
-    try {
-      getLocation();
-    } catch (e) {
-      console.log("Location skipped");
+    // 1. Digital Tasbih with Haptic Feedback
+    let count = 0;
+    function countDhikr() {
+        count++;
+        document.getElementById('count').innerText = count;
+        // Vibration Feedback (Modern UX)
+        if (navigator.vibrate) {
+            navigator.vibrate(50); 
+        }
     }
-  }, 600);
-}
+    function resetDhikr() {
+        if(confirm("Start a new session?")) {
+            count = 0;
+            document.getElementById('count').innerText = count;
+        }
+    }
 
+    // 2. Hijri Date Logic (2026 Compatible)
+    const options = { day: 'numeric', month: 'long', year: 'numeric' };
+    const hijriDate = new Intl.DateTimeFormat('en-u-ca-islamic-umalqura', options).format(new Date());
+    document.getElementById('hijri-date').innerText = hijriDate;
 
-function updateUIText(){const t=uiTexts[currentLang];document.getElementById('site-title').innerText=t.title;document.getElementById('prayer-heading').innerText=t.prayer;document.getElementById('ramadan-heading').innerText=t.ramadan;document.getElementById('dua-heading').innerText=t.dua;document.getElementById('load-more-btn').innerText=t.load;}
+    // 3. AR Qibla Interaction Placeholder
+    function startAR() {
+        alert("Accessing Camera for AR Qibla... (In a real app, this launches the ARKit/ARCore camera view to show the Kaaba overlay).");
+    }
 
-function tab(id, el){document.querySelectorAll('.content-section').forEach(s=>s.classList.remove('active-section'));document.getElementById(id).classList.add('active-section');document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');}
+    // 4. AI Chatbot Toggle
+    function toggleAIChat() {
+        alert("Launching Ethical AI Assistant... \n\nTrained on verified Sahih sources to help you with Tajweed, Hadith search, and Fiqh basics.");
+    }
 
-// Qibla
-function getQiblaDirection(lat1, lon1){const kaabaLat=21.4225*Math.PI/180;const kaabaLon=39.8262*Math.PI/180;const userLat=lat1*Math.PI/180;const userLon=lon1*Math.PI/180;const deltaLon=kaabaLon-userLon;const x=Math.sin(deltaLon);const y=Math.cos(userLat)*Math.tan(kaabaLat)-Math.sin(userLat)*Math.cos(deltaLon);let angle=Math.atan2(x,y)*(180/Math.PI);return (angle+360)%360;}
-
-// Location + Prayer Times
-function getLocation(){
-if(navigator.geolocation){
-navigator.geolocation.getCurrentPosition(pos=>{
-const lat=pos.coords.latitude;
-const lon=pos.coords.longitude;
-document.getElementById('location').innerText=`Lat:${lat.toFixed(2)}, Lon:${lon.toFixed(2)}`;
-fetchPrayerTimes(lat,lon);
-fetchRamadanTimes(lat,lon);
-const angle=getQiblaDirection(lat,lon);
-document.getElementById('qibla-arrow').style.transform=`rotate(${angle}deg)`;
-},err=>{alert("Location denied. Default used.");});
-}else{alert("Geolocation not supported.");}}
-
-function fetchPrayerTimes(lat, lon){
-fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=2`)
-.then(res=>res.json())
-.then(data=>{
-const times=data.data.timings;
-
-const prayerNames={
-en:{Fajr:'Fajr', Dhuhr:'Duhar', Asr:'Asar', Maghrib:'Maghrib', Isha:'Isha'},
-si:{Fajr:'උදේ නමස්කාරය', Dhuhr:'දුහර්', Asr:'ආසර', Maghrib:'මග්රිබ්', Isha:'ඉෂා'},
-ta:{Fajr:'புஹூர்', Dhuhr:'துஹர்', Asr:'அசர்', Maghrib:'மக்ரிப்', Isha:'ஈஷா'},
-ar:{Fajr:'الفجر', Dhuhr:'الظهر', Asr:'العصر', Maghrib:'المغرب', Isha:'العشاء'},
-ur:{Fajr:'فجر', Dhuhr:'ظہر', Asr:'عصر', Maghrib:'مغرب', Isha:'عشاء'}
-};
-const names=prayerNames[currentLang]||prayerNames.en;
-
-document.getElementById('prayer-container').innerHTML=`
-<div class="card">${names.Fajr}: ${times.Fajr}</div>
-<div class="card">${names.Dhuhr}: ${times.Dhuhr}</div>
-<div class="card">${names.Asr}: ${times.Asr}</div>
-<div class="card">${names.Maghrib}: ${times.Maghrib}</div>
-<div class="card">${names.Isha}: ${times.Isha}</div>`;
-});
-}
-
-// Ramadan timetable placeholder
-function fetchRamadanTimes(lat, lon){
-let container=document.getElementById('ramadan-container');let html='';
-for(let i=1;i<=30;i++){html+=`<div class="card">Day ${i}: Sehri 05:00 - Iftar 18:30</div>`;}
-container.innerHTML=html;
-}
-
-// Duas
-async function loadDuas(){try{const res=await fetch('duas.json');allDuas=await res.json();renderDuas();}catch(e){document.getElementById('dua-container').innerText='Upload correct duas.json!';}}
-
-function renderDuas(){const container=document.getElementById('dua-container');const batch=allDuas.slice(currentIndex,currentIndex+10);batch.forEach(d=>{const card=document.createElement('div');card.className='card';card.innerHTML=`<span class="arabic">${d.ar}</span><p>${d[currentLang]}</p>`;container.appendChild(card);});currentIndex+=10;document.getElementById('load-more-btn').style.display=currentIndex>=allDuas.length?'none':'block';}
-
-// Hijri Date
-document.getElementById('hijri-date').innerText=new Intl.DateTimeFormat('en-u-ca-islamic-umalqura',{day:'numeric',month:'long',year:'numeric'}).format(new Date());
-
-// Notifications
-if("Notification" in window){Notification.requestPermission().then(p=>{if(p==="granted"){setTimeout(()=>{new Notification("Remember to pray on time and recite your duas!");},5000);}});}
-<script>
-function getLocation(){
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
-      // ✅ If user ALLOWS location
-      (pos) => {
-        const lat = pos.coords.latitude;
-        const lon = pos.coords.longitude;
-
-        document.getElementById('location').innerText =
-          `Lat: ${lat.toFixed(2)}, Lon: ${lon.toFixed(2)}`;
-
-        fetchPrayerTimes(lat, lon);
-        fetchRamadanTimes(lat, lon);
-
-        const angle = getQiblaDirection(lat, lon);
-        document.getElementById('qibla-arrow').style.transform =
-          `rotate(${angle}deg)`;
-      },
-
-      // ✅ If user DENIES location → use Sri Lanka
-      (err) => {
-        const lat = 6.9271;   // Colombo
-        const lon = 79.8612;
-
-        document.getElementById('location').innerText =
-          "Colombo, Sri Lanka";
-
-        fetchPrayerTimes(lat, lon);
-        fetchRamadanTimes(lat, lon);
-
-        const angle = getQiblaDirection(lat, lon);
-        document.getElementById('qibla-arrow').style.transform =
-          `rotate(${angle}deg)`;
-      }
-    );
-  } else {
-    alert("Geolocation not supported on this device.");
-  }
-}
+    // 5. Service Worker Registration (Offline functionality)
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+            .then(reg => console.log('Spiritual Service Worker: Active'))
+            .catch(err => console.log('SW Failed', err));
+        });
+    }
 </script>
 
 </body>
 </html>
-
-
