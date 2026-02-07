@@ -3,198 +3,261 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Masjidul Hasanath | Godamuduna</title>
+    <title>Masjidul Hasanath | Godamuduna Official</title>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Amiri&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Amiri&display=swap" rel="stylesheet">
+    
     <style>
-        :root { --primary: #064e3b; --gold: #d4af37; --bg: #f8fafc; --text: #0f172a; --card: #ffffff; --accent: #f0fdf4; }
-        [data-theme="dark"] { --primary: #10b981; --gold: #fbbf24; --bg: #020617; --text: #f8fafc; --card: #1e293b; --accent: #064e3b; }
+        :root { --p: #064e3b; --pl: #0d9488; --g: #d4af37; --bg: #f8fafc; --t: #0f172a; --c: #ffffff; --a: #f0fdf4; }
+        [data-theme="dark"] { --p: #10b981; --pl: #34d399; --g: #fbbf24; --bg: #020617; --t: #f8fafc; --c: #1e293b; --a: #064e3b; }
 
-        body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Poppins', sans-serif; padding-bottom: 110px; }
+        body { margin: 0; background: var(--bg); color: var(--t); font-family: 'Poppins', sans-serif; padding-bottom: 110px; transition: 0.3s; overflow-x: hidden; }
         
-        /* LOGIN */
-        #gatekeeper { position: fixed; inset: 0; background: var(--primary); z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; text-align: center; }
-        
-        header { background: var(--primary); padding: 20px; color: white; border-bottom: 4px solid var(--gold); border-radius: 0 0 20px 20px; position: sticky; top: 0; z-index: 1000; }
-        
-        nav { background: var(--card); display: flex; justify-content: space-around; padding: 12px 0; position: fixed; bottom: 0; width: 100%; z-index: 2000; box-shadow: 0 -5px 15px rgba(0,0,0,0.1); border-radius: 20px 20px 0 0; }
-        nav button { background: none; border: none; color: #94a3b8; font-size: 0.7rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 5px; width: 15%; }
-        nav button.active { color: var(--primary); font-weight: bold; }
+        /* GATEKEEPER */
+        #gate { position: fixed; inset: 0; background: linear-gradient(135deg, var(--p), #065f46); z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; text-align: center; padding: 30px; }
+        .l-btn { padding: 12px 25px; border: 2px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); color: white; border-radius: 12px; cursor: pointer; font-weight: 600; margin: 5px; }
+        .l-btn.active { background: var(--g); border-color: var(--g); color: var(--p); }
 
-        section { padding: 15px; display: none; animation: fadeIn 0.3s ease; }
+        /* LIVE NEWS TICKER */
+        .news-ticker { background: var(--g); color: var(--p); padding: 8px 0; font-weight: 700; font-size: 0.85rem; overflow: hidden; white-space: nowrap; position: relative; border-bottom: 2px solid var(--p); }
+        .news-scroll { display: inline-block; animation: scroll 25s linear infinite; padding-left: 100%; }
+        @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+
+        /* HEADER */
+        header { background: var(--p); padding: 20px; color: white; border-bottom: 4px solid var(--g); border-radius: 0 0 25px 25px; display: flex; justify-content: space-between; align-items: center; }
+        
+        /* NAV */
+        nav { background: var(--c); display: flex; justify-content: space-around; padding: 15px 0; position: fixed; bottom: 0; width: 100%; z-index: 5000; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); border-radius: 25px 25px 0 0; }
+        nav button { background: none; border: none; color: #94a3b8; font-size: 0.7rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; width: 18%; transition: 0.2s; }
+        nav button.active { color: var(--p); font-weight: 700; transform: translateY(-5px); }
+
+        section { padding: 20px 15px; display: none; animation: fadeIn 0.4s ease; }
         section.active { display: block; }
-        .card { background: var(--card); border-radius: 18px; padding: 20px; margin-bottom: 15px; border: 1px solid rgba(0,0,0,0.05); }
-
-        /* ARABIC */
-        .arabic { font-family: 'Amiri', serif; font-size: 1.6rem; direction: rtl; color: var(--primary); text-align: right; line-height: 2.2; }
-        .dua-card { cursor: pointer; border-left: 5px solid var(--gold); }
-        .dua-content { display: none; margin-top: 15px; border-top: 1px solid #eee; padding-top: 10px; }
-
-        /* COMPASS FIX */
-        .compass-ui { position: relative; width: 240px; height: 240px; margin: 20px auto; border: 8px solid var(--gold); border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        #needle { font-size: 6rem; color: #b91c1c; transition: transform 0.2s linear; transform-origin: center center; }
-
-        .btn-action { background: var(--primary); color: white; padding: 15px; border-radius: 12px; border: none; width: 100%; font-weight: bold; cursor: pointer; }
+        .card { background: var(--c); border-radius: 20px; padding: 22px; margin-bottom: 18px; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
         
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* RAMADAN TABLE */
+        .r-wrap { max-height: 350px; overflow-y: auto; border-radius: 12px; border: 1px solid #eee; }
+        .r-row { display: grid; grid-template-columns: 1.2fr 1fr 1fr; padding: 12px; border-bottom: 1px solid #f1f5f9; font-size: 0.8rem; }
+        .r-head { background: var(--p); color: white; font-weight: 700; position: sticky; top: 0; z-index: 10; }
+
+        /* COMPASS */
+        .comp { width: 220px; height: 220px; margin: 20px auto; border: 8px solid var(--g); border-radius: 50%; position: relative; background: #fff; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 15px rgba(0,0,0,0.1); }
+        #ndl { font-size: 5rem; color: #b91c1c; transition: transform 0.1s linear; }
+
+        .badge { background: var(--g); color: var(--p); padding: 4px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; display: inline-block; margin: 5px 2px; }
+        .story-box { border-left: 4px solid var(--g); padding-left: 15px; margin: 15px 0; font-style: italic; font-size: 0.85rem; line-height: 1.5; color: var(--t); opacity: 0.9; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        .btn-g { background: var(--g); color: var(--p); border: none; padding: 15px; border-radius: 12px; width: 100%; font-weight: 700; cursor: pointer; transition: 0.2s; }
+        .btn-g:active { transform: scale(0.98); }
     </style>
 </head>
 <body>
 
-<div id="gatekeeper">
-    <div class="gate-box">
-        <h1>Masjidul Hasanath</h1>
-        <p>Godamuduna, Muruthalawa</p>
-        <div id="google-btn-container" style="margin:20px 0;"></div>
-        <p style="font-size:0.7rem; opacity:0.8;">Developed for the community by Hamad</p>
+<div id="gate">
+    <i class="fas fa-mosque" style="font-size: 3rem; color: var(--g); margin-bottom: 15px;"></i>
+    <h1 style="margin:0;">Masjidul Hasanath</h1>
+    <p>Godamuduna Community Portal</p>
+    <div style="margin: 20px 0;">
+        <button class="l-btn" onclick="setL('en', this)">English</button>
+        <button class="l-btn" onclick="setL('si', this)">සිංහල</button>
+        <button class="l-btn" onclick="setL('ta', this)">தமிழ்</button>
     </div>
+    <div id="g-box" style="display:none;">
+        <div id="g_id_signin"></div>
+    </div>
+    <p style="margin-top: 20px; font-size: 0.7rem; opacity: 0.7;">Developed by Hamad Fazmil</p>
 </div>
 
-<header>
-    <div style="display:flex; justify-content:space-between; align-items:center;">
-        <div><h3 style="margin:0;">Masjidul Hasanath</h3><small>Muruthalawa, Kandy | Dev: Hamad</small></div>
-        <i onclick="toggleMode()" class="fas fa-adjust" style="cursor:pointer;"></i>
-    </div>
-</header>
-
-<section id="home" class="active">
-    <div class="card" style="background:var(--primary); color:white; text-align:center;">
-        <p style="margin:0; font-size:0.8rem;">Ramadan 2026 Countdown</p>
-        <h2 id="cd-timer">---</h2>
-        <small>Godamuduna Main, Sri Lanka</small>
-    </div>
-    <div class="card">
-        <h3><i class="fas fa-clock"></i> Prayer Times</h3>
-        <div style="display:flex; flex-direction:column; gap:10px;">
-            <div style="display:flex; justify-content:space-between;"><span>Fajr</span><b>5:09 AM</b></div>
-            <div style="display:flex; justify-content:space-between;"><span>Dhuhr</span><b>12:24 PM</b></div>
-            <div style="display:flex; justify-content:space-between; color:var(--primary); font-weight:bold;"><span>Asr</span><b>3:46 PM</b></div>
-            <div style="display:flex; justify-content:space-between; color:var(--gold);"><span>Maghrib</span><b>6:19 PM</b></div>
-            <div style="display:flex; justify-content:space-between;"><span>Isha</span><b>7:30 PM</b></div>
+<div id="main-content" style="display:none;">
+    <div class="news-ticker">
+        <div class="news-scroll">
+            📢 Masjidul Hasanath Updates: Ramadan 2026 Timetable is now LIVE! • Special Duas after Maghrib every Friday • Please maintain silence in the prayer hall • Donate to the Mosque maintenance fund via Baithulmaal • Site developed by Hamad Fazmil (Age 16) 📢
         </div>
     </div>
-</section>
 
-<section id="qibla">
-    <div class="card" style="text-align:center;">
-        <h3>Qibla Finder</h3>
-        <p style="font-size:0.75rem;">Godamuduna, Muruthalawa Calibration</p>
-        <div class="compass-ui"><i id="needle" class="fas fa-location-arrow"></i></div>
-        <h2 id="q-val">0°</h2>
-        <button class="btn-action" onclick="initCompass()">ACTIVATE COMPASS</button>
-        <p style="font-size:0.65rem; margin-top:10px; color:#666;">Hold phone flat. Points to Makkah from Kandy.</p>
-    </div>
-</section>
+    <header>
+        <div><h3 style="margin:0; color:white;">Masjidul Hasanath</h3><small id="sub-loc">Godamuduna Main, Muruthalawa</small></div>
+        <i onclick="tMode()" class="fas fa-moon" style="cursor:pointer; font-size: 1.2rem;"></i>
+    </header>
 
-<section id="duas">
-    <div class="card"><h3><i class="fas fa-hands-praying"></i> 45 Arabic Duas</h3><div id="dua-list"></div></div>
-</section>
-
-<section id="me">
-    <div class="card" style="text-align:center;">
-        <div style="width:80px; height:80px; background:var(--gold); border-radius:50%; margin:0 auto 15px; display:flex; align-items:center; justify-content:center; color:white; font-size:2rem;"><i class="fas fa-user-tie"></i></div>
-        <h2 style="margin:0;">Hamad</h2>
-        <span style="background:var(--primary); color:white; padding:4px 12px; border-radius:20px; font-size:0.7rem;">Founder & Developer | Age: 16</span>
-        <p style="text-align:left; font-size:0.9rem; line-height:1.6; margin-top:15px;">
-            I am Hamad, the 16-year-old developer from Godamuduna. I have worked incredibly hard to code this site for our community in Muruthalawa. Every feature, from the Arabic Duas to the Qibla sensor, was built by me to help our mosque stay connected. 
-            <br><br>
-            Please feel free to suggest improvements to make my site better.
-        </p>
-        <a href="mailto:hamadfazmil455@gmail.com" class="btn-action" style="text-decoration:none; display:block;">Email Me Suggestions</a>
-        
-        <div class="card" style="margin-top:20px; background:var(--accent);">
-            <h4><i class="fas fa-star"></i> Ask Dua for Me</h4>
-            <p style="font-size:0.8rem;">Request a dua from the community through Hamad's platform.</p>
-            <input type="text" id="dua-req-box" placeholder="Your name or request..." style="width:85%; padding:12px; border-radius:10px; border:1px solid #ddd; margin-bottom:10px;">
-            <button onclick="alert('Dua request submitted to Hamad!')" style="background:var(--gold); border:none; padding:10px; width:100%; border-radius:10px; font-weight:bold;">Submit</button>
+    <section id="home" class="active">
+        <div class="card" style="background: linear-gradient(135deg, var(--p), var(--pl)); color:white; border:none;">
+            <p style="margin:0; font-size:0.8rem; opacity:0.9; text-transform: uppercase; letter-spacing: 1px;">Ramadan 2026 Countdown</p>
+            <h1 id="timer" style="margin:10px 0; font-size: 2.2rem;">00d 00h 00m</h1>
+            <p style="font-size: 0.75rem; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 10px; margin-top: 10px;">Location: Godamuduna, Kandy District</p>
         </div>
-    </div>
-</section>
 
-<section id="bot">
-    <div class="card">
-        <h3>Hasanath AI</h3>
-        <div id="chat-win" style="height:300px; background:var(--accent); overflow-y:auto; padding:15px; border-radius:15px; margin-bottom:10px;"></div>
-        <div style="display:flex; gap:5px;"><input id="bot-inp" style="flex:1; padding:12px; border-radius:10px; border:1px solid #ddd;"><button onclick="sendMsg()" class="btn-action" style="width:auto;"><i class="fas fa-paper-plane"></i></button></div>
-    </div>
-</section>
+        <div class="card">
+            <h3><i class="fas fa-info-circle"></i> Site Guide</h3>
+            <p style="font-size:0.85rem; line-height:1.6; color: var(--t);">
+                <b>News Ticker:</b> Check the gold bar at the top for live Mosque announcements.<br>
+                <b>Qibla:</b> Real-time direction finder for Godamuduna residents.<br>
+                <b>Timetable:</b> Official Ramadan times from Feb 19 - Mar 27.<br>
+                <b>Bot:</b> Chat with our AI for quick Islamic info.
+            </p>
+        </div>
 
-<nav>
-    <button onclick="tab('home', this)" class="active"><i class="fas fa-home"></i><span>Home</span></button>
-    <button onclick="tab('qibla', this)"><i class="fas fa-compass"></i><span>Qibla</span></button>
-    <button onclick="tab('duas', this)"><i class="fas fa-heart"></i><span>Duas</span></button>
-    <button onclick="tab('me', this)"><i class="fas fa-user-check"></i><span>Hamad</span></button>
-    <button onclick="tab('bot', this)"><i class="fas fa-robot"></i><span>AI</span></button>
-</nav>
+        <div class="card">
+            <h3><i class="fas fa-calendar-check"></i> Ramadan Timetable 2026</h3>
+            <div class="r-wrap" id="r-list">
+                <div class="r-row r-head"><span>Date</span><span>Sahar End</span><span>Iftar</span></div>
+            </div>
+            <p style="font-size: 0.6rem; color: #888; text-align: center; margin-top: 10px;">Source: Dehianga Baithulmaal Official Calendar</p>
+        </div>
+    </section>
+
+    <section id="qibla">
+        <div class="card" style="text-align:center;">
+            <h3>Qibla Direction</h3>
+            <p style="font-size: 0.8rem;">Godamuduna Bearing: 298.5°</p>
+            <div class="comp"><i id="ndl" class="fas fa-location-arrow"></i></div>
+            <h2 id="deg" style="color: var(--p);">0°</h2>
+            <button class="btn-g" onclick="initC()">ACTIVATE COMPASS SENSORS</button>
+            <p style="font-size:0.65rem; color:#888; margin-top:15px;">Note: Keep your phone away from metal objects for better accuracy.</p>
+        </div>
+    </section>
+
+    <section id="bot">
+        <div class="card">
+            <h3>Hasanath Assistant</h3>
+            <div id="chat" style="height:320px; overflow-y:auto; background:var(--a); padding:15px; border-radius:12px; margin-bottom:12px; border: 1px solid rgba(0,0,0,0.05);">
+                <div style="background:white; padding:10px; border-radius:10px; font-size:0.85rem; margin-bottom:10px; border-left: 4px solid var(--p);">Assalamu Alaikum! I am the official AI assistant for Masjidul Hasanath. How can I help you today?</div>
+            </div>
+            <div style="display:flex; gap:10px;">
+                <input id="in" style="flex:1; padding:14px; border-radius:12px; border:1px solid #ddd; outline: none;" placeholder="Ask a question...">
+                <button onclick="send()" class="btn-g" style="width:auto; padding: 0 20px;"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <section id="me">
+        <div class="card">
+            <div style="text-align:center;">
+                <div style="width:100px; height:100px; background: linear-gradient(var(--g), var(--p)); border-radius:50%; margin:0 auto 15px; display:flex; align-items:center; justify-content:center; color:white; font-size:2.5rem; border: 5px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.1);"><i class="fas fa-user-check"></i></div>
+                <h2 style="margin:0;">Hamad Fazmil</h2>
+                <div class="badge">Founder & Developer</div>
+                <div class="badge">Age: 16 Years</div>
+            </div>
+            
+            <div class="story-box">
+                "I am Hamad, a 16-year-old student from Godamuduna. I developed this site because I believe our village deserves the best technology to support our religious duties."
+            </div>
+            
+            <p style="font-size:0.9rem; line-height:1.7;">
+                <b>The Technical Journey:</b> Building this portal required me to learn how to integrate Google Authentication for security, utilize mobile hardware sensors for the Qibla compass, and design a responsive interface that works on every smartphone in our village.
+                <br><br>
+                <b>My Dedication:</b> I have hand-verified every Sahar and Iftar time against the official physical timetables to ensure our community never misses a prayer. Every feature here—from the news ticker to the AI—was built with love for Godamuduna.
+            </p>
+
+            <div style="background:var(--a); padding:18px; border-radius:15px; margin-top:20px;">
+                <p style="margin:0 0 10px 0; font-size:0.85rem; font-weight: 700;">Development Tools Used:</p>
+                <span class="badge">Mobile Sensors API</span><span class="badge">Google OAuth 2.0</span>
+                <span class="badge">CSS3 Flexbox/Grid</span><span class="badge">Real-time JS</span>
+            </div>
+
+            <a href="mailto:hamadfazmil455@gmail.com" class="btn-g" style="display:block; text-align:center; text-decoration:none; margin-top:25px; box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);">EMAIL FEEDBACK TO HAMAD</a>
+        </div>
+    </section>
+
+    <nav>
+        <button onclick="tab('home', this)" class="active"><i class="fas fa-house"></i><span>Home</span></button>
+        <button onclick="tab('qibla', this)"><i class="fas fa-compass"></i><span>Qibla</span></button>
+        <button onclick="tab('bot', this)"><i class="fas fa-robot"></i><span>Bot</span></button>
+        <button onclick="tab('me', this)"><i class="fas fa-user"></i><span>Hamad</span></button>
+    </nav>
+</div>
 
 <script>
-    const duaData = [
-        { t: "Waking Up", a: "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ", m: "Praise is to Allah who gave us life after death." },
-        { t: "Before Eating", a: "بِسْمِ اللَّهِ", m: "In the name of Allah." },
-        { t: "After Eating", a: "الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا وَسَقَانَا وَجَعَلَنَا مُسْلِمِينَ", m: "Praise be to Allah who fed us." }
+    const ramadan = [
+        {d:"Feb 19", s:"5:04 AM", i:"6:20 PM"}, {d:"Feb 20", s:"5:03 AM", i:"6:20 PM"},
+        {d:"Feb 21", s:"5:03 AM", i:"6:20 PM"}, {d:"Feb 22", s:"5:03 AM", i:"6:21 PM"},
+        {d:"Feb 23", s:"5:03 AM", i:"6:21 PM"}, {d:"Feb 24", s:"5:03 AM", i:"6:21 PM"},
+        {d:"Feb 25", s:"5:03 AM", i:"6:21 PM"}, {d:"Feb 26", s:"5:03 AM", i:"6:21 PM"},
+        {d:"Feb 27", s:"5:03 AM", i:"6:21 PM"}, {d:"Feb 28", s:"5:03 AM", i:"6:21 PM"},
+        {d:"Mar 01", s:"5:01 AM", i:"6:21 PM"}, {d:"Mar 02", s:"5:01 AM", i:"6:21 PM"},
+        {d:"Mar 03", s:"5:01 AM", i:"6:21 PM"}, {d:"Mar 04", s:"5:01 AM", i:"6:21 PM"},
+        {d:"Mar 05", s:"5:00 AM", i:"6:21 PM"}, {d:"Mar 06", s:"5:00 AM", i:"6:21 PM"},
+        {d:"Mar 07", s:"4:59 AM", i:"6:21 PM"}, {d:"Mar 08", s:"4:59 AM", i:"6:21 PM"},
+        {d:"Mar 09", s:"4:58 AM", i:"6:20 PM"}, {d:"Mar 10", s:"4:58 AM", i:"6:20 PM"},
+        {d:"Mar 11", s:"4:58 AM", i:"6:20 PM"}, {d:"Mar 12", s:"4:57 AM", i:"6:20 PM"},
+        {d:"Mar 13", s:"4:57 AM", i:"6:20 PM"}, {d:"Mar 14", s:"4:56 AM", i:"6:20 PM"},
+        {d:"Mar 15", s:"4:56 AM", i:"6:20 PM"}, {d:"Mar 16", s:"4:55 AM", i:"6:20 PM"},
+        {d:"Mar 17", s:"4:55 AM", i:"6:20 PM"}, {d:"Mar 18", s:"4:54 AM", i:"6:20 PM"},
+        {d:"Mar 19", s:"4:54 AM", i:"6:20 PM"}, {d:"Mar 20", s:"4:53 AM", i:"6:20 PM"},
+        {d:"Mar 21", s:"4:53 AM", i:"6:20 PM"}, {d:"Mar 22", s:"4:52 AM", i:"6:19 PM"},
+        {d:"Mar 23", s:"4:52 AM", i:"6:19 PM"}, {d:"Mar 24", s:"4:51 AM", i:"6:19 PM"},
+        {d:"Mar 25", s:"4:51 AM", i:"6:19 PM"}, {d:"Mar 26", s:"4:50 AM", i:"6:19 PM"},
+        {d:"Mar 27", s:"4:50 AM", i:"6:19 PM"}
     ];
 
-    window.onload = function () {
+    function setL(l, b) {
+        document.querySelectorAll('.l-btn').forEach(btn => btn.classList.remove('active'));
+        b.classList.add('active');
+        document.getElementById('g-box').style.display = 'block';
+    }
+
+    window.onload = function() {
         google.accounts.id.initialize({
             client_id: "318225024149-0hjour8gpcp0in6l9ksb415ba6aqvn03.apps.googleusercontent.com",
-            callback: (r) => { document.getElementById('gatekeeper').style.display='none'; }
+            callback: (res) => { if(res.credential) { 
+                document.getElementById('gate').style.display='none'; 
+                document.getElementById('main-content').style.display='block'; 
+                start();
+            }}
         });
-        google.accounts.id.renderButton(document.getElementById("google-btn-container"), { theme: "outline", size: "large" });
-        loadDuas();
-        setInterval(countdown, 1000);
-    };
-
-    function loadDuas() {
-        let h = "";
-        for(let i=0; i<45; i++) {
-            let d = duaData[i] || { t: "Dua " + (i+1), a: "قريباً", m: "Translation being verified by Hamad." };
-            h += `<div class="card dua-card" onclick="toggleDua(${i})"><strong>${i+1}. ${d.t}</strong><div id="dc-${i}" class="dua-content"><p class="arabic">${d.a}</p><p>${d.m}</p></div></div>`;
-        }
-        document.getElementById('dua-list').innerHTML = h;
+        google.accounts.id.renderButton(document.getElementById("g_id_signin"), {theme:"outline", size:"large"});
     }
 
-    function toggleDua(i) { let e = document.getElementById('dc-'+i); e.style.display = e.style.display==='block' ? 'none' : 'block'; }
+    function start() {
+        const list = document.getElementById('r-list');
+        ramadan.forEach(day => {
+            list.innerHTML += `<div class="r-row"><span>${day.d}</span><span>${day.s}</span><span>${day.i}</span></div>`;
+        });
+        setInterval(() => {
+            const gap = new Date("February 19, 2026 00:00:00") - new Date();
+            if(gap<0) { document.getElementById('timer').innerText = "Ramadan Mubarak!"; return; }
+            const d = Math.floor(gap/86400000);
+            const h = Math.floor((gap%86400000)/3600000);
+            const m = Math.floor((gap%3600000)/60000);
+            document.getElementById('timer').innerText = `${d}d ${h}h ${m}m`;
+        }, 1000);
+    }
 
-    function initCompass() {
+    function initC() {
         if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-            DeviceOrientationEvent.requestPermission().then(s => { if(s=='granted') startSensors(); });
-        } else { startSensors(); }
+            DeviceOrientationEvent.requestPermission().then(s => { if(s=='granted') window.addEventListener('deviceorientation', rot); });
+        } else { window.addEventListener('deviceorientation', rot); }
     }
 
-    function startSensors() {
-        window.addEventListener('deviceorientationabsolute', (e) => {
-            let h = e.webkitCompassHeading || e.alpha;
-            if(h) {
-                // Qibla for Kandy Sri Lanka is ~298.5
-                let qibla = 298.5;
-                let rotation = h - qibla;
-                document.getElementById('needle').style.transform = `rotate(${-rotation}deg)`;
-                document.getElementById('q-val').innerText = Math.round(h) + "°";
-            }
-        }, true);
+    function rot(e) {
+        let h = e.webkitCompassHeading || (360 - e.alpha);
+        if(h) {
+            let q = 298.5; 
+            document.getElementById('ndl').style.transform = `rotate(${- (h - q)}deg)`;
+            document.getElementById('deg').innerText = Math.round(h) + "°";
+        }
     }
 
-    function tab(id, btn) {
+    function send() {
+        const i = document.getElementById('in');
+        const c = document.getElementById('chat');
+        if(!i.value) return;
+        c.innerHTML += `<div style="background:var(--p); color:white; padding:10px; border-radius:10px; align-self:flex-end; font-size:0.85rem; margin-bottom:10px; margin-left:20%;">${i.value}</div>`;
+        let res = "Assalamu Alaikum! Hamad is currently upgrading my brain to answer more questions about Godamuduna Mosque.";
+        setTimeout(() => { c.innerHTML += `<div style="background:#e2e8f0; padding:10px; border-radius:10px; align-self:flex-start; font-size:0.85rem; margin-bottom:10px; margin-right:20%;">${res}</div>`; c.scrollTop = c.scrollHeight; }, 600);
+        i.value = "";
+    }
+
+    function tab(id, b) {
         document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
         document.getElementById(id).classList.add('active');
-        document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
+        document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
+        b.classList.add('active');
     }
 
-    function countdown() {
-        let diff = new Date("February 19, 2026 00:00:00") - new Date();
-        if(diff < 0) { document.getElementById('cd-timer').innerText = "Ramadan Mubarak!"; return; }
-        document.getElementById('cd-timer').innerText = Math.floor(diff/86400000) + "d " + Math.floor((diff%86400000)/3600000) + "h " + Math.floor((diff%3600000)/60000) + "m";
-    }
-
-    function sendMsg() {
-        let v = document.getElementById('bot-inp').value; if(!v) return;
-        document.getElementById('chat-win').innerHTML += `<p style="text-align:right;"><b>You:</b> ${v}</p><p><b>AI:</b> Hamad's system is processing your request...</p>`;
-        document.getElementById('bot-inp').value = "";
-    }
-
-    function toggleMode() {
+    function tMode() {
         let d = document.documentElement;
         d.setAttribute('data-theme', d.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
     }
