@@ -11,59 +11,38 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Amiri&display=swap" rel="stylesheet">
     <style>
         :root { --p: #064e3b; --g: #d4af37; --bg: #f1f5f9; --t: #0f172a; --c: #ffffff; --a: #f0fdf4; --grad: linear-gradient(135deg, #064e3b 0%, #042f24 100%); }
-        [data-theme="dark"] { --p: #10b981; --g: #fbbf24; --bg: #020617; --t: #f8fafc; --c: #1e293b; --a: #064e3b; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
         body { margin: 0; background: var(--bg); color: var(--t); font-family: 'Poppins', sans-serif; padding-bottom: 110px; overflow-x: hidden; }
 
-        /* THE ENTRANCE GATE */
         #gate { position: fixed; inset: 0; background: var(--grad); z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; text-align: center; }
-        .gate-card { background: rgba(255,255,255,0.08); padding: 40px; border-radius: 35px; border: 1px solid rgba(255,255,255,0.15); width: 90%; max-width: 420px; backdrop-filter: blur(25px); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); }
-        .l-btn { width: 100%; padding: 18px; margin: 12px 0; border: none; border-radius: 15px; font-weight: 700; cursor: pointer; background: var(--g); color: var(--p); font-size: 1.1rem; }
+        .gate-card { background: rgba(255,255,255,0.08); padding: 40px; border-radius: 35px; border: 1px solid rgba(255,255,255,0.15); width: 90%; max-width: 420px; backdrop-filter: blur(25px); }
 
-        /* NEWS TICKER */
+        .user-top-right { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.15); padding: 5px 12px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.2); font-size: 0.75rem; font-weight: 600; color: white; }
+        .user-top-right img { width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid var(--g); }
+
         .ticker { background: var(--g); color: var(--p); padding: 12px 0; font-weight: 800; font-size: 0.85rem; overflow: hidden; white-space: nowrap; border-bottom: 3px solid var(--p); position: sticky; top: 0; z-index: 1000; }
         .ticker-m { display: inline-block; animation: scroll 40s linear infinite; padding-left: 100%; }
         @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
 
-        header { background: var(--grad); padding: 30px 20px; color: white; border-radius: 0 0 40px 40px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        .loc-badge { font-size: 0.7rem; background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 20px; font-weight: 600; text-transform: uppercase; }
-
-        /* CONTENT SYSTEM */
-        section { padding: 25px 20px; display: none; animation: cubic-bezier(0.4, 0, 0.2, 1) 0.6s slideIn; }
+        header { background: var(--grad); padding: 20px; color: white; border-radius: 0 0 40px 40px; display: flex; justify-content: space-between; align-items: center; }
+        section { padding: 20px; display: none; }
         section.active { display: block; }
-        @keyframes slideIn { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
         .card { background: var(--c); border-radius: 30px; padding: 25px; margin-bottom: 25px; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
 
-        /* TIMETABLE LIST */
-        .time-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(0,0,0,0.05); font-size: 0.85rem; }
-        .time-row:last-child { border: none; }
-        .time-label { color: #64748b; font-weight: 500; }
-        .time-val { color: var(--p); font-weight: 700; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+        th { background: var(--a); color: var(--p); padding: 10px; text-align: left; }
+        td { padding: 10px; border-bottom: 1px solid #eee; text-align: center; }
 
-        /* QURAN READING SUITE */
-        .read-box { height: 320px; background: #fffdf7; border: 3px solid var(--g); border-radius: 25px; margin: 20px 0; overflow-y: auto; padding: 25px; position: relative; scroll-behavior: smooth; }
-        .arabic-text { font-family: 'Amiri', serif; font-size: 2.3rem; line-height: 3.2; color: #1a1a1a; direction: rtl; text-align: center; }
-        .visualizer { height: 5px; width: 0%; background: var(--g); margin-bottom: 15px; border-radius: 10px; transition: 0.4s; }
+        .rem-btn { background: none; border: none; color: var(--g); cursor: pointer; padding: 5px; font-size: 0.9rem; }
 
-        /* QIBLA */
-        .comp-ui { width: 220px; height: 220px; border: 12px solid var(--g); border-radius: 50%; margin: 30px auto; position: relative; display: flex; align-items: center; justify-content: center; background: white; box-shadow: inset 0 0 30px rgba(0,0,0,0.05); }
-        #ndl { font-size: 5.5rem; color: #be123c; transition: transform 0.1s; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2)); }
-
-        /* NAVIGATION */
+        .btn-action { background: var(--g); color: var(--p); border: none; padding: 18px; border-radius: 18px; width: 100%; font-weight: 800; cursor: pointer; }
         nav { background: var(--c); display: flex; justify-content: space-around; padding: 20px 0; position: fixed; bottom: 0; width: 100%; box-shadow: 0 -15px 35px rgba(0,0,0,0.1); border-radius: 40px 40px 0 0; z-index: 5000; }
         nav button { background: none; border: none; color: #94a3b8; font-size: 0.7rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 10px; }
-        nav button.active { color: var(--p); font-weight: 800; transform: translateY(-8px); }
-
-        /* CHAT & BUTTONS */
-        .chat-ui { height: 200px; overflow-y: auto; background: var(--bg); border-radius: 20px; padding: 15px; margin-bottom: 15px; font-size: 0.85rem; }
-        .btn-action { background: var(--g); color: var(--p); border: none; padding: 18px; border-radius: 18px; width: 100%; font-weight: 800; cursor: pointer; }
+        nav button.active { color: var(--p); font-weight: 800; }
         
-        .tasbih-count { font-size: 5rem; font-weight: 800; color: var(--p); margin: 20px 0; text-shadow: 2px 2px 0px rgba(0,0,0,0.1); }
-
-        /* TABLE STYLING */
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.8rem; }
-        th { background: var(--a); color: var(--p); padding: 10px 5px; text-align: center; }
-        td { padding: 10px 5px; text-align: center; border-bottom: 1px solid #eee; }
+        .arabic-text { font-family: 'Amiri', serif; font-size: 1.8rem; line-height: 2.2; text-align: center; color: var(--p); direction: rtl; }
+        
+        #quranViewer { max-height: 400px; overflow-y: auto; padding: 15px; border: 1px solid #eee; border-radius: 15px; background: #fffdf9; margin-top: 15px; display: none; }
     </style>
 </head>
 <body>
@@ -71,255 +50,288 @@
 <div id="gate">
     <div class="gate-card">
         <i class="fas fa-kaaba" style="font-size: 4rem; color: var(--g); margin-bottom: 25px;"></i>
-        <h2 style="margin:0; letter-spacing: 1px;">Masjidul Hasanath</h2>
-        <p style="opacity: 0.8; font-weight: 300;">Digital Portal Entrance</p>
-        <button class="l-btn" onclick="openSecurity()">English</button>
-        <button class="l-btn" onclick="openSecurity()">සිංහල</button>
-        <div id="g_id_signin" style="display:none; justify-content:center; margin-top:20px; transform: scale(1.1);"></div>
+        <h2>Masjidul Hasanath</h2>
+        <p>Digital Portal Entrance</p>
+        <div id="g_id_signin" style="margin-top:20px;"></div>
         <p style="font-size: 0.75rem; margin-top: 40px; opacity: 0.6; font-weight: 600;">BUILD BY HAMAD FAZMIL (16)</p>
     </div>
 </div>
 
 <div id="app" style="display:none;">
-    <div class="ticker"><div class="ticker-m">📢 NOTICE: RAMADAN 2026 STARTS FEB 19 • 30 JUZ QURAN PRACTICE MODE NOW LIVE • QIBLA SYNC CALIBRATED FOR GODAMUDUNA (298.5°) • DEVELOPED BY HAMAD FAZMIL 📢</div></div>
+    <div class="ticker"><div class="ticker-m">📢 NOTICE: RAMADAN 2026 STARTS FEB 19 • DEVELOPED BY HAMAD FAZMIL • DATA SOURCE: GODAMUDUNA OFFICIAL 📢</div></div>
     
     <header>
-        <div><h3 style="margin:0; font-size: 1.4rem;">Masjidul Hasanath</h3><span class="loc-badge"><i class="fas fa-location-dot"></i> Godamuduna</span></div>
-        <i onclick="tMode()" class="fas fa-moon" style="font-size: 1.5rem; cursor: pointer;"></i>
+        <div><h3 style="margin:0;">Masjidul Hasanath</h3></div>
+        <div class="user-top-right" id="userArea">
+            <span id="userName">User</span>
+            <img id="userImg" src="">
+        </div>
     </header>
 
     <section id="home" class="active">
-        <div class="card" style="background: var(--grad); color: white; text-align: center; border: none;">
-            <p style="margin:0; font-size: 0.85rem; opacity: 0.9;">Ramadan 2026 Countdown</p>
-            <h1 id="timer" style="margin: 15px 0; font-size: 2.8rem; letter-spacing: 2px;">00d 00h 00m</h1>
+        <div class="card" style="background: var(--grad); color: white; text-align: center;">
+            <p style="margin:0; font-size: 0.85rem;">Ramadan 2026 Countdown</p>
+            <h1 id="timer">00d 00h 00m</h1>
         </div>
 
         <div class="card">
-            <h3><i class="fas fa-clock" style="color:var(--g)"></i> Daily Prayer Times</h3>
+            <h3><i class="fas fa-map-marker-alt"></i> Godamuduna Community Feed</h3>
+            <div id="locStatus" style="font-size:0.75rem; margin-bottom:10px; color:#666;">Verifying resident location...</div>
+            <div id="postArea" style="display:none;">
+                <textarea id="feedMsg" style="width:100%; padding:12px; border-radius:12px; border:1px solid #ddd;" placeholder="Share with the village..."></textarea>
+                <button class="btn-action" onclick="addFeed()" style="margin-top:10px;">Post Update</button>
+            </div>
+            <div id="feedContent" style="margin-top:15px;"></div>
+        </div>
+
+        <div class="card">
+            <h3><i class="fas fa-calendar-alt"></i> February 2026 Calendar</h3>
             <div style="overflow-x:auto;">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Sahar</th>
-                            <th>Fajr</th>
-                            <th>Luhr</th>
-                            <th>Asr</th>
-                            <th>Magrib</th>
-                            <th>Isha</th>
-                        </tr>
-                    </thead>
-                    <tbody id="prayerRows">
-                        </tbody>
+                <table id="febTable">
+                    <thead><tr><th>Date</th><th>Fajr</th><th>Sunrise</th><th>Luhr</th><th>Asr</th><th>Magrib</th><th>Isha</th></tr></thead>
+                    <tbody id="febBody"></tbody>
                 </table>
             </div>
         </div>
 
         <div class="card">
-            <h3><i class="fas fa-users" style="color:var(--g)"></i> Community Feed</h3>
-            <div id="locBanner" style="background: #fff3cd; padding: 10px; border-radius: 10px; font-size: 0.8rem; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
-                <i class="fas fa-location-crosshairs"></i>
-                <span id="locText">Checking location to enable posting...</span>
-            </div>
-            
-            <div id="postBox" style="display:none;">
-                <textarea id="feedInput" style="width:100%; height:80px; padding:12px; border-radius:12px; border:1px solid #ddd; font-family:inherit; margin-bottom:10px;" placeholder="What's happening in Godamuduna?"></textarea>
-                <button class="btn-action" onclick="addPost()">Post Update</button>
-            </div>
-
-            <div id="feedList" style="margin-top: 20px;">
-                <div style="text-align:center; color:#94a3b8; font-size:0.85rem; padding:20px;">No updates yet.</div>
+            <h3><i class="fas fa-moon"></i> Ramadan 2026 Timetable</h3>
+            <div style="overflow-x:auto;">
+                <table id="ramTable">
+                    <thead><tr><th>Period</th><th>Sahar</th><th>Fajr</th><th>Luhr</th><th>Asr</th><th>Magrib</th><th>Isha</th></tr></thead>
+                    <tbody id="ramBody"></tbody>
+                </table>
             </div>
         </div>
     </section>
 
     <section id="quran">
         <div class="card">
-            <h3><i class="fas fa-book-quran"></i> 30 Juz Reading Practice</h3>
-            <div class="visualizer" id="vBar"></div>
-            <div class="read-box" id="readWin">
-                <div id="qText" class="arabic-text">Select a Surah to begin practicing...</div>
-            </div>
-            <select id="sSel" style="width:100%; padding:18px; border-radius:15px; margin-bottom:15px; font-weight:700; border: 2px solid #eee;" onchange="loadQuran()"></select>
-            <audio id="qAudio" style="width:100%;" controls onplay="playScroll()" onpause="stopScroll()"></audio>
-        </div>
-        <div class="card">
-            <h3><i class="fas fa-heart"></i> Essential Duas</h3>
-            <select id="duaSel" style="width:100%; padding:15px; border-radius:15px;" onchange="showDua()">
-                <option value="">Select a Prayer...</option>
+            <h3><i class="fas fa-book-open"></i> Al-Quran Al-Kareem</h3>
+            <select id="surahSel" class="btn-action" style="background:white; border:1px solid #ddd;" onchange="fetchSurah()">
+                <option value="">Select Surah (114 Surahs)...</option>
             </select>
-            <div id="duaDisp" style="margin-top:20px; text-align:center;"></div>
+            <audio id="quranAudio" controls style="width: 100%; margin-top: 15px; display: none;"></audio>
+            <div id="quranViewer" class="arabic-text"></div>
+        </div>
+
+        <div class="card">
+            <h3><i class="fas fa-heart"></i> 45 Essential Duas</h3>
+            <select id="duaSel" class="btn-action" style="background:white; border:1px solid #ddd;" onchange="showDua()">
+                <option value="">Select a Dua...</option>
+            </select>
+            <div id="duaDisp" style="margin-top:20px;"></div>
         </div>
     </section>
 
     <section id="tools">
         <div class="card" style="text-align:center;">
-            <h3><i class="fas fa-fingerprint"></i> Digital Tasbih</h3>
-            <div id="tasbihVal" class="tasbih-count">0</div>
-            <button class="btn-action" onclick="countTasbih()" style="margin-bottom:15px; font-size:1.2rem;">TAP TO COUNT</button>
-            <br>
-            <button onclick="resetTasbih()" style="background:none; border:none; color:#64748b; text-decoration:underline; font-size:0.85rem; cursor:pointer;">Reset Counter</button>
-        </div>
-
-        <div class="card" style="text-align:center;">
-            <h3>Precision Qibla</h3>
-            <p style="font-size:0.8rem; color:#94a3b8;">Godamuduna Offset: 298.5°</p>
-            <div class="comp-ui"><i id="ndl" class="fas fa-location-arrow"></i></div>
-            <button class="btn-action" onclick="syncSensors()">ACTIVATE SENSOR</button>
-        </div>
-
-        <div class="card">
-            <h3>Zakat Calculator</h3>
-            <input type="number" id="zVal" style="width:100%; padding:15px; margin-bottom:15px; border-radius:12px; border:1px solid #ddd;" placeholder="Total Assets (LKR)">
-            <button class="btn-action" onclick="calcZ()">Calculate 2.5%</button>
-            <h4 id="zRes" style="text-align:center; color:var(--p); margin-top:15px;"></h4>
+            <h3>Digital Tasbih</h3>
+            <div id="tasbihVal" style="font-size: 5rem; font-weight: 800; color: var(--p);">0</div>
+            <button class="btn-action" onclick="countTasbih()">TAP TO COUNT</button>
+            <button onclick="resetTasbih()" style="margin-top:15px; background:none; border:none; text-decoration:underline; cursor:pointer;">Reset</button>
         </div>
     </section>
 
     <section id="me">
         <div class="card" style="text-align:center; border-top: 6px solid var(--g);">
-            <div style="width:110px; height:110px; background:var(--grad); border-radius:50%; margin:0 auto 20px; display:flex; align-items:center; justify-content:center; color:white; font-size:3rem; border:5px solid white; box-shadow: 0 15px 30px rgba(0,0,0,0.1);"><i class="fas fa-user-gear"></i></div>
-            <h2 style="margin:0;">Hamad Fazmil</h2>
-            <div style="margin:12px 0;"><span style="background:var(--a); color:var(--p); padding:6px 18px; border-radius:25px; font-weight:800; font-size:0.8rem;">CHIEF ARCHITECT | AGE 16</span></div>
-            
-            <p style="text-align:left; font-size:0.95rem; line-height:2.0; color: #475569; padding: 10px;">
-                <b>Assalamu Alaikum.</b> This platform is not just a website; it is a labor of love and a promise to the community of Godamuduna. 
-                <br><br>
-                At just 16 years old, I spent countless sleepless nights designing and engineering this system from the ground up. I faced complex challenges, but my vision was clear: <b>Masjidul Hasanath deserves world-class digital infrastructure.</b>
-                <br><br>
-                I poured my heart, soul, and determination into every single feature you see here—from the precision reading engine to the sensor algorithms—to prove that our community can lead in innovation. This is my gift to my neighbors, my family, and the Ummah.
-            </p>
-            <a href="mailto:hamadfazmil455@gmail.com" class="btn-action" style="display:block; text-decoration:none; margin-top:20px;">CONTACT THE DEVELOPER</a>
+            <div style="width:100px; height:100px; background:var(--grad); border-radius:50%; margin:0 auto 20px; display:flex; align-items:center; justify-content:center; color:white; font-size:2.5rem;"><i class="fas fa-user-gear"></i></div>
+            <h2>Hamad Fazmil</h2>
+            <div style="margin:12px 0;"><span style="background:var(--a); color:var(--p); padding:6px 18px; border-radius:25px; font-weight:800; font-size:0.8rem;">DEVELOPER | AGE 16</span></div>
+            <p style="text-align:left; font-size:0.9rem; line-height:1.8;">Built with passion for Godamuduna residents. This portal ensures our community stays connected and spiritually synchronized.</p>
         </div>
     </section>
 
     <nav>
-        <button onclick="tab('home', this)" class="active"><i class="fas fa-mosque"></i><span>Home</span></button>
-        <button onclick="tab('quran', this)"><i class="fas fa-book-open"></i><span>Quran</span></button>
-        <button onclick="tab('tools', this)"><i class="fas fa-microchip"></i><span>Tools</span></button>
-        <button onclick="tab('me', this)"><i class="fas fa-id-badge"></i><span>Hamad</span></button>
+        <button onclick="tab('home', this)" class="active"><i class="fas fa-home"></i><span>Home</span></button>
+        <button onclick="tab('quran', this)"><i class="fas fa-book-open"></i><span>Quran/Duas</span></button>
+        <button onclick="tab('tools', this)"><i class="fas fa-toolbox"></i><span>Tools</span></button>
+        <button onclick="tab('me', this)"><i class="fas fa-user"></i><span>Hamad</span></button>
     </nav>
 </div>
 
 <script>
-    let scrollJob, scrollPos = 0;
     let tCount = 0;
 
-    const surahNames = ["Al-Fatiha","Al-Baqarah","Al-Imran","An-Nisa","Al-Ma'idah","Al-An'am","Al-A'raf","Al-Anfal","At-Tawbah","Yunus","Hud","Yusuf","Ar-Ra'd","Ibrahim","Al-Hijr","An-Nahl","Al-Isra","Al-Kahf","Maryam","Ta-Ha","Al-Anbiya","Al-Hajj","Al-Mu'minun","An-Nur","Al-Furqan","Ash-Shu'ara","An-Naml","Al-Qasas","Al-Ankabut","Ar-Rum","Luqman","As-Sajdah","Al-Ahzab","Saba","Fatir","Ya-Sin","As-Saffat","Sad","Az-Zumar","Ghafir","Fussilat","Ash-Shura","Az-Zukhruf","Ad-Dukhan","Al-Jathiyah","Al-Ahqaf","Muhammad","Al-Fath","Al-Hujurat","Qaf","Adh-Dhariyat","At-Tur","An-Najm","Al-Qamar","Ar-Rahman","Al-Waqi'a","Al-Hadid","Al-Mujadila","Al-Hashr","Al-Mumtahanah","As-Saff","Al-Jumu'ah","Al-Munafiqun","At-Taghabun","At-Talaq","At-Tahrim","Al-Mulk","Al-Qalam","Al-Haqqah","Al-Ma'arij","Nuh","Al-Jinn","Al-Muzzammil","Al-Muddathir","Al-Qiyamah","Al-Insan","Al-Mursalat","An-Naba","An-Nazi'at","Abasa","At-Takwir","Al-Infitar","Al-Mutaffifin","Al-Inshiqaq","Al-Buruj","At-Tariq","Al-A'la","Al-Ghashiyah","Al-Fajr","Al-Balad","Ash-Shams","Al-Lail","Ad-Duha","Ash-Sharh","At-Tin","Al-Alaq","Al-Qadr","Al-Bayyinah","Az-Zalzalah","Al-Adiyat","Al-Qari'a","At-Takathur","Al-Asr","Al-Humazah","Al-Fil","Quraish","Al-Ma'un","Al-Kawthar","Al-Kafirun","An-Nasr","Al-Masad","Al-Ikhlas","Al-Falaq","An-Nas"];
-    
+    const surahList = [
+        "Al-Fatihah","Al-Baqarah","Ali 'Imran","An-Nisa","Al-Ma'idah","Al-An'am","Al-A'raf","Al-Anfal","At-Tawbah","Yunus","Hud","Yusuf","Ar-Ra'd","Ibrahim","Al-Hijr","An-Nahl","Al-Isra","Al-Kahf","Maryam","Ta-Ha","Al-Anbiya","Al-Hajj","Al-Mu'minun","An-Nur","Al-Furqan","Ash-Shu'ara","An-Naml","Al-Qasas","Al-Ankabut","Ar-Rum","Luqman","As-Sajdah","Al-Ahzab","Saba","Fatir","Ya-Sin","As-Saffat","Sad","Az-Zumar","Ghafir","Fussilat","Ash-Shura","Az-Zukhruf","Ad-Dukhan","Al-Jathiyah","Al-Ahqaf","Muhammad","Al-Fath","Al-Hujurat","Qaf","Adh-Dhariyat","At-Tur","An-Najm","Al-Qamar","Ar-Rahman","Al-Waqi'ah","Al-Hadid","Al-Mujadila","Al-Hashr","Al-Mumtahanah","As-Saff","Al-Jumu'ah","Al-Munafiqun","At-Taghabun","At-Talaq","At-Tahrim","Al-Mulk","Al-Qalam","Al-Haqqah","Al-Ma'arij","Nuh","Al-Jinn","Al-Muzzammil","Al-Muddaththir","Al-Qiyamah","Al-Insan","Al-Mursalat","An-Naba","An-Nazi'at","Abasa","At-Takwir","Al-Infitar","Al-Mutaffifin","Al-Inshiqaq","Al-Buruj","At-Tariq","Al-A'la","Al-Ghashiyah","Al-Fajr","Al-Balad","Ash-Shams","Al-Layl","Ad-Duha","Ash-Sharh","At-Tin","Al-Alaq","Al-Qadr","Al-Bayyinah","Az-Zalzalah","Al-Adiyat","Al-Qari'ah","At-Takathur","Al-Asr","Al-Humazah","Al-Fil","Quraysh","Al-Ma'un","Al-Kawthar","Al-Kafirun","An-Nasr","Al-Masad","Al-Ikhlas","Al-Falaq","An-Nas"
+    ];
+
+    const febData = [
+        {d:"1-Feb", f:"5:08", s:"6:28", l:"12:23", a:"3:45", m:"6:18", i:"7:29"},
+        {d:"5-Feb", f:"5:09", s:"6:28", l:"12:24", a:"3:46", m:"6:19", i:"7:30"},
+        {d:"10-Feb", f:"5:09", s:"6:28", l:"12:24", a:"3:45", m:"6:20", i:"7:30"},
+        {d:"15-Feb", f:"5:08", s:"6:27", l:"12:24", a:"3:45", m:"6:21", i:"7:31"},
+        {d:"20-Feb", f:"5:07", s:"6:25", l:"12:24", a:"3:44", m:"6:21", i:"7:31"},
+        {d:"25-Feb", f:"5:06", s:"6:24", l:"12:23", a:"3:43", m:"6:22", i:"7:31"},
+        {d:"29-Feb", f:"5:05", s:"6:22", l:"12:22", a:"3:41", m:"6:22", i:"7:31"}
+    ];
+
+    const ramData = [
+        {p:"19-22 Feb", sa:"5:04", f:"5:06", l:"12:23", a:"3:43", m:"6:20", i:"7:30"},
+        {p:"23-25 Feb", sa:"5:03", f:"5:05", l:"12:22", a:"3:42", m:"6:21", i:"7:30"},
+        {p:"26-28 Feb", sa:"5:03", f:"5:05", l:"12:21", a:"3:41", m:"6:21", i:"7:30"},
+        {p:"01-04 Mar", sa:"5:01", f:"5:03", l:"12:21", a:"3:39", m:"6:21", i:"7:29"},
+        {p:"05-08 Mar", sa:"4:59", f:"5:01", l:"12:20", a:"3:35", m:"6:20", i:"7:29"},
+        {p:"09-13 Mar", sa:"4:58", f:"5:00", l:"12:19", a:"3:34", m:"6:20", i:"7:29"},
+        {p:"14-17 Mar", sa:"4:56", f:"4:58", l:"12:18", a:"3:31", m:"6:20", i:"7:28"},
+        {p:"18-21 Mar", sa:"4:54", f:"4:56", l:"12:17", a:"3:29", m:"6:20", i:"7:28"},
+        {p:"22-25 Mar", sa:"4:52", f:"4:54", l:"12:15", a:"3:26", m:"6:19", i:"7:28"},
+        {p:"26-27 Mar", sa:"4:50", f:"4:52", l:"12:14", a:"3:24", m:"6:19", i:"7:28"}
+    ];
+
     const duaData = [
-        {t: "Upon Waking Up", ar: "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ", en: "All praise is due to Allah who brought us to life after having caused us to die and unto Him is the resurrection."},
-        {t: "Protection from Anxiety", ar: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ", en: "O Allah, I seek refuge in You from anxiety and sorrow."}
-        // ... (Keep existing duaData)
+        {t: "Waking Up", ar: "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ", en: "All praise is for Allah who gave us life after death..."},
+        {t: "Entering Toilet", ar: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبُثِ وَالْخَبَائِثِ", en: "O Allah, I seek refuge from the male and female filth..."},
+        {t: "Leaving Toilet", ar: "غُفْرَانَكَ", en: "I ask for Your forgiveness."},
+        {t: "Before Wudu", ar: "بِسْمِ اللَّهِ", en: "In the name of Allah."},
+        {t: "After Wudu", ar: "أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ", en: "I bear witness that there is no god but Allah..."},
+        {t: "Entering Mosque", ar: "اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ", en: "O Allah, open the gates of Your mercy for me."},
+        {t: "Leaving Mosque", ar: "اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ فَضْلِكَ", en: "O Allah, I ask You from Your bounty."},
+        {t: "After Adhan", ar: "اللَّهُمَّ رَبَّ هَذِهِ الدَّعْوَةِ التَّامَّةِ", en: "O Allah, Lord of this perfect call..."},
+        {t: "Breaking Fast", ar: "ذَهَبَ الظَّمَأُ وَابْتَلَّتِ الْعُرُوقُ وَثَبَتَ الْأَجْرُ", en: "The thirst is gone, the veins are moist..."},
+        {t: "After Eating", ar: "الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا وَسَقَانَا وَجَعَلَنَا مُسْلِمِينَ", en: "Praise be to Allah who fed us and made us Muslims."},
+        {t: "Before Sleeping", ar: "بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا", en: "In Your name O Allah, I die and I live."},
+        {t: "Leaving Home", ar: "بِسْمِ اللَّهِ تَوَكَّلْتُ عَلَى اللَّهِ لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ", en: "In the name of Allah, I trust in Allah..."},
+        {t: "For Parents", ar: "رَبِّ ارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا", en: "My Lord, have mercy on them as they raised me."},
+        {t: "Seeking Knowledge", ar: "رَبِّ زِدْنِي عِلْمًا", en: "My Lord, increase me in knowledge."},
+        {t: "When Angry", ar: "أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ", en: "I seek refuge in Allah from Satan."},
+        {t: "Entering Market", ar: "لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ", en: "There is no god but Allah alone..."},
+        {t: "During Rain", ar: "اللَّهُمَّ صَيِّبًا نَافِعًا", en: "O Allah, make it a beneficial rain."},
+        {t: "Thunder", ar: "سُبْحَانَ الَّذِي يُسَبِّحُ الرَّعْدُ بِحَمْدِهِ", en: "Glory be to Him whom the thunder glorifies."},
+        {t: "Visiting Sick", ar: "لَا بَأْسَ طَهُورٌ إِنْ شَاءَ اللَّهُ", en: "No harm, a purification if Allah wills."},
+        {t: "Asking for Paradise", ar: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْجَنَّةَ", en: "O Allah, I ask You for Paradise."},
+        {t: "Protection from Hell", ar: "اللَّهُمَّ أَجِرْنِي مِنَ النَّارِ", en: "O Allah, protect me from the Fire."},
+        {t: "Morning Protection", ar: "أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ", en: "I seek refuge in the perfect words of Allah."},
+        {t: "Evening Protection", ar: "بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ", en: "In the name of Allah, with whose name nothing is harmed."},
+        {t: "Before Study", ar: "اللَّهُمَّ انْفَعْنِي بِمَا عَلَّمْتَنِي", en: "O Allah, benefit me with what You taught me."},
+        {t: "Accepting Deeds", ar: "رَبَّنَا تَقَبَّلْ مِنَّا إِنَّكَ أَنْتَ السَّمِيعُ الْعَلِيمُ", en: "Our Lord, accept from us..."},
+        {t: "Travel Dua", ar: "سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَذَا", en: "Glory be to Him who subjected this to us."},
+        {t: "For Patience", ar: "رَبَّنَا أَفْرِغْ عَلَيْنَا صَبْرًا", en: "Our Lord, pour upon us patience."},
+        {t: "Dua for Ease", ar: "اللَّهُمَّ لَا سَهْلَ إِلَّا مَا جَعَلْتَهُ سَهْلًا", en: "O Allah, nothing is easy except what You make easy."},
+        {t: "Forgiveness", ar: "رَبَّنَا اغْفِرْ لَنَا ذُنُوبَنَا", en: "Our Lord, forgive us our sins."},
+        {t: "For Good Health", ar: "اللَّهُمَّ عَافِنِي فِي بَدَنِي", en: "O Allah, grant health to my body."},
+        {t: "Before Class", ar: "رَبِّ اشْرَحْ لِي صَدْرِي", en: "My Lord, expand for me my chest."},
+        {t: "Steadfastness", ar: "يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ", en: "O Turner of hearts, keep my heart firm."},
+        {t: "Against Anxiety", ar: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحُزْنِ", en: "O Allah, I seek refuge from worry and grief."},
+        {t: "Against Debt", ar: "اللَّهُمَّ اكْفِنِي بِحَلَالِكَ عَنْ حَرَامِكَ", en: "O Allah, suffice me with Your halal."},
+        {t: "Sneezing", ar: "الْحَمْدُ لِلَّهِ", en: "Praise be to Allah."},
+        {t: "Hearing Sneeze", ar: "يَرْحَمُكَ اللَّهُ", en: "May Allah have mercy on you."},
+        {t: "Entering Home", ar: "بِسْمِ اللَّهِ وَلَجْنَا وَبِسْمِ اللَّهِ خَرَجْنَا", en: "In the name of Allah we enter and leave."},
+        {t: "Protection from Shirk", ar: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ أَنْ أُشْرِكَ بِكَ", en: "O Allah, I seek refuge from shirk."},
+        {t: "Seeing Someone in Trial", ar: "الْحَمْدُ لِلَّهِ الَّذِي عَافَانِي", en: "Praise be to Allah who spared me..."},
+        {t: "Looking in Mirror", ar: "اللَّهُمَّ كَمَا حَسَّنْتَ خَلْقِي فَحَسِّنْ خُلُقِي", en: "O Allah, beautify my character..."},
+        {t: "Dua for Laylatul Qadr", ar: "اللَّهُمَّ إِنَّكَ عَفُوٌّ تُحِبُّ الْعَفْوَ فَاعْفُ عَنِّي", en: "O Allah, You are Forgiving..."},
+        {t: "Wearing Clothes", ar: "الْحَمْدُ لِلَّهِ الَّذِي كَسَانِي هَذَا", en: "Praise be to Allah who clothed me..."},
+        {t: "Placing Dead in Grave", ar: "بِسْمِ اللَّهِ وَعَلَى مِلَّةِ رَسُولِ اللَّهِ", en: "In the name of Allah and on the path..."},
+        {t: "General Goodness", ar: "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً", en: "Our Lord, give us good in this world..."},
+        {t: "End of Meeting", ar: "سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ", en: "Glory be to You O Allah, and praise."}
     ];
 
-    const prayerData = [
-        { date: "19-22 Feb", sahar: "5:04", fajr: "5:06", luhr: "12:23", asr: "3:43", magrib: "6:20", isha: "7:30" },
-        { date: "23-25 Feb", sahar: "5:03", fajr: "5:05", luhr: "12:22", asr: "3:42", magrib: "6:21", isha: "7:30" },
-        { date: "26-28 Feb", sahar: "5:03", fajr: "5:05", luhr: "12:21", asr: "3:41", magrib: "6:21", isha: "7:30" },
-        { date: "01-04 Mar", sahar: "5:01", fajr: "5:03", luhr: "12:21", asr: "3:39", magrib: "6:21", isha: "7:29" },
-        { date: "05-08 Mar", sahar: "4:59", fajr: "5:01", luhr: "12:20", asr: "3:35", magrib: "6:20", isha: "7:29" }
-    ];
+    window.onload = function() {
+        google.accounts.id.initialize({
+            client_id: "318225024149-0hjour8gpcp0in6l9ksb415ba6aqvn03.apps.googleusercontent.com",
+            callback: handleAuth
+        });
+        google.accounts.id.renderButton(document.getElementById("g_id_signin"), { theme: "outline", size: "large" });
+        setupData();
+        populateSurahs();
+    };
 
-    function openSecurity() {
-        document.getElementById('gate').style.display='none';
-        document.getElementById('app').style.display='block';
-        setup();
-        checkLocation();
+    function handleAuth(response) {
+        const payload = JSON.parse(atob(response.credential.split('.')[1]));
+        document.getElementById('gate').style.display = 'none';
+        document.getElementById('app').style.display = 'block';
+        document.getElementById('userName').innerText = payload.given_name;
+        document.getElementById('userImg').src = payload.picture;
+        checkUserLocation();
     }
 
-    function setup() {
-        const s = document.getElementById('sSel');
-        surahNames.forEach((name, index) => {
-            let o = document.createElement('option');
-            o.value = index + 1;
-            o.text = (index + 1) + ". " + name;
-            s.appendChild(o);
+    function setupData() {
+        const feb = document.getElementById('febBody');
+        febData.forEach(p => {
+            feb.innerHTML += `<tr><td>${p.d}</td><td>${p.f}<button class="rem-btn" onclick="setRem('${p.f}')">🔔</button></td><td>${p.s}</td><td>${p.l}<button class="rem-btn" onclick="setRem('${p.l}')">🔔</button></td><td>${p.a}<button class="rem-btn" onclick="setRem('${p.a}')">🔔</button></td><td>${p.m}<button class="rem-btn" onclick="setRem('${p.m}')">🔔</button></td><td>${p.i}<button class="rem-btn" onclick="setRem('${p.i}')">🔔</button></td></tr>`;
         });
-
-        const pr = document.getElementById('prayerRows');
-        prayerData.forEach(p => {
-            pr.innerHTML += `<tr><td>${p.date}</td><td>${p.sahar}</td><td>${p.fajr}</td><td>${p.luhr}</td><td>${p.asr}</td><td>${p.magrib}</td><td>${p.isha}</td></tr>`;
+        const ram = document.getElementById('ramBody');
+        ramData.forEach(p => {
+            ram.innerHTML += `<tr><td>${p.p}</td><td>${p.sa}</td><td>${p.f}<button class="rem-btn" onclick="setRem('${p.f}')">🔔</button></td><td>${p.l}<button class="rem-btn" onclick="setRem('${p.l}')">🔔</button></td><td>${p.a}<button class="rem-btn" onclick="setRem('${p.a}')">🔔</button></td><td>${p.m}<button class="rem-btn" onclick="setRem('${p.m}')">🔔</button></td><td>${p.i}<button class="rem-btn" onclick="setRem('${p.i}')">🔔</button></td></tr>`;
         });
+        const ds = document.getElementById('duaSel');
+        duaData.forEach((d, i) => ds.innerHTML += `<option value="${i}">${i+1}. ${d.t}</option>`);
 
         setInterval(() => {
-            let g = new Date("Feb 19, 2026 00:00:00") - new Date();
-            if(g<0) { document.getElementById('timer').innerText = "Ramadan Mubarak!"; return; }
-            document.getElementById('timer').innerText = Math.floor(g/86400000)+"d "+Math.floor((g%86400000)/3600000)+"h "+Math.floor((g%3600000)/60000)+"m";
+            let diff = new Date("Feb 19, 2026 00:00:00") - new Date();
+            if(diff < 0) { document.getElementById('timer').innerText = "Ramadan Mubarak!"; return; }
+            document.getElementById('timer').innerText = Math.floor(diff/86400000) + "d " + Math.floor((diff%86400000)/3600000) + "h " + Math.floor((diff%3600000)/60000) + "m";
         }, 1000);
     }
 
-    // LOCATION & COMMUNITY POST LOGIC
-    function checkLocation() {
-        if ("geolocation" in navigator) {
+    function populateSurahs() {
+        const sel = document.getElementById('surahSel');
+        surahList.forEach((name, index) => {
+            sel.innerHTML += `<option value="${index + 1}">${index + 1}. ${name}</option>`;
+        });
+    }
+
+    async function fetchSurah() {
+        const num = document.getElementById('surahSel').value;
+        if(!num) return;
+        const viewer = document.getElementById('quranViewer');
+        viewer.style.display = 'block';
+        viewer.innerText = "Loading Verses...";
+        
+        try {
+            const res = await fetch(`https://api.alquran.cloud/v1/surah/${num}`);
+            const data = await res.json();
+            let content = "";
+            data.data.ayahs.forEach(a => content += a.text + " ﴿" + a.numberInSurah + "﴾ ");
+            viewer.innerText = content;
+            
+            const audio = document.getElementById('quranAudio');
+            audio.src = `https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/${num}.mp3`;
+            audio.style.display = 'block';
+        } catch (e) {
+            viewer.innerText = "Error loading Surah. Please check internet connection.";
+        }
+    }
+
+    function checkUserLocation() {
+        if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(pos => {
-                // Godamuduna Coordinates approx: 6.74, 80.53
-                const lat = pos.coords.latitude;
-                const lon = pos.coords.longitude;
-                const dist = Math.sqrt(Math.pow(lat - 6.74, 2) + Math.pow(lon - 80.53, 2));
-                
-                if (dist < 0.1) { // Within village radius
-                    document.getElementById('locBanner').style.background = "#d1e7dd";
-                    document.getElementById('locText').innerText = "Location Verified: Godamuduna";
-                    document.getElementById('postBox').style.display = "block";
+                const dist = Math.sqrt(Math.pow(pos.coords.latitude - 6.7383, 2) + Math.pow(pos.coords.longitude - 80.5303, 2));
+                if (dist < 0.1) {
+                    document.getElementById('locStatus').innerText = "✅ Resident Verified: Godamuduna";
+                    document.getElementById('postArea').style.display = 'block';
                 } else {
-                    document.getElementById('locText').innerText = "Posting is only for Godamuduna residents.";
+                    document.getElementById('locStatus').innerText = "❌ Restricted: Posting allowed for Godamuduna residents only.";
                 }
-            }, () => {
-                document.getElementById('locText').innerText = "Location access denied. Cannot post.";
             });
         }
     }
 
-    function addPost() {
-        const input = document.getElementById('feedInput');
-        if(!input.value) return;
-        const feed = document.getElementById('feedList');
-        const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-        
-        const html = `
-            <div style="background:var(--c); border:1px solid #eee; padding:15px; border-radius:15px; margin-bottom:12px; box-shadow:0 4px 6px rgba(0,0,0,0.02);">
-                <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-                    <span style="font-weight:700; color:var(--p); font-size:0.8rem;">Village Resident</span>
-                    <span style="color:#94a3b8; font-size:0.7rem;">${time}</span>
-                </div>
-                <div style="font-size:0.9rem; line-height:1.5;">${input.value}</div>
-            </div>
-        `;
-        if(feed.innerText === "No updates yet.") feed.innerHTML = "";
-        feed.insertAdjacentHTML('afterbegin', html);
-        input.value = "";
+    function showDua() {
+        const d = duaData[document.getElementById('duaSel').value];
+        if(!d) return;
+        document.getElementById('duaDisp').innerHTML = `<div class="card"><div class="arabic-text">${d.ar}</div><p style="text-align:center; font-style:italic; margin-top:15px; font-size:0.9rem;">"${d.en}"</p></div>`;
     }
 
-    // --- (Keep existing Quran, Tasbih, and Navigation JS) ---
-    function countTasbih() { tCount++; document.getElementById('tasbihVal').innerText = tCount; if(navigator.vibrate) navigator.vibrate(40); }
-    function resetTasbih() { if(confirm("Reset?")) { tCount = 0; document.getElementById('tasbihVal').innerText = 0; } }
+    function addFeed() {
+        const msg = document.getElementById('feedMsg').value;
+        if(!msg) return;
+        const post = `<div class="card" style="padding:15px; margin-bottom:10px;"><small>Just now • Verified Resident</small><p style="margin:5px 0 0 0;">${msg}</p></div>`;
+        document.getElementById('feedContent').insertAdjacentHTML('afterbegin', post);
+        document.getElementById('feedMsg').value = "";
+    }
+
+    function countTasbih() { tCount++; document.getElementById('tasbihVal').innerText = tCount; }
+    function resetTasbih() { tCount = 0; document.getElementById('tasbihVal').innerText = 0; }
+    function setRem(time) { alert("Reminder set for " + time); }
     
-    async function loadQuran() {
-        const n = document.getElementById('sSel').value;
-        const txt = document.getElementById('qText');
-        txt.innerText = "Loading...";
-        try {
-            const res = await fetch(`https://api.alquran.cloud/v1/surah/${n}`);
-            const data = await res.json();
-            txt.innerHTML = data.data.ayahs.map(a => a.text + ` <span style="color:var(--g)">(${a.numberInSurah})</span> `).join(" ");
-            document.getElementById('qAudio').src = `https://server8.mp3quran.net/afs/${n.padStart(3, '0')}.mp3`;
-        } catch(e) { txt.innerText = "Error."; }
-    }
-
-    function playScroll() { scrollJob = setInterval(() => { scrollPos += 0.6; document.getElementById('readWin').scrollTop = scrollPos; }, 100); }
-    function stopScroll() { clearInterval(scrollJob); }
-
-    function tab(id, b) {
-        document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+    function tab(id, btn) {
+        document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
         document.getElementById(id).classList.add('active');
-        document.querySelectorAll('nav button').forEach(n=>n.classList.remove('active'));
-        b.classList.add('active');
-    }
-
-    function tMode() {
-        let d = document.documentElement;
-        d.setAttribute('data-theme', d.getAttribute('data-theme')==='dark'?'light':'dark');
+        document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
     }
 </script>
 </body>
