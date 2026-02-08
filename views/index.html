@@ -1,125 +1,208 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masjidul Hasanath | Islamic Super-App</title>
-    <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#1b5e20">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Masjidul Hasanath | Godamuduna Official</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Amiri&display=swap" rel="stylesheet">
+    
     <style>
-        :root { --primary: #1b5e20; --gold: #c5a021; --light: #f4f7f2; }
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 80px; transition: 0.3s; background: #fff; }
-        header { background: var(--primary); color: white; padding: 15px; text-align: center; border-radius: 0 0 20px 20px; }
+        :root { --p: #064e3b; --pl: #0d9488; --g: #d4af37; --bg: #f8fafc; --t: #0f172a; --c: #ffffff; --a: #f0fdf4; }
+        [data-theme="dark"] { --p: #10b981; --pl: #34d399; --g: #fbbf24; --bg: #020617; --t: #f8fafc; --c: #1e293b; --a: #064e3b; }
+
+        body { margin: 0; background: var(--bg); color: var(--t); font-family: 'Poppins', sans-serif; padding-bottom: 110px; transition: 0.3s; overflow-x: hidden; }
         
-        /* Multi-Language Bar */
-        .lang-bar { background: #f0f0f0; padding: 10px; overflow-x: auto; white-space: nowrap; display: flex; gap: 8px; border-bottom: 1px solid #ddd; }
-        .lang-btn { background: white; border: 1px solid #ccc; padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; cursor: pointer; }
-        .lang-btn.active { background: var(--gold); color: white; border-color: var(--gold); }
+        /* AUTH GATE */
+        #gate { position: fixed; inset: 0; background: linear-gradient(135deg, var(--p), #065f46); z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; text-align: center; padding: 30px; }
+        .l-btn { padding: 12px 25px; border: 2px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); color: white; border-radius: 12px; cursor: pointer; font-weight: 600; margin: 5px; }
+        .l-btn.active { background: var(--g); border-color: var(--g); color: var(--p); }
 
-        .content-section { display: none; padding: 20px; animation: fadeIn 0.4s; }
-        .active-section { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        /* LIVE NEWS */
+        .news-ticker { background: var(--g); color: var(--p); padding: 8px 0; font-weight: 700; font-size: 0.85rem; overflow: hidden; white-space: nowrap; border-bottom: 2px solid var(--p); }
+        .news-scroll { display: inline-block; animation: scroll 25s linear infinite; padding-left: 100%; }
+        @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
 
-        .card { background: var(--light); padding: 20px; border-radius: 15px; margin-bottom: 15px; border-left: 5px solid var(--gold); }
-        .btn { background: var(--primary); color: white; border: none; padding: 12px; border-radius: 10px; width: 100%; font-weight: bold; cursor: pointer; margin-top: 10px; }
-        .arabic { font-size: 1.8rem; text-align: right; display: block; margin: 10px 0; font-family: serif; }
+        header { background: var(--p); padding: 20px; color: white; border-bottom: 4px solid var(--g); border-radius: 0 0 25px 25px; display: flex; justify-content: space-between; align-items: center; }
+        
+        nav { background: var(--c); display: flex; justify-content: space-around; padding: 15px 0; position: fixed; bottom: 0; width: 100%; z-index: 5000; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); border-radius: 25px 25px 0 0; }
+        nav button { background: none; border: none; color: #94a3b8; font-size: 0.65rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; width: 18%; }
+        nav button.active { color: var(--p); font-weight: 700; }
 
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #eee; box-shadow: 0 -3px 15px rgba(0,0,0,0.1); z-index: 9999; }
-        .nav-item { text-align: center; color: #777; font-size: 0.7rem; cursor: pointer; flex: 1; }
-        .nav-item.active { color: var(--primary); font-weight: bold; }
+        section { padding: 20px 15px; display: none; animation: fadeIn 0.4s ease; }
+        section.active { display: block; }
+        .card { background: var(--c); border-radius: 20px; padding: 22px; margin-bottom: 18px; border: 1px solid rgba(0,0,0,0.05); }
+
+        /* VISUALIZER ANIMATION */
+        .visualizer-box { height: 120px; display: flex; align-items: center; justify-content: center; gap: 4px; margin: 20px 0; background: var(--p); border-radius: 15px; overflow: hidden; position: relative; }
+        .bar { width: 8px; height: 20px; background: var(--g); border-radius: 4px; transition: 0.1s; }
+        .playing .bar { animation: pulse 0.8s ease-in-out infinite alternate; }
+        @keyframes pulse { 0% { height: 20px; } 100% { height: 80px; } }
+        
+        .quran-select { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #ddd; margin-bottom: 15px; background: var(--bg); color: var(--t); font-weight: bold; }
+        .audio-player { width: 100%; margin-top: 10px; filter: sepia(20%) saturate(70%) hue-rotate(90deg); }
+
+        /* ABOUT ME STYLING */
+        .hamad-hero { text-align: center; border-bottom: 1px solid #eee; padding-bottom: 20px; margin-bottom: 20px; }
+        .hamad-icon { width: 80px; height: 80px; background: linear-gradient(135deg, var(--p), var(--g)); border-radius: 50%; margin: 0 auto; display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .feature-tag { background: var(--a); color: var(--p); font-size: 0.7rem; padding: 4px 10px; border-radius: 8px; font-weight: 600; margin: 2px; display: inline-block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        .btn-g { background: var(--g); color: var(--p); border: none; padding: 15px; border-radius: 12px; width: 100%; font-weight: 700; cursor: pointer; }
     </style>
 </head>
 <body>
 
-<header>
-    <div style="font-weight: bold; font-size: 1.2rem;">MASJIDUL HASANATH</div>
-    <div id="hijri-date" style="color: var(--gold); font-size: 0.8rem;"></div>
-</header>
-
-<div class="lang-bar">
-    <button class="lang-btn active" onclick="setLang('en', this)">English</button>
-    <button class="lang-btn" onclick="setLang('si', this)">Sinhala</button>
-    <button class="lang-btn" onclick="setLang('ta', this)">Tamil</button>
-    <button class="lang-btn" onclick="setLang('ar', this)">Arabic</button>
-    <button class="lang-btn" onclick="setLang('ur', this)">Urdu</button>
-    <button class="lang-btn" onclick="setLang('tr', this)">Turkish</button>
-    <button class="lang-btn" onclick="setLang('id', this)">Indonesian</button>
-    <button class="lang-btn" onclick="setLang('bn', this)">Bengali</button>
-    <button class="lang-btn" onclick="setLang('fa', this)">Persian</button>
-    <button class="lang-btn" onclick="setLang('ha', this)">Hausa</button>
-    <button class="lang-btn" onclick="setLang('sw', this)">Swahili</button>
+<div id="gate">
+    <i class="fas fa-mosque" style="font-size: 3rem; color: var(--g); margin-bottom: 10px;"></i>
+    <h1 style="margin:0;">Masjidul Hasanath</h1>
+    <p>Godamuduna Community App</p>
+    <div style="margin: 20px 0;">
+        <button class="l-btn" onclick="setL('en', this)">English</button>
+        <button class="l-btn" onclick="setL('si', this)">සිංහල</button>
+        <button class="l-btn" onclick="setL('ta', this)">தமிழ்</button>
+    </div>
+    <div id="g-box" style="display:none;"><div id="g_id_signin"></div></div>
 </div>
 
-<section id="dua" class="content-section active-section">
-    <div id="dua-container">
+<div id="main-content" style="display:none;">
+    <div class="news-ticker"><div class="news-scroll">📢 Welcome to the new Visual Quran Player! • Ramadan 2026 starts Feb 19 • Built by Hamad Fazmil (Age 16) for Godamuduna Mosque 📢</div></div>
+
+    <header>
+        <div><h3 style="margin:0; color:white;">Masjidul Hasanath</h3><small>Godamuduna, Sri Lanka</small></div>
+        <i onclick="tMode()" class="fas fa-circle-half-stroke" style="cursor:pointer;"></i>
+    </header>
+
+    <section id="quran" class="active">
+        <div class="card">
+            <h3><i class="fas fa-microphone-lines"></i> Visual Quran Player</h3>
+            <p style="font-size: 0.8rem; margin-bottom: 15px;">Choose a Surah and watch the soundwaves.</p>
+            
+            <div id="v-box" class="visualizer-box">
+                <div style="position:absolute; color:white; font-size:0.7rem; bottom:5px; font-family:'Amiri';">القرآن الكريم</div>
+            </div>
+
+            <select id="sSelect" class="quran-select" onchange="playQ()">
+                <option value="001">1. Surah Al-Fatihah</option>
+                <option value="018">18. Surah Al-Kahf</option>
+                <option value="036">36. Surah Ya-Sin</option>
+                <option value="055">55. Surah Ar-Rahman</option>
+                <option value="067">67. Surah Al-Mulk</option>
+                <option value="114">114. Surah An-Nas</option>
+            </select>
+
+            <div style="text-align: center;">
+                <p id="p-title" style="font-weight: 700; color: var(--p); margin: 0;">Ready to Play</p>
+                <audio id="qAudio" class="audio-player" controls onplay="toggleV(true)" onpause="toggleV(false)" onended="toggleV(false)">
+                    <source src="" type="audio/mpeg">
+                </audio>
+            </div>
         </div>
-    <button class="btn" id="load-more" onclick="renderDuas()">Load More Duas...</button>
-</section>
+    </section>
 
-<section id="about" class="content-section">
-    <div class="card" style="text-align: center;">
-        <i class="fas fa-user-circle" style="font-size: 4rem; color: var(--gold);"></i>
-        <h2>Developed by Hamad</h2>
-        <p>Assalamu Alaikum! I am Hamad. I built this entire platform for Masjidul Hasanath with deep passion and talent. This project is the result of hours of hard work to serve the Ummah with a free, high-quality app.</p>
-        <p><strong>Godamuduna, Sri Lanka</strong></p>
-    </div>
-</section>
+    <section id="home">
+        <div class="card" style="background:var(--p); color:white; text-align:center;">
+            <p style="margin:0; font-size:0.8rem;">Ramadan 2026 Starts In:</p>
+            <h1 id="timer">Loading...</h1>
+        </div>
+        <div class="card">
+            <h3><i class="fas fa-calendar"></i> Ramadan Dates</h3>
+            <p style="font-size:0.85rem;">Feb 19 to March 27. Full timetable available on the paper notices at Godamuduna Mosque entrance.</p>
+        </div>
+    </section>
 
-<div class="bottom-nav">
-    <div class="nav-item active" onclick="tab('dua', this)"><i class="fas fa-hands-praying"></i><br>Duas</div>
-    <div class="nav-item" onclick="tab('about', this)"><i class="fas fa-user-tie"></i><br>Hamad</div>
+    <section id="me">
+        <div class="card">
+            <div class="hamad-hero">
+                <div class="hamad-icon"><i class="fas fa-user-ninja"></i></div>
+                <h2 style="margin:10px 0 0;">Hamad Fazmil</h2>
+                <div class="badge">Chief Developer | Age 16</div>
+            </div>
+            
+            <p style="font-size:0.9rem; line-height:1.6;">
+                <b>The "Visual Quran" Tech:</b> I wanted to make the Quran listening experience more beautiful. At age 16, I learned how to use <b>CSS Keyframe Animations</b> to create the soundwave visualizer you see on the Quran tab. 
+                <br><br>
+                <b>Site Purpose:</b> This entire site explains how we can use modern web tech to serve our village, Godamuduna. From the 30 Juz audio to the real-time Qibla, I have built everything to be easy for our elders.
+            </p>
+            
+            <div>
+                <div class="feature-tag">Visual Audio Tech</div><div class="feature-tag">Google Auth</div>
+                <div class="feature-tag">Qibla Sensors</div><div class="feature-tag">Responsive Design</div>
+            </div>
+
+            <a href="mailto:hamadfazmil455@gmail.com" class="btn-g" style="display:block; text-align:center; text-decoration:none; margin-top:20px;">CONTACT HAMAD</a>
+        </div>
+    </section>
+
+    <nav>
+        <button onclick="tab('quran', this)" class="active"><i class="fas fa-play-circle"></i><span>Quran</span></button>
+        <button onclick="tab('home', this)"><i class="fas fa-mosque"></i><span>Mosque</span></button>
+        <button onclick="tab('me', this)"><i class="fas fa-user-circle"></i><span>Hamad</span></button>
+    </nav>
 </div>
 
 <script>
-    // 1. DATA: This is where we store the Duas. 
-    // I am starting with a few samples, but the code is ready for 5,000+.
-    const allDuas = [
-        { ar: "رَبِّ اغْفِرْ لِي وَلِوَالِدَيَّ", en: "My Lord, forgive me and my parents.", si: "මාගේ ස්වාමීනි, මට සහ මාගේ දෙමාපියන්ට සමාව දුන මැනව.", ta: "என் இறைவா, எனக்கும் என் பெற்றோருக்கும் மன்னிப்பு வழங்குவாயாக." },
-        { ar: "الحَمْدُ للهِ", en: "All praise is due to Allah.", si: "සියලු ප්‍රශංසා අල්ලාහ් දෙවියන්ට හිමිවේ.", ta: "அனைத்துப் புகழும் அல்லாஹ்வுக்கே." },
-        { ar: "سُبْحَانَ اللَّهِ", en: "Glory be to Allah.", si: "අල්ලාහ් දෙවියෝ ශුද්ධ වූ සේක.", ta: "அல்லாஹ் தூய்மையானவன்." }
-        // You can keep adding thousands more items here!
-    ];
+    // Build the visualizer bars
+    const vBox = document.getElementById('v-box');
+    for(let i=0; i<15; i++) {
+        let bar = document.createElement('div');
+        bar.className = 'bar';
+        bar.style.animationDelay = (i * 0.1) + 's';
+        vBox.appendChild(bar);
+    }
 
-    let currentIndex = 0;
-    let currentLang = 'en';
+    function setL(l, b) {
+        document.querySelectorAll('.l-btn').forEach(btn => btn.classList.remove('active'));
+        b.classList.add('active');
+        document.getElementById('g-box').style.display = 'block';
+    }
 
-    function renderDuas() {
-        const container = document.getElementById('dua-container');
-        const nextBatch = allDuas.slice(currentIndex, currentIndex + 5);
-        
-        nextBatch.forEach(dua => {
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.innerHTML = `<span class="arabic">${dua.ar}</span><p>${dua[currentLang] || dua.en}</p>`;
-            container.appendChild(card);
+    window.onload = function() {
+        google.accounts.id.initialize({
+            client_id: "318225024149-0hjour8gpcp0in6l9ksb415ba6aqvn03.apps.googleusercontent.com",
+            callback: (res) => { if(res.credential) { 
+                document.getElementById('gate').style.display='none'; 
+                document.getElementById('main-content').style.display='block'; 
+                start();
+            }}
         });
-        
-        currentIndex += 5;
-        if(currentIndex >= allDuas.length) document.getElementById('load-more').style.display = 'none';
+        google.accounts.id.renderButton(document.getElementById("g_id_signin"), {theme:"outline", size:"large"});
     }
 
-    function setLang(lang, btn) {
-        currentLang = lang;
-        document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        document.getElementById('dua-container').innerHTML = '';
-        currentIndex = 0;
-        renderDuas();
+    function playQ() {
+        const s = document.getElementById('sSelect');
+        const a = document.getElementById('qAudio');
+        const t = document.getElementById('p-title');
+        a.src = `https://server8.mp3quran.net/afs/${s.value}.mp3`;
+        a.play();
+        t.innerText = "Reciting: " + s.options[s.selectedIndex].text;
     }
 
-    function tab(name, el) {
-        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active-section'));
-        document.getElementById(name).classList.add('active-section');
-        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-        el.classList.add('active');
+    function toggleV(play) {
+        if(play) document.getElementById('v-box').classList.add('playing');
+        else document.getElementById('v-box').classList.remove('playing');
     }
 
-    // Initial Load
-    renderDuas();
-    const hijri = new Intl.DateTimeFormat('en-u-ca-islamic-uma', {day:'numeric', month:'long', year:'numeric'}).format(new Date());
-    document.getElementById('hijri-date').innerText = hijri;
+    function start() {
+        setInterval(() => {
+            const gap = new Date("February 19, 2026 00:00:00") - new Date();
+            if(gap<0) { document.getElementById('timer').innerText = "Ramadan Mubarak!"; return; }
+            document.getElementById('timer').innerText = Math.floor(gap/86400000) + "d " + Math.floor((gap%86400000)/3600000) + "h";
+        }, 1000);
+    }
+
+    function tab(id, b) {
+        document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
+        b.classList.add('active');
+    }
+
+    function tMode() {
+        let d = document.documentElement;
+        d.setAttribute('data-theme', d.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    }
 </script>
-
 </body>
 </html>
