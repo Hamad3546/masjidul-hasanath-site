@@ -37,7 +37,9 @@
 
         .rem-btn { background: none; border: none; color: var(--g); cursor: pointer; padding: 5px; font-size: 0.9rem; }
 
-        .btn-action { background: var(--g); color: var(--p); border: none; padding: 18px; border-radius: 18px; width: 100%; font-weight: 800; cursor: pointer; }
+        .btn-action { background: var(--g); color: var(--p); border: none; padding: 18px; border-radius: 18px; width: 100%; font-weight: 800; cursor: pointer; margin-bottom: 10px; transition: transform 0.2s; }
+        .btn-action:active { transform: scale(0.95); }
+
         nav { background: var(--c); display: flex; justify-content: space-around; padding: 20px 0; position: fixed; bottom: 0; width: 100%; box-shadow: 0 -15px 35px rgba(0,0,0,0.1); border-radius: 40px 40px 0 0; z-index: 5000; }
         nav button { background: none; border: none; color: #94a3b8; font-size: 0.7rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 10px; }
         nav button.active { color: var(--p); font-weight: 800; }
@@ -46,9 +48,11 @@
         
         #quranViewer { max-height: 400px; overflow-y: auto; padding: 15px; border: 1px solid #eee; border-radius: 15px; background: #fffdf9; margin-top: 15px; display: none; }
 
-        /* Zakat Calculator Styles */
         .calc-input { width: 100%; padding: 15px; border-radius: 15px; border: 1px solid #ddd; margin-bottom: 10px; font-size: 1rem; }
         .calc-res { background: var(--a); padding: 15px; border-radius: 15px; margin-top: 15px; text-align: center; border: 1px dashed var(--p); }
+
+        /* Lang Gate specifics */
+        .lang-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
     </style>
 </head>
 <body>
@@ -57,9 +61,24 @@
     <div class="gate-card">
         <i class="fas fa-kaaba" style="font-size: 4rem; color: var(--g); margin-bottom: 25px;"></i>
         <h2>Masjidul Hasanath</h2>
-        <p>Digital Portal Entrance</p>
-        <div id="g_id_signin" style="margin-top:20px;"></div>
-        <p style="font-size: 0.75rem; margin-top: 40px; opacity: 0.6; font-weight: 600;">BUILD BY HAMAD FAZMIL (16)</p>
+        
+        <div id="langStep">
+            <p style="margin-bottom: 20px;">Select Language / භාෂාව තෝරන්න / மொழி</p>
+            <div class="lang-grid">
+                <button class="btn-action" onclick="setLanguage('en')">English</button>
+                <button class="btn-action" onclick="setLanguage('si')">සිංහල</button>
+                <button class="btn-action" onclick="setLanguage('ta')">தமிழ்</button>
+                <button class="btn-action" onclick="setLanguage('ar')">العربية</button>
+            </div>
+        </div>
+
+        <div id="loginStep" style="display:none;">
+            <p>Digital Portal Entrance</p>
+            <div id="g_id_signin" style="margin-top:20px; display: flex; justify-content: center;"></div>
+            <button onclick="showLangStep()" style="margin-top:25px; background:none; border:none; color:white; font-size:0.75rem; text-decoration:underline; opacity:0.8; cursor:pointer;">Change Language</button>
+        </div>
+
+        <p style="font-size: 0.75rem; margin-top: 40px; opacity: 0.6; font-weight: 600;">BUILT BY HAMAD FAZMIL (16)</p>
     </div>
 </div>
 
@@ -79,7 +98,7 @@
 
     <section id="home" class="active">
         <div class="card" style="background: var(--grad); color: white; text-align: center;">
-            <p style="margin:0; font-size: 0.85rem;">Ramadan 2026 Countdown</p>
+            <p style="margin:0; font-size: 0.85rem;" id="txtCountdown">Ramadan 2026 Countdown</p>
             <h1 id="timer">00d 00h 00m</h1>
         </div>
 
@@ -161,27 +180,32 @@
             
             <div style="text-align:left; font-size:0.9rem; line-height:1.8;">
                 <p>Assalamu Alaikum! I am Hamad Fazmil, a passionate 16-year-old developer dedicated to creating digital solutions for the Ummah.</p>
-                <p><strong>My Vision:</strong> This portal for Masjidul Hasanath was built entirely with the Godamuduna residents in mind. My goal is to combine modern technology with our spiritual traditions to keep our community connected, informed, and synchronized during Ramadan and beyond.</p>
-                <p><strong>Experience:</strong> Despite my young age, I focus on building responsive, user-friendly web applications that solve real-world problems. This project is a blend of my technical skills and my love for our village.</p>
+                <p><strong>My Vision:</strong> This portal for Masjidul Hasanath was built entirely with the Godamuduna residents in mind.</p>
                 <p>I hope this tool helps you in your daily worship. Please keep me in your Duas as I continue to develop more for our community.</p>
             </div>
         </div>
     </section>
 
-    <nav>
-        <button onclick="tab('home', this)" class="active"><i class="fas fa-home"></i><span>Home</span></button>
-        <button onclick="tab('quran', this)"><i class="fas fa-book-open"></i><span>Quran/Duas</span></button>
-        <button onclick="tab('tools', this)"><i class="fas fa-toolbox"></i><span>Tools</span></button>
-        <button onclick="tab('me', this)"><i class="fas fa-user"></i><span>Hamad</span></button>
+    <nav id="mainNav">
+        <button onclick="tab('home', this)" class="active"><i class="fas fa-home"></i><span id="navHome">Home</span></button>
+        <button onclick="tab('quran', this)"><i class="fas fa-book-open"></i><span id="navQuran">Quran</span></button>
+        <button onclick="tab('tools', this)"><i class="fas fa-toolbox"></i><span id="navTools">Tools</span></button>
+        <button onclick="tab('me', this)"><i class="fas fa-user"></i><span id="navMe">Hamad</span></button>
     </nav>
 </div>
 
 <script>
     let tCount = 0;
+    let selectedLang = 'en';
 
-    const surahList = [
-        "Al-Fatihah","Al-Baqarah","Ali 'Imran","An-Nisa","Al-Ma'idah","Al-An'am","Al-A'raf","Al-Anfal","At-Tawbah","Yunus","Hud","Yusuf","Ar-Ra'd","Ibrahim","Al-Hijr","An-Nahl","Al-Isra","Al-Kahf","Maryam","Ta-Ha","Al-Anbiya","Al-Hajj","Al-Mu'minun","An-Nur","Al-Furqan","Ash-Shu'ara","An-Naml","Al-Qasas","Al-Ankabut","Ar-Rum","Luqman","As-Sajdah","Al-Ahzab","Saba","Fatir","Ya-Sin","As-Saffat","Sad","Az-Zumar","Ghafir","Fussilat","Ash-Shura","Az-Zukhruf","Ad-Dukhan","Al-Jathiyah","Al-Ahqaf","Muhammad","Al-Fath","Al-Hujurat","Qaf","Adh-Dhariyat","At-Tur","An-Najm","Al-Qamar","Ar-Rahman","Al-Waqi'ah","Al-Hadid","Al-Mujadila","Al-Hashr","Al-Mumtahanah","As-Saff","Al-Jumu'ah","Al-Munafiqun","At-Taghabun","At-Talaq","At-Tahrim","Al-Mulk","Al-Qalam","Al-Haqqah","Al-Ma'arij","Nuh","Al-Jinn","Al-Muzzammil","Al-Muddaththir","Al-Qiyamah","Al-Insan","Al-Mursalat","An-Naba","An-Nazi'at","Abasa","At-Takwir","Al-Infitar","Al-Mutaffifin","Al-Inshiqaq","Al-Buruj","At-Tariq","Al-A'la","Al-Ghashiyah","Al-Fajr","Al-Balad","Ash-Shams","Al-Layl","Ad-Duha","Ash-Sharh","At-Tin","Al-Alaq","Al-Qadr","Al-Bayyinah","Az-Zalzalah","Al-Adiyat","Al-Qari'ah","At-Takathur","Al-Asr","Al-Humazah","Al-Fil","Quraysh","Al-Ma'un","Al-Kawthar","Al-Kafirun","An-Nasr","Al-Masad","Al-Ikhlas","Al-Falaq","An-Nas"
-    ];
+    const translations = {
+        en: { home: "Home", quran: "Quran", tools: "Tools", me: "Hamad", countdown: "Ramadan 2026 Countdown" },
+        si: { home: "නිවස", quran: "කුර්ආනය", tools: "මෙවලම්", me: "හමාඩ්", countdown: "රාමසාන් 2026 ගණන් කිරීම" },
+        ta: { home: "முகப்பு", quran: "குர்ஆன்", tools: "கருவிகள்", me: "ஹமத்", countdown: "ரமலான் 2026 கவுண்ட்டவுன்" },
+        ar: { home: "الرئيسية", quran: "القرآن", tools: "أدوات", me: "حمد", countdown: "عد تنازلي لرمضان ٢٠٢٦" }
+    };
+
+    const surahList = ["Al-Fatihah","Al-Baqarah","Ali 'Imran","An-Nisa","Al-Ma'idah","Al-An'am","Al-A'raf","Al-Anfal","At-Tawbah","Yunus","Hud","Yusuf","Ar-Ra'd","Ibrahim","Al-Hijr","An-Nahl","Al-Isra","Al-Kahf","Maryam","Ta-Ha","Al-Anbiya","Al-Hajj","Al-Mu'minun","An-Nur","Al-Furqan","Ash-Shu'ara","An-Naml","Al-Qasas","Al-Ankabut","Ar-Rum","Luqman","As-Sajdah","Al-Ahzab","Saba","Fatir","Ya-Sin","As-Saffat","Sad","Az-Zumar","Ghafir","Fussilat","Ash-Shura","Az-Zukhruf","Ad-Dukhan","Al-Jathiyah","Al-Ahqaf","Muhammad","Al-Fath","Al-Hujurat","Qaf","Adh-Dhariyat","At-Tur","An-Najm","Al-Qamar","Ar-Rahman","Al-Waqi'ah","Al-Hadid","Al-Mujadila","Al-Hashr","Al-Mumtahanah","As-Saff","Al-Jumu'ah","Al-Munafiqun","At-Taghabun","At-Talaq","At-Tahrim","Al-Mulk","Al-Qalam","Al-Haqqah","Al-Ma'arij","Nuh","Al-Jinn","Al-Muzzammil","Al-Muddaththir","Al-Qiyamah","Al-Insan","Al-Mursalat","An-Naba","An-Nazi'at","Abasa","At-Takwir","Al-Infitar","Al-Mutaffifin","Al-Inshiqaq","Al-Buruj","At-Tariq","Al-A'la","Al-Ghashiyah","Al-Fajr","Al-Balad","Ash-Shams","Al-Layl","Ad-Duha","Ash-Sharh","At-Tin","Al-Alaq","Al-Qadr","Al-Bayyinah","Az-Zalzalah","Al-Adiyat","Al-Qari'ah","At-Takathur","Al-Asr","Al-Humazah","Al-Fil","Quraysh","Al-Ma'un","Al-Kawthar","Al-Kafirun","An-Nasr","Al-Masad","Al-Ikhlas","Al-Falaq","An-Nas"];
 
     const febData = [
         {d:"1-Feb", f:"5:08", s:"6:28", l:"12:23", a:"3:45", m:"6:18", i:"7:29"},
@@ -236,7 +260,7 @@
         {t: "For Patience", ar: "رَبَّنَا أَفْرِغْ عَلَيْنَا صَبْرًا", en: "Our Lord, pour upon us patience."},
         {t: "Dua for Ease", ar: "اللَّهُمَّ لَا سَهْلَ إِلَّا مَا جَعَلْتَهُ سَهْلًا", en: "O Allah, nothing is easy except what You make easy."},
         {t: "Forgiveness", ar: "رَبَّنَا اغْفِرْ لَنَا ذُنُوبَنَا", en: "Our Lord, forgive us our sins."},
-        {t: "For Good Health", ar: "اللَّهُمَّ عَافِنِي فِي بَدَنِي", en: "O Allah, grant health to my body."},
+        {t: "For Good Health", ar: "اللَّهُمَّ عَافිනِي فِي بَدَنِي", en: "O Allah, grant health to my body."},
         {t: "Before Class", ar: "رَبِّ اشْرَحْ لِي صَدْرِي", en: "My Lord, expand for me my chest."},
         {t: "Steadfastness", ar: "يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ", en: "O Turner of hearts, keep my heart firm."},
         {t: "Against Anxiety", ar: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحُزْنِ", en: "O Allah, I seek refuge from worry and grief."},
@@ -250,7 +274,7 @@
         {t: "Dua for Laylatul Qadr", ar: "اللَّهُمَّ إِنَّكَ عَفُوٌّ تُحِبُّ الْعَفْوَ فَاعْفُ عَنِّي", en: "O Allah, You are Forgiving..."},
         {t: "Wearing Clothes", ar: "الْحَمْدُ لِلَّهِ الَّذِي كَسَانِي هَذَا", en: "Praise be to Allah who clothed me..."},
         {t: "Placing Dead in Grave", ar: "بِسْمِ اللَّهِ وَعَلَى مِلَّةِ رَسُولِ اللَّهِ", en: "In the name of Allah and on the path..."},
-        {t: "General Goodness", ar: "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً", en: "Our Lord, give us good in this world..."},
+        {t: "General Goodness", ar: "رَبَّنَا آتිනَا فِي الدُّنْيَا حَسَنَةً", en: "Our Lord, give us good in this world..."},
         {t: "End of Meeting", ar: "سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ", en: "Glory be to You O Allah, and praise."}
     ];
 
@@ -264,6 +288,27 @@
         populateSurahs();
     };
 
+    function setLanguage(lang) {
+        selectedLang = lang;
+        document.getElementById('langStep').style.display = 'none';
+        document.getElementById('loginStep').style.display = 'block';
+        applyTranslations();
+    }
+
+    function showLangStep() {
+        document.getElementById('langStep').style.display = 'block';
+        document.getElementById('loginStep').style.display = 'none';
+    }
+
+    function applyTranslations() {
+        const t = translations[selectedLang];
+        document.getElementById('navHome').innerText = t.home;
+        document.getElementById('navQuran').innerText = t.quran;
+        document.getElementById('navTools').innerText = t.tools;
+        document.getElementById('navMe').innerText = t.me;
+        document.getElementById('txtCountdown').innerText = t.countdown;
+    }
+
     function handleAuth(response) {
         const payload = JSON.parse(atob(response.credential.split('.')[1]));
         document.getElementById('gate').style.display = 'none';
@@ -275,9 +320,6 @@
 
     function logout() {
         google.accounts.id.disableAutoSelect();
-        document.getElementById('app').style.display = 'none';
-        document.getElementById('gate').style.display = 'flex';
-        // Reload for complete fresh state
         location.reload();
     }
 
@@ -313,20 +355,16 @@
         const viewer = document.getElementById('quranViewer');
         viewer.style.display = 'block';
         viewer.innerText = "Loading Verses...";
-        
         try {
             const res = await fetch(`https://api.alquran.cloud/v1/surah/${num}`);
             const data = await res.json();
             let content = "";
             data.data.ayahs.forEach(a => content += a.text + " ﴿" + a.numberInSurah + "﴾ ");
             viewer.innerText = content;
-            
             const audio = document.getElementById('quranAudio');
             audio.src = `https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/${num}.mp3`;
             audio.style.display = 'block';
-        } catch (e) {
-            viewer.innerText = "Error loading Surah. Please check internet connection.";
-        }
+        } catch (e) { viewer.innerText = "Error loading Surah."; }
     }
 
     function checkUserLocation() {
