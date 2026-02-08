@@ -55,11 +55,6 @@
         /* CHAT */
         .chat-ui { height: 200px; overflow-y: auto; background: var(--bg); border-radius: 20px; padding: 15px; margin-bottom: 15px; font-size: 0.85rem; }
         .btn-action { background: var(--g); color: var(--p); border: none; padding: 18px; border-radius: 18px; width: 100%; font-weight: 800; cursor: pointer; }
-
-        /* ADSENSE & POLICY SECTIONS */
-        .policy-card { padding: 20px; background: var(--c); border-radius: 25px; margin-bottom: 25px; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 15px 25px rgba(0,0,0,0.05); }
-        .policy-card h3 { color: var(--p); margin-bottom: 12px; }
-        .policy-card p { font-size: 0.85rem; line-height: 1.7; color: #475569; }
     </style>
 </head>
 <body>
@@ -84,56 +79,189 @@
         <i onclick="tMode()" class="fas fa-moon" style="font-size: 1.5rem; cursor: pointer;"></i>
     </header>
 
-    <!-- EXISTING SECTIONS -->
-    <section id="home" class="active"> ...existing content... </section>
-    <section id="quran"> ...existing content... </section>
-    <section id="tools"> ...existing content... </section>
-    <section id="me"> ...existing content... </section>
-
-    <!-- NEW POLICY SECTIONS FOR ADSENSE -->
-    <section id="about">
-        <div class="policy-card">
-            <h3>About Masjidul Hasanath</h3>
-            <p>Masjidul Hasanath is a community mosque dedicated to spiritual growth and digital engagement. Our portal provides prayer times, Quran reading tools, Qibla direction, and educational resources for all members of our community.</p>
+    <section id="home" class="active">
+        <div class="card" style="background: var(--grad); color: white; text-align: center; border: none;">
+            <p style="margin:0; font-size: 0.85rem; opacity: 0.9;">Ramadan 2026 Countdown</p>
+            <h1 id="timer" style="margin: 15px 0; font-size: 2.8rem; letter-spacing: 2px;">00d 00h 00m</h1>
+        </div>
+        <div class="card">
+            <h3><i class="fas fa-compass" style="color:var(--g)"></i> Site Guide</h3>
+            <p style="font-size:0.85rem; line-height:1.7; color: #64748b;">Welcome. Use the <b>News Ticker</b> for Mosque updates. The <b>Quran Tab</b> is for 30 Juz reading practice, and the <b>Tools Tab</b> provides a precision Qibla for our village.</p>
+        </div>
+        <div class="card">
+            <h3><i class="fas fa-calendar-day"></i> Ramadan Timetable (Feb 19 - Mar 27)</h3>
+            <div id="ttable" style="max-height: 350px; overflow-y: auto; padding-top: 10px;">
+                </div>
         </div>
     </section>
 
-    <section id="privacy">
-        <div class="policy-card">
-            <h3>Privacy Policy</h3>
-            <p>We respect your privacy. Any data collected through this portal is strictly for site functionality and improvement. No personal data is shared without your consent. Google AdSense may use cookies for personalized ads.</p>
+    <section id="quran">
+        <div class="card">
+            <h3><i class="fas fa-book-quran"></i> 30 Juz Reading Practice</h3>
+            <div class="visualizer" id="vBar"></div>
+            <div class="read-box" id="readWin">
+                <div id="qText" class="arabic-text">Select a Surah to begin practicing...</div>
+            </div>
+            <select id="sSel" style="width:100%; padding:18px; border-radius:15px; margin-bottom:15px; font-weight:700; border: 2px solid #eee;" onchange="loadQuran()"></select>
+            <audio id="qAudio" style="width:100%;" controls onplay="playScroll()" onpause="stopScroll()"></audio>
+        </div>
+        <div class="card">
+            <h3><i class="fas fa-heart"></i> 45 Essential Duas</h3>
+            <select id="duaSel" style="width:100%; padding:15px; border-radius:15px;" onchange="showDua()">
+                <option value="">Select a Prayer...</option>
+            </select>
+            <p id="duaDisp" style="margin-top:20px; font-family:'Amiri'; font-size:1.6rem; text-align:center; color:var(--p);"></p>
         </div>
     </section>
 
-    <section id="terms">
-        <div class="policy-card">
-            <h3>Terms & Conditions</h3>
-            <p>By using this site, you agree to abide by our terms and conditions. Content provided is for informational purposes only. The developer is not liable for any inaccuracies or misinterpretations.</p>
+    <section id="tools">
+        <div class="card" style="text-align:center;">
+            <h3>Precision Qibla</h3>
+            <p style="font-size:0.8rem; color:#94a3b8;">Godamuduna Offset: 298.5°</p>
+            <div class="comp-ui"><i id="ndl" class="fas fa-location-arrow"></i></div>
+            <button class="btn-action" onclick="syncSensors()">ACTIVATE SENSOR</button>
+        </div>
+        <div class="card">
+            <h3><i class="fas fa-robot"></i> Hasanath AI Bot</h3>
+            <div id="cWin" class="chat-ui">Assalamu Alaikum! I am the Hasanath AI assistant. Ask me about prayer times or Mosque news.</div>
+            <div style="display:flex; gap:10px;"><input id="cIn" style="flex:1; padding:12px; border-radius:12px; border:1px solid #ddd;" placeholder="Ask something..."><button onclick="chat()" style="background:var(--p); color:white; border:none; padding:15px; border-radius:12px;"><i class="fas fa-paper-plane"></i></button></div>
+        </div>
+        <div class="card">
+            <h3>Zakat Calculator</h3>
+            <input type="number" id="zVal" style="width:100%; padding:15px; margin-bottom:15px; border-radius:12px; border:1px solid #ddd;" placeholder="Total Assets (LKR)">
+            <button class="btn-action" onclick="calcZ()">Calculate 2.5%</button>
+            <h4 id="zRes" style="text-align:center; color:var(--p); margin-top:15px;"></h4>
         </div>
     </section>
 
-    <section id="contact">
-        <div class="policy-card">
-            <h3>Contact Us</h3>
-            <p>If you have any questions or feedback, please email us at <a href="mailto:hamadfazmil455@gmail.com">hamadfazmil455@gmail.com</a> or use the contact form provided on this page.</p>
+    <section id="me">
+        <div class="card" style="text-align:center; border-top: 6px solid var(--g);">
+            <div style="width:110px; height:110px; background:var(--grad); border-radius:50%; margin:0 auto 20px; display:flex; align-items:center; justify-content:center; color:white; font-size:3rem; border:5px solid white; box-shadow: 0 15px 30px rgba(0,0,0,0.1);"><i class="fas fa-user-gear"></i></div>
+            <h2 style="margin:0;">Hamad Fazmil</h2>
+            <div style="margin:12px 0;"><span style="background:var(--a); color:var(--p); padding:6px 18px; border-radius:25px; font-weight:800; font-size:0.8rem;">CHIEF DEVELOPER | AGE 16</span></div>
+            <p style="text-align:left; font-size:0.95rem; line-height:1.9; color: #475569;">
+                Built specifically for the Godamuduna community, this portal is a demonstration of <b>Advanced API Integration</b> and <b>Mobile Sensor Matrix technology</b>. As a 16-year-old developer, I designed this end-to-end system to serve Masjidul Hasanath with professional-grade digital tools, featuring an optimized <b>0.6px Auto-Scroll reading engine</b> and precision Qibla orientation.
+            </p>
+            <a href="mailto:hamadfazmil455@gmail.com" class="btn-action" style="display:block; text-decoration:none;">MESSAGE THE DEVELOPER</a>
         </div>
     </section>
 
-    <!-- NAVIGATION -->
     <nav>
         <button onclick="tab('home', this)" class="active"><i class="fas fa-mosque"></i><span>Home</span></button>
         <button onclick="tab('quran', this)"><i class="fas fa-book-open"></i><span>Quran</span></button>
         <button onclick="tab('tools', this)"><i class="fas fa-microchip"></i><span>Tools</span></button>
         <button onclick="tab('me', this)"><i class="fas fa-id-badge"></i><span>Hamad</span></button>
-        <button onclick="tab('about', this)"><i class="fas fa-info-circle"></i><span>About</span></button>
-        <button onclick="tab('privacy', this)"><i class="fas fa-user-secret"></i><span>Privacy</span></button>
-        <button onclick="tab('terms', this)"><i class="fas fa-file-contract"></i><span>Terms</span></button>
-        <button onclick="tab('contact', this)"><i class="fas fa-envelope"></i><span>Contact</span></button>
     </nav>
 </div>
 
 <script>
-    // ...existing JavaScript functions remain unchanged...
+    let scrollJob, scrollPos = 0;
+
+    function openSecurity() {
+        document.querySelectorAll('.l-btn').forEach(b => b.style.display='none');
+        document.getElementById('g_id_signin').style.display='flex';
+        google.accounts.id.initialize({
+            client_id: "318225024149-0hjour8gpcp0in6l9ksb415ba6aqvn03.apps.googleusercontent.com",
+            callback: (r) => { if(r.credential) { document.getElementById('gate').style.display='none'; document.getElementById('app').style.display='block'; setup(); } }
+        });
+        google.accounts.id.renderButton(document.getElementById("g_id_signin"), {theme:"filled_blue", size:"large", shape:"pill"});
+    }
+
+    function setup() {
+        // Load 30 Juz
+        const s = document.getElementById('sSel');
+        for(let i=1; i<=114; i++) {
+            let o = document.createElement('option'); o.value = i;
+            o.text = i + ". Surah " + i.toString().padStart(3, '0');
+            s.appendChild(o);
+        }
+        
+        // Load 45 Duas
+        const d = document.getElementById('duaSel');
+        for(let i=1; i<=45; i++) { let o = document.createElement('option'); o.value = i; o.text = "Daily Dua #" + i; d.appendChild(o); }
+
+        // Data from IMG_4244.jpg
+        const prayerData = [
+            { date: "19-22 Feb", sahar: "5:04 AM", fajr: "5:06 AM", luhr: "12:23 PM", asr: "3:43 PM", magrib: "6:20 PM", isha: "7:30 PM" },
+            { date: "23-25 Feb", sahar: "5:03 AM", fajr: "5:05 AM", luhr: "12:22 PM", asr: "3:42 PM", magrib: "6:21 PM", isha: "7:30 PM" },
+            { date: "26-28 Feb", sahar: "5:03 AM", fajr: "5:05 AM", luhr: "12:21 PM", asr: "3:41 PM", magrib: "6:21 PM", isha: "7:30 PM" },
+            { date: "01-04 Mar", sahar: "5:01 AM", fajr: "5:03 AM", luhr: "12:21 PM", asr: "3:39 PM", magrib: "6:21 PM", isha: "7:29 PM" },
+            { date: "05-08 Mar", sahar: "4:59 AM", fajr: "5:01 AM", luhr: "12:20 PM", asr: "3:35 PM", magrib: "6:20 PM", isha: "7:29 PM" },
+            { date: "09-13 Mar", sahar: "4:58 AM", fajr: "5:00 AM", luhr: "12:19 PM", asr: "3:34 PM", magrib: "6:20 PM", isha: "7:29 PM" },
+            { date: "14-17 Mar", sahar: "4:56 AM", fajr: "4:58 AM", luhr: "12:18 PM", asr: "3:31 PM", magrib: "6:20 PM", isha: "7:28 PM" },
+            { date: "18-21 Mar", sahar: "4:54 AM", fajr: "4:56 AM", luhr: "12:17 PM", asr: "3:29 PM", magrib: "6:20 PM", isha: "7:28 PM" },
+            { date: "22-25 Mar", sahar: "4:52 AM", fajr: "4:54 AM", luhr: "12:15 PM", asr: "3:26 PM", magrib: "6:19 PM", isha: "7:28 PM" },
+            { date: "26-27 Mar", sahar: "4:50 AM", fajr: "4:52 AM", luhr: "12:14 PM", asr: "3:24 PM", magrib: "6:19 PM", isha: "7:28 PM" }
+        ];
+
+        const t = document.getElementById('ttable');
+        prayerData.forEach(p => {
+            t.innerHTML += `
+                <div class="card" style="padding:15px; margin-bottom:15px;">
+                    <div style="font-weight:700; color:var(--g); margin-bottom:10px;">📅 ${p.date}</div>
+                    <div class="time-row"><span class="time-label">Sahar End</span><span class="time-val">${p.sahar}</span></div>
+                    <div class="time-row"><span class="time-label">Fajr</span><span class="time-val">${p.fajr}</span></div>
+                    <div class="time-row"><span class="time-label">Luhr</span><span class="time-val">${p.luhr}</span></div>
+                    <div class="time-row"><span class="time-label">Asr</span><span class="time-val">${p.asr}</span></div>
+                    <div class="time-row"><span class="time-label">Magrib</span><span class="time-val">${p.magrib}</span></div>
+                    <div class="time-row"><span class="time-label">Isha</span><span class="time-val">${p.isha}</span></div>
+                </div>
+            `;
+        });
+
+        setInterval(() => {
+            let g = new Date("Feb 19, 2026 00:00:00") - new Date();
+            if(g<0) { document.getElementById('timer').innerText = "Ramadan Mubarak!"; return; }
+            document.getElementById('timer').innerText = Math.floor(g/86400000)+"d "+Math.floor((g%86400000)/3600000)+"h "+Math.floor((g%3600000)/60000)+"m";
+        }, 1000);
+    }
+
+    async function loadQuran() {
+        const n = document.getElementById('sSel').value;
+        const txt = document.getElementById('qText');
+        const aud = document.getElementById('qAudio');
+        txt.innerText = "Connecting to API...";
+        try {
+            const res = await fetch(`https://api.alquran.cloud/v1/surah/${n}`);
+            const data = await res.json();
+            txt.innerHTML = data.data.ayahs.map(a => a.text + ` <span style="color:var(--g)">(${a.numberInSurah})</span> `).join(" ");
+            aud.src = `https://server8.mp3quran.net/afs/${n.padStart(3, '0')}.mp3`;
+            aud.play();
+            scrollPos = 0;
+        } catch(e) { txt.innerText = "Network Error."; }
+    }
+
+    function playScroll() {
+        scrollJob = setInterval(() => {
+            scrollPos += 0.6; // Precision Auto-Scroll Algorithm
+            document.getElementById('readWin').scrollTop = scrollPos;
+            document.getElementById('vBar').style.width = (scrollPos/25) + "%";
+        }, 100);
+    }
+
+    function stopScroll() { clearInterval(scrollJob); }
+
+    function syncSensors() {
+        if(typeof DeviceOrientationEvent.requestPermission==='function') {
+            DeviceOrientationEvent.requestPermission().then(s => { if(s==='granted') window.addEventListener('deviceorientation', rot); });
+        } else { window.addEventListener('deviceorientation', rot); }
+    }
+
+    function rot(e) {
+        let h = e.webkitCompassHeading || (360 - e.alpha);
+        if(h) document.getElementById('ndl').style.transform = `rotate(${- (h - 298.5)}deg)`;
+    }
+
+    function chat() {
+        let i = document.getElementById('cIn').value; if(!i) return;
+        document.getElementById('cWin').innerHTML += `<br><b>User:</b> ${i}<br><b>Bot:</b> As configured by Hamad, Ramadan begins on Feb 19. Check the Home tab for times!`;
+        document.getElementById('cIn').value = "";
+    }
+
+    function calcZ() {
+        let v = document.getElementById('zVal').value;
+        document.getElementById('zRes').innerText = v ? "Zakat Due: LKR " + (v * 0.025).toLocaleString() : "";
+    }
 
     function tab(id, b) {
         document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
@@ -141,6 +269,11 @@
         document.querySelectorAll('nav button').forEach(n=>n.classList.remove('active'));
         b.classList.add('active');
         window.scrollTo(0,0);
+    }
+
+    function tMode() {
+        let d = document.documentElement;
+        d.setAttribute('data-theme', d.getAttribute('data-theme')==='dark'?'light':'dark');
     }
 </script>
 </body>
