@@ -17,8 +17,10 @@
         #gate { position: fixed; inset: 0; background: var(--grad); z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; text-align: center; }
         .gate-card { background: rgba(255,255,255,0.08); padding: 40px; border-radius: 35px; border: 1px solid rgba(255,255,255,0.15); width: 90%; max-width: 420px; backdrop-filter: blur(25px); }
 
+        .header-user-group { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; }
         .user-top-right { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.15); padding: 5px 12px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.2); font-size: 0.75rem; font-weight: 600; color: white; }
         .user-top-right img { width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid var(--g); }
+        .logout-link { color: #ff9b9b; font-size: 0.65rem; font-weight: 700; text-decoration: none; background: rgba(0,0,0,0.2); padding: 2px 8px; border-radius: 10px; cursor: pointer; border: none; }
 
         .ticker { background: var(--g); color: var(--p); padding: 12px 0; font-weight: 800; font-size: 0.85rem; overflow: hidden; white-space: nowrap; border-bottom: 3px solid var(--p); position: sticky; top: 0; z-index: 1000; }
         .ticker-m { display: inline-block; animation: scroll 40s linear infinite; padding-left: 100%; }
@@ -43,6 +45,10 @@
         .arabic-text { font-family: 'Amiri', serif; font-size: 1.8rem; line-height: 2.2; text-align: center; color: var(--p); direction: rtl; }
         
         #quranViewer { max-height: 400px; overflow-y: auto; padding: 15px; border: 1px solid #eee; border-radius: 15px; background: #fffdf9; margin-top: 15px; display: none; }
+
+        /* Zakat Calculator Styles */
+        .calc-input { width: 100%; padding: 15px; border-radius: 15px; border: 1px solid #ddd; margin-bottom: 10px; font-size: 1rem; }
+        .calc-res { background: var(--a); padding: 15px; border-radius: 15px; margin-top: 15px; text-align: center; border: 1px dashed var(--p); }
     </style>
 </head>
 <body>
@@ -62,9 +68,12 @@
     
     <header>
         <div><h3 style="margin:0;">Masjidul Hasanath</h3></div>
-        <div class="user-top-right" id="userArea">
-            <span id="userName">User</span>
-            <img id="userImg" src="">
+        <div class="header-user-group">
+            <div class="user-top-right" id="userArea">
+                <span id="userName">User</span>
+                <img id="userImg" src="">
+            </div>
+            <button class="logout-link" onclick="logout()">LOGOUT <i class="fas fa-sign-out-alt"></i></button>
         </div>
     </header>
 
@@ -131,6 +140,17 @@
             <button class="btn-action" onclick="countTasbih()">TAP TO COUNT</button>
             <button onclick="resetTasbih()" style="margin-top:15px; background:none; border:none; text-decoration:underline; cursor:pointer;">Reset</button>
         </div>
+
+        <div class="card">
+            <h3><i class="fas fa-calculator"></i> Zakat Calculator</h3>
+            <p style="font-size:0.8rem; margin-bottom:15px;">Enter your total Zakatable wealth (Cash, Gold, Silver, Trade goods) to calculate 2.5%.</p>
+            <input type="number" id="zWealth" class="calc-input" placeholder="Enter Total Amount">
+            <button class="btn-action" onclick="calcZakat()">CALCULATE</button>
+            <div id="zResult" class="calc-res" style="display:none;">
+                <small>Required Zakat (2.5%):</small>
+                <h2 id="zAmount" style="margin:5px 0; color:var(--p);">0.00</h2>
+            </div>
+        </div>
     </section>
 
     <section id="me">
@@ -138,7 +158,13 @@
             <div style="width:100px; height:100px; background:var(--grad); border-radius:50%; margin:0 auto 20px; display:flex; align-items:center; justify-content:center; color:white; font-size:2.5rem;"><i class="fas fa-user-gear"></i></div>
             <h2>Hamad Fazmil</h2>
             <div style="margin:12px 0;"><span style="background:var(--a); color:var(--p); padding:6px 18px; border-radius:25px; font-weight:800; font-size:0.8rem;">DEVELOPER | AGE 16</span></div>
-            <p style="text-align:left; font-size:0.9rem; line-height:1.8;">Built with passion for Godamuduna residents. This portal ensures our community stays connected and spiritually synchronized.</p>
+            
+            <div style="text-align:left; font-size:0.9rem; line-height:1.8;">
+                <p>Assalamu Alaikum! I am Hamad Fazmil, a passionate 16-year-old developer dedicated to creating digital solutions for the Ummah.</p>
+                <p><strong>My Vision:</strong> This portal for Masjidul Hasanath was built entirely with the Godamuduna residents in mind. My goal is to combine modern technology with our spiritual traditions to keep our community connected, informed, and synchronized during Ramadan and beyond.</p>
+                <p><strong>Experience:</strong> Despite my young age, I focus on building responsive, user-friendly web applications that solve real-world problems. This project is a blend of my technical skills and my love for our village.</p>
+                <p>I hope this tool helps you in your daily worship. Please keep me in your Duas as I continue to develop more for our community.</p>
+            </div>
         </div>
     </section>
 
@@ -247,6 +273,14 @@
         checkUserLocation();
     }
 
+    function logout() {
+        google.accounts.id.disableAutoSelect();
+        document.getElementById('app').style.display = 'none';
+        document.getElementById('gate').style.display = 'flex';
+        // Reload for complete fresh state
+        location.reload();
+    }
+
     function setupData() {
         const feb = document.getElementById('febBody');
         febData.forEach(p => {
@@ -327,6 +361,14 @@
     function resetTasbih() { tCount = 0; document.getElementById('tasbihVal').innerText = 0; }
     function setRem(time) { alert("Reminder set for " + time); }
     
+    function calcZakat() {
+        const wealth = document.getElementById('zWealth').value;
+        if(wealth <= 0) { alert("Please enter a valid amount"); return; }
+        const result = (wealth * 0.025).toFixed(2);
+        document.getElementById('zAmount').innerText = result;
+        document.getElementById('zResult').style.display = 'block';
+    }
+
     function tab(id, btn) {
         document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
         document.getElementById(id).classList.add('active');
