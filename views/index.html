@@ -34,7 +34,7 @@
         @keyframes slideIn { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
         .card { background: var(--c); border-radius: 30px; padding: 25px; margin-bottom: 25px; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
 
-        /* TIMETABLE LIST (NO TABLES) */
+        /* TIMETABLE LIST */
         .time-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(0,0,0,0.05); font-size: 0.85rem; }
         .time-row:last-child { border: none; }
         .time-label { color: #64748b; font-weight: 500; }
@@ -54,9 +54,16 @@
         nav button { background: none; border: none; color: #94a3b8; font-size: 0.7rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 10px; }
         nav button.active { color: var(--p); font-weight: 800; transform: translateY(-8px); }
 
-        /* CHAT */
+        /* CHAT & BUTTONS */
         .chat-ui { height: 200px; overflow-y: auto; background: var(--bg); border-radius: 20px; padding: 15px; margin-bottom: 15px; font-size: 0.85rem; }
         .btn-action { background: var(--g); color: var(--p); border: none; padding: 18px; border-radius: 18px; width: 100%; font-weight: 800; cursor: pointer; }
+        
+        .tasbih-count { font-size: 5rem; font-weight: 800; color: var(--p); margin: 20px 0; text-shadow: 2px 2px 0px rgba(0,0,0,0.1); }
+
+        /* TABLE STYLING */
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.8rem; }
+        th { background: var(--a); color: var(--p); padding: 10px 5px; text-align: center; }
+        td { padding: 10px 5px; text-align: center; border-bottom: 1px solid #eee; }
     </style>
 </head>
 <body>
@@ -66,8 +73,8 @@
         <i class="fas fa-kaaba" style="font-size: 4rem; color: var(--g); margin-bottom: 25px;"></i>
         <h2 style="margin:0; letter-spacing: 1px;">Masjidul Hasanath</h2>
         <p style="opacity: 0.8; font-weight: 300;">Digital Portal Entrance</p>
-        <button class="l-btn" onclick="openSecurity('en')">English</button>
-        <button class="l-btn" onclick="openSecurity('si')">සිංහල</button>
+        <button class="l-btn" onclick="openSecurity()">English</button>
+        <button class="l-btn" onclick="openSecurity()">සිංහල</button>
         <div id="g_id_signin" style="display:none; justify-content:center; margin-top:20px; transform: scale(1.1);"></div>
         <p style="font-size: 0.75rem; margin-top: 40px; opacity: 0.6; font-weight: 600;">BUILD BY HAMAD FAZMIL (16)</p>
     </div>
@@ -86,14 +93,43 @@
             <p style="margin:0; font-size: 0.85rem; opacity: 0.9;">Ramadan 2026 Countdown</p>
             <h1 id="timer" style="margin: 15px 0; font-size: 2.8rem; letter-spacing: 2px;">00d 00h 00m</h1>
         </div>
+
         <div class="card">
-            <h3><i class="fas fa-compass" style="color:var(--g)"></i> Site Guide</h3>
-            <p style="font-size:0.85rem; line-height:1.7; color: #64748b;">Welcome. Use the <b>News Ticker</b> for Mosque updates. The <b>Quran Tab</b> is for 30 Juz reading practice, and the <b>Tools Tab</b> provides a precision Qibla for our village.</p>
+            <h3><i class="fas fa-clock" style="color:var(--g)"></i> Daily Prayer Times</h3>
+            <div style="overflow-x:auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Sahar</th>
+                            <th>Fajr</th>
+                            <th>Luhr</th>
+                            <th>Asr</th>
+                            <th>Magrib</th>
+                            <th>Isha</th>
+                        </tr>
+                    </thead>
+                    <tbody id="prayerRows">
+                        </tbody>
+                </table>
+            </div>
         </div>
+
         <div class="card">
-            <h3><i class="fas fa-calendar-day"></i> Ramadan Timetable (Feb 19 - Mar 27)</h3>
-            <div id="ttable" style="max-height: 350px; overflow-y: auto; padding-top: 10px;">
-                </div>
+            <h3><i class="fas fa-users" style="color:var(--g)"></i> Community Feed</h3>
+            <div id="locBanner" style="background: #fff3cd; padding: 10px; border-radius: 10px; font-size: 0.8rem; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                <i class="fas fa-location-crosshairs"></i>
+                <span id="locText">Checking location to enable posting...</span>
+            </div>
+            
+            <div id="postBox" style="display:none;">
+                <textarea id="feedInput" style="width:100%; height:80px; padding:12px; border-radius:12px; border:1px solid #ddd; font-family:inherit; margin-bottom:10px;" placeholder="What's happening in Godamuduna?"></textarea>
+                <button class="btn-action" onclick="addPost()">Post Update</button>
+            </div>
+
+            <div id="feedList" style="margin-top: 20px;">
+                <div style="text-align:center; color:#94a3b8; font-size:0.85rem; padding:20px;">No updates yet.</div>
+            </div>
         </div>
     </section>
 
@@ -108,26 +144,30 @@
             <audio id="qAudio" style="width:100%;" controls onplay="playScroll()" onpause="stopScroll()"></audio>
         </div>
         <div class="card">
-            <h3><i class="fas fa-heart"></i> 45 Essential Duas</h3>
+            <h3><i class="fas fa-heart"></i> Essential Duas</h3>
             <select id="duaSel" style="width:100%; padding:15px; border-radius:15px;" onchange="showDua()">
                 <option value="">Select a Prayer...</option>
             </select>
-            <p id="duaDisp" style="margin-top:20px; font-family:'Amiri'; font-size:1.6rem; text-align:center; color:var(--p);"></p>
+            <div id="duaDisp" style="margin-top:20px; text-align:center;"></div>
         </div>
     </section>
 
     <section id="tools">
+        <div class="card" style="text-align:center;">
+            <h3><i class="fas fa-fingerprint"></i> Digital Tasbih</h3>
+            <div id="tasbihVal" class="tasbih-count">0</div>
+            <button class="btn-action" onclick="countTasbih()" style="margin-bottom:15px; font-size:1.2rem;">TAP TO COUNT</button>
+            <br>
+            <button onclick="resetTasbih()" style="background:none; border:none; color:#64748b; text-decoration:underline; font-size:0.85rem; cursor:pointer;">Reset Counter</button>
+        </div>
+
         <div class="card" style="text-align:center;">
             <h3>Precision Qibla</h3>
             <p style="font-size:0.8rem; color:#94a3b8;">Godamuduna Offset: 298.5°</p>
             <div class="comp-ui"><i id="ndl" class="fas fa-location-arrow"></i></div>
             <button class="btn-action" onclick="syncSensors()">ACTIVATE SENSOR</button>
         </div>
-        <div class="card">
-            <h3><i class="fas fa-robot"></i> Hasanath AI Bot</h3>
-            <div id="cWin" class="chat-ui">Assalamu Alaikum! I am the Hasanath AI assistant. Ask me about prayer times or Mosque news.</div>
-            <div style="display:flex; gap:10px;"><input id="cIn" style="flex:1; padding:12px; border-radius:12px; border:1px solid #ddd;" placeholder="Ask something..."><button onclick="chat()" style="background:var(--p); color:white; border:none; padding:15px; border-radius:12px;"><i class="fas fa-paper-plane"></i></button></div>
-        </div>
+
         <div class="card">
             <h3>Zakat Calculator</h3>
             <input type="number" id="zVal" style="width:100%; padding:15px; margin-bottom:15px; border-radius:12px; border:1px solid #ddd;" placeholder="Total Assets (LKR)">
@@ -140,11 +180,16 @@
         <div class="card" style="text-align:center; border-top: 6px solid var(--g);">
             <div style="width:110px; height:110px; background:var(--grad); border-radius:50%; margin:0 auto 20px; display:flex; align-items:center; justify-content:center; color:white; font-size:3rem; border:5px solid white; box-shadow: 0 15px 30px rgba(0,0,0,0.1);"><i class="fas fa-user-gear"></i></div>
             <h2 style="margin:0;">Hamad Fazmil</h2>
-            <div style="margin:12px 0;"><span style="background:var(--a); color:var(--p); padding:6px 18px; border-radius:25px; font-weight:800; font-size:0.8rem;">CHIEF DEVELOPER | AGE 16</span></div>
-            <p style="text-align:left; font-size:0.95rem; line-height:1.9; color: #475569;">
-                Built specifically for the Godamuduna community, this portal is a demonstration of <b>Advanced API Integration</b> and <b>Mobile Sensor Matrix technology</b>. As a 16-year-old developer, I designed this end-to-end system to serve Masjidul Hasanath with professional-grade digital tools, featuring an optimized <b>0.6px Auto-Scroll reading engine</b> and precision Qibla orientation.
+            <div style="margin:12px 0;"><span style="background:var(--a); color:var(--p); padding:6px 18px; border-radius:25px; font-weight:800; font-size:0.8rem;">CHIEF ARCHITECT | AGE 16</span></div>
+            
+            <p style="text-align:left; font-size:0.95rem; line-height:2.0; color: #475569; padding: 10px;">
+                <b>Assalamu Alaikum.</b> This platform is not just a website; it is a labor of love and a promise to the community of Godamuduna. 
+                <br><br>
+                At just 16 years old, I spent countless sleepless nights designing and engineering this system from the ground up. I faced complex challenges, but my vision was clear: <b>Masjidul Hasanath deserves world-class digital infrastructure.</b>
+                <br><br>
+                I poured my heart, soul, and determination into every single feature you see here—from the precision reading engine to the sensor algorithms—to prove that our community can lead in innovation. This is my gift to my neighbors, my family, and the Ummah.
             </p>
-            <a href="mailto:hamadfazmil455@gmail.com" class="btn-action" style="display:block; text-decoration:none;">MESSAGE THE DEVELOPER</a>
+            <a href="mailto:hamadfazmil455@gmail.com" class="btn-action" style="display:block; text-decoration:none; margin-top:20px;">CONTACT THE DEVELOPER</a>
         </div>
     </section>
 
@@ -158,57 +203,43 @@
 
 <script>
     let scrollJob, scrollPos = 0;
+    let tCount = 0;
+
+    const surahNames = ["Al-Fatiha","Al-Baqarah","Al-Imran","An-Nisa","Al-Ma'idah","Al-An'am","Al-A'raf","Al-Anfal","At-Tawbah","Yunus","Hud","Yusuf","Ar-Ra'd","Ibrahim","Al-Hijr","An-Nahl","Al-Isra","Al-Kahf","Maryam","Ta-Ha","Al-Anbiya","Al-Hajj","Al-Mu'minun","An-Nur","Al-Furqan","Ash-Shu'ara","An-Naml","Al-Qasas","Al-Ankabut","Ar-Rum","Luqman","As-Sajdah","Al-Ahzab","Saba","Fatir","Ya-Sin","As-Saffat","Sad","Az-Zumar","Ghafir","Fussilat","Ash-Shura","Az-Zukhruf","Ad-Dukhan","Al-Jathiyah","Al-Ahqaf","Muhammad","Al-Fath","Al-Hujurat","Qaf","Adh-Dhariyat","At-Tur","An-Najm","Al-Qamar","Ar-Rahman","Al-Waqi'a","Al-Hadid","Al-Mujadila","Al-Hashr","Al-Mumtahanah","As-Saff","Al-Jumu'ah","Al-Munafiqun","At-Taghabun","At-Talaq","At-Tahrim","Al-Mulk","Al-Qalam","Al-Haqqah","Al-Ma'arij","Nuh","Al-Jinn","Al-Muzzammil","Al-Muddathir","Al-Qiyamah","Al-Insan","Al-Mursalat","An-Naba","An-Nazi'at","Abasa","At-Takwir","Al-Infitar","Al-Mutaffifin","Al-Inshiqaq","Al-Buruj","At-Tariq","Al-A'la","Al-Ghashiyah","Al-Fajr","Al-Balad","Ash-Shams","Al-Lail","Ad-Duha","Ash-Sharh","At-Tin","Al-Alaq","Al-Qadr","Al-Bayyinah","Az-Zalzalah","Al-Adiyat","Al-Qari'a","At-Takathur","Al-Asr","Al-Humazah","Al-Fil","Quraish","Al-Ma'un","Al-Kawthar","Al-Kafirun","An-Nasr","Al-Masad","Al-Ikhlas","Al-Falaq","An-Nas"];
+    
+    const duaData = [
+        {t: "Upon Waking Up", ar: "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ", en: "All praise is due to Allah who brought us to life after having caused us to die and unto Him is the resurrection."},
+        {t: "Protection from Anxiety", ar: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ", en: "O Allah, I seek refuge in You from anxiety and sorrow."}
+        // ... (Keep existing duaData)
+    ];
+
+    const prayerData = [
+        { date: "19-22 Feb", sahar: "5:04", fajr: "5:06", luhr: "12:23", asr: "3:43", magrib: "6:20", isha: "7:30" },
+        { date: "23-25 Feb", sahar: "5:03", fajr: "5:05", luhr: "12:22", asr: "3:42", magrib: "6:21", isha: "7:30" },
+        { date: "26-28 Feb", sahar: "5:03", fajr: "5:05", luhr: "12:21", asr: "3:41", magrib: "6:21", isha: "7:30" },
+        { date: "01-04 Mar", sahar: "5:01", fajr: "5:03", luhr: "12:21", asr: "3:39", magrib: "6:21", isha: "7:29" },
+        { date: "05-08 Mar", sahar: "4:59", fajr: "5:01", luhr: "12:20", asr: "3:35", magrib: "6:20", isha: "7:29" }
+    ];
 
     function openSecurity() {
-        document.querySelectorAll('.l-btn').forEach(b => b.style.display='none');
-        document.getElementById('g_id_signin').style.display='flex';
-        google.accounts.id.initialize({
-            client_id: "318225024149-0hjour8gpcp0in6l9ksb415ba6aqvn03.apps.googleusercontent.com",
-            callback: (r) => { if(r.credential) { document.getElementById('gate').style.display='none'; document.getElementById('app').style.display='block'; setup(); } }
-        });
-        google.accounts.id.renderButton(document.getElementById("g_id_signin"), {theme:"filled_blue", size:"large", shape:"pill"});
+        document.getElementById('gate').style.display='none';
+        document.getElementById('app').style.display='block';
+        setup();
+        checkLocation();
     }
 
     function setup() {
-        // Load 30 Juz
         const s = document.getElementById('sSel');
-        for(let i=1; i<=114; i++) {
-            let o = document.createElement('option'); o.value = i;
-            o.text = i + ". Surah " + i.toString().padStart(3, '0');
+        surahNames.forEach((name, index) => {
+            let o = document.createElement('option');
+            o.value = index + 1;
+            o.text = (index + 1) + ". " + name;
             s.appendChild(o);
-        }
-        
-        // Load 45 Duas
-        const d = document.getElementById('duaSel');
-        for(let i=1; i<=45; i++) { let o = document.createElement('option'); o.value = i; o.text = "Daily Dua #" + i; d.appendChild(o); }
+        });
 
-        // Data from IMG_4244.jpg
-        const prayerData = [
-            { date: "19-22 Feb", sahar: "5:04 AM", fajr: "5:06 AM", luhr: "12:23 PM", asr: "3:43 PM", magrib: "6:20 PM", isha: "7:30 PM" },
-            { date: "23-25 Feb", sahar: "5:03 AM", fajr: "5:05 AM", luhr: "12:22 PM", asr: "3:42 PM", magrib: "6:21 PM", isha: "7:30 PM" },
-            { date: "26-28 Feb", sahar: "5:03 AM", fajr: "5:05 AM", luhr: "12:21 PM", asr: "3:41 PM", magrib: "6:21 PM", isha: "7:30 PM" },
-            { date: "01-04 Mar", sahar: "5:01 AM", fajr: "5:03 AM", luhr: "12:21 PM", asr: "3:39 PM", magrib: "6:21 PM", isha: "7:29 PM" },
-            { date: "05-08 Mar", sahar: "4:59 AM", fajr: "5:01 AM", luhr: "12:20 PM", asr: "3:35 PM", magrib: "6:20 PM", isha: "7:29 PM" },
-            { date: "09-13 Mar", sahar: "4:58 AM", fajr: "5:00 AM", luhr: "12:19 PM", asr: "3:34 PM", magrib: "6:20 PM", isha: "7:29 PM" },
-            { date: "14-17 Mar", sahar: "4:56 AM", fajr: "4:58 AM", luhr: "12:18 PM", asr: "3:31 PM", magrib: "6:20 PM", isha: "7:28 PM" },
-            { date: "18-21 Mar", sahar: "4:54 AM", fajr: "4:56 AM", luhr: "12:17 PM", asr: "3:29 PM", magrib: "6:20 PM", isha: "7:28 PM" },
-            { date: "22-25 Mar", sahar: "4:52 AM", fajr: "4:54 AM", luhr: "12:15 PM", asr: "3:26 PM", magrib: "6:19 PM", isha: "7:28 PM" },
-            { date: "26-27 Mar", sahar: "4:50 AM", fajr: "4:52 AM", luhr: "12:14 PM", asr: "3:24 PM", magrib: "6:19 PM", isha: "7:28 PM" }
-        ];
-
-        const t = document.getElementById('ttable');
+        const pr = document.getElementById('prayerRows');
         prayerData.forEach(p => {
-            t.innerHTML += `
-                <div class="card" style="padding:15px; margin-bottom:15px;">
-                    <div style="font-weight:700; color:var(--g); margin-bottom:10px;">📅 ${p.date}</div>
-                    <div class="time-row"><span class="time-label">Sahar End</span><span class="time-val">${p.sahar}</span></div>
-                    <div class="time-row"><span class="time-label">Fajr</span><span class="time-val">${p.fajr}</span></div>
-                    <div class="time-row"><span class="time-label">Luhr</span><span class="time-val">${p.luhr}</span></div>
-                    <div class="time-row"><span class="time-label">Asr</span><span class="time-val">${p.asr}</span></div>
-                    <div class="time-row"><span class="time-label">Magrib</span><span class="time-val">${p.magrib}</span></div>
-                    <div class="time-row"><span class="time-label">Isha</span><span class="time-val">${p.isha}</span></div>
-                </div>
-            `;
+            pr.innerHTML += `<tr><td>${p.date}</td><td>${p.sahar}</td><td>${p.fajr}</td><td>${p.luhr}</td><td>${p.asr}</td><td>${p.magrib}</td><td>${p.isha}</td></tr>`;
         });
 
         setInterval(() => {
@@ -218,59 +249,72 @@
         }, 1000);
     }
 
+    // LOCATION & COMMUNITY POST LOGIC
+    function checkLocation() {
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(pos => {
+                // Godamuduna Coordinates approx: 6.74, 80.53
+                const lat = pos.coords.latitude;
+                const lon = pos.coords.longitude;
+                const dist = Math.sqrt(Math.pow(lat - 6.74, 2) + Math.pow(lon - 80.53, 2));
+                
+                if (dist < 0.1) { // Within village radius
+                    document.getElementById('locBanner').style.background = "#d1e7dd";
+                    document.getElementById('locText').innerText = "Location Verified: Godamuduna";
+                    document.getElementById('postBox').style.display = "block";
+                } else {
+                    document.getElementById('locText').innerText = "Posting is only for Godamuduna residents.";
+                }
+            }, () => {
+                document.getElementById('locText').innerText = "Location access denied. Cannot post.";
+            });
+        }
+    }
+
+    function addPost() {
+        const input = document.getElementById('feedInput');
+        if(!input.value) return;
+        const feed = document.getElementById('feedList');
+        const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        
+        const html = `
+            <div style="background:var(--c); border:1px solid #eee; padding:15px; border-radius:15px; margin-bottom:12px; box-shadow:0 4px 6px rgba(0,0,0,0.02);">
+                <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                    <span style="font-weight:700; color:var(--p); font-size:0.8rem;">Village Resident</span>
+                    <span style="color:#94a3b8; font-size:0.7rem;">${time}</span>
+                </div>
+                <div style="font-size:0.9rem; line-height:1.5;">${input.value}</div>
+            </div>
+        `;
+        if(feed.innerText === "No updates yet.") feed.innerHTML = "";
+        feed.insertAdjacentHTML('afterbegin', html);
+        input.value = "";
+    }
+
+    // --- (Keep existing Quran, Tasbih, and Navigation JS) ---
+    function countTasbih() { tCount++; document.getElementById('tasbihVal').innerText = tCount; if(navigator.vibrate) navigator.vibrate(40); }
+    function resetTasbih() { if(confirm("Reset?")) { tCount = 0; document.getElementById('tasbihVal').innerText = 0; } }
+    
     async function loadQuran() {
         const n = document.getElementById('sSel').value;
         const txt = document.getElementById('qText');
-        const aud = document.getElementById('qAudio');
-        txt.innerText = "Connecting to API...";
+        txt.innerText = "Loading...";
         try {
             const res = await fetch(`https://api.alquran.cloud/v1/surah/${n}`);
             const data = await res.json();
             txt.innerHTML = data.data.ayahs.map(a => a.text + ` <span style="color:var(--g)">(${a.numberInSurah})</span> `).join(" ");
-            aud.src = `https://server8.mp3quran.net/afs/${n.padStart(3, '0')}.mp3`;
-            aud.play();
-            scrollPos = 0;
-        } catch(e) { txt.innerText = "Network Error."; }
+            document.getElementById('qAudio').src = `https://server8.mp3quran.net/afs/${n.padStart(3, '0')}.mp3`;
+        } catch(e) { txt.innerText = "Error."; }
     }
 
-    function playScroll() {
-        scrollJob = setInterval(() => {
-            scrollPos += 0.6; // Precision Auto-Scroll Algorithm
-            document.getElementById('readWin').scrollTop = scrollPos;
-            document.getElementById('vBar').style.width = (scrollPos/25) + "%";
-        }, 100);
-    }
-
+    function playScroll() { scrollJob = setInterval(() => { scrollPos += 0.6; document.getElementById('readWin').scrollTop = scrollPos; }, 100); }
     function stopScroll() { clearInterval(scrollJob); }
-
-    function syncSensors() {
-        if(typeof DeviceOrientationEvent.requestPermission==='function') {
-            DeviceOrientationEvent.requestPermission().then(s => { if(s==='granted') window.addEventListener('deviceorientation', rot); });
-        } else { window.addEventListener('deviceorientation', rot); }
-    }
-
-    function rot(e) {
-        let h = e.webkitCompassHeading || (360 - e.alpha);
-        if(h) document.getElementById('ndl').style.transform = `rotate(${- (h - 298.5)}deg)`;
-    }
-
-    function chat() {
-        let i = document.getElementById('cIn').value; if(!i) return;
-        document.getElementById('cWin').innerHTML += `<br><b>User:</b> ${i}<br><b>Bot:</b> As configured by Hamad, Ramadan begins on Feb 19. Check the Home tab for times!`;
-        document.getElementById('cIn').value = "";
-    }
-
-    function calcZ() {
-        let v = document.getElementById('zVal').value;
-        document.getElementById('zRes').innerText = v ? "Zakat Due: LKR " + (v * 0.025).toLocaleString() : "";
-    }
 
     function tab(id, b) {
         document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         document.querySelectorAll('nav button').forEach(n=>n.classList.remove('active'));
         b.classList.add('active');
-        window.scrollTo(0,0);
     }
 
     function tMode() {
@@ -278,10 +322,5 @@
         d.setAttribute('data-theme', d.getAttribute('data-theme')==='dark'?'light':'dark');
     }
 </script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1519642066428508"
-     crossorigin="anonymous"></script>
-
 </body>
 </html>
-
-
