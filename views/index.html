@@ -2,124 +2,448 @@
 <html lang="en" data-theme="light">
 <head>
 
-<meta name="google-adsense-account" content="ca-pub-1519642066428508">
-<script async
-src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1519642066428508"
-crossorigin="anonymous"></script>
+    <!-- Google AdSense Verification -->
+    <meta name="google-adsense-account" content="ca-pub-1519642066428508">
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="description" content="Official Digital Portal of Masjidul Hasanath Godamuduna.">
-<meta name="robots" content="index, follow">
-<title>Masjidul Hasanath | Official Portal</title>
+    <!-- Google AdSense Auto Ads Script -->
+    <script async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1519642066428508"
+        crossorigin="anonymous"></script>
 
-<script src="https://accounts.google.com/gsi/client" async defer></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Amiri&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<style>
-:root { --p:#064e3b; --g:#d4af37; --bg:#f1f5f9; --t:#0f172a; --c:#ffffff; --a:#f0fdf4; --grad:linear-gradient(135deg,#064e3b 0%,#042f24 100%);}
-*{box-sizing:border-box;}
-body{margin:0;background:var(--bg);color:var(--t);font-family:'Poppins',sans-serif;padding-bottom:110px;}
+    <!-- SEO Meta Description -->
+    <meta name="description" content="Official Digital Portal of Masjidul Hasanath Godamuduna. February 2026 prayer timetable, Ramadan 2026 calendar, Quran reading with audio, 45 essential duas, digital tasbih counter and zakat calculator for the Muslim community.">
 
-.card{background:var(--c);border-radius:30px;padding:25px;margin-bottom:25px;box-shadow:0 20px 25px -5px rgba(0,0,0,0.1);}
-.btn-action{background:var(--g);color:var(--p);border:none;padding:15px;border-radius:15px;width:100%;font-weight:800;cursor:pointer;margin-top:10px;}
-nav{background:var(--c);display:flex;justify-content:space-around;padding:20px 0;position:fixed;bottom:0;width:100%;box-shadow:0 -15px 35px rgba(0,0,0,0.1);}
-nav button{background:none;border:none;color:#94a3b8;font-size:0.7rem;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;}
-nav button.active{color:var(--p);font-weight:800;}
-section{padding:20px;display:none;}
-section.active{display:block;}
-</style>
+    <!-- SEO Robots -->
+    <meta name="robots" content="index, follow">
+
+    <title>Masjidul Hasanath | Official Portal</title>
+
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Amiri&display=swap" rel="stylesheet">
+
+    <style>
+        :root { --p: #064e3b; --g: #d4af37; --bg: #f1f5f9; --t: #0f172a; --c: #ffffff; --a: #f0fdf4; --grad: linear-gradient(135deg, #064e3b 0%, #042f24 100%); }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
+        body { margin: 0; background: var(--bg); color: var(--t); font-family: 'Poppins', sans-serif; padding-bottom: 110px; overflow-x: hidden; }
+
+        #gate { position: fixed; inset: 0; background: var(--grad); z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; text-align: center; }
+        .gate-card { background: rgba(255,255,255,0.08); padding: 40px; border-radius: 35px; border: 1px solid rgba(255,255,255,0.15); width: 90%; max-width: 420px; backdrop-filter: blur(25px); }
+
+        .header-user-group { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; }
+        .user-top-right { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.15); padding: 5px 12px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.2); font-size: 0.75rem; font-weight: 600; color: white; }
+        .user-top-right img { width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid var(--g); }
+        .logout-link { color: #ff9b9b; font-size: 0.65rem; font-weight: 700; text-decoration: none; background: rgba(0,0,0,0.2); padding: 2px 8px; border-radius: 10px; cursor: pointer; border: none; }
+
+        .ticker { background: var(--g); color: var(--p); padding: 12px 0; font-weight: 800; font-size: 0.85rem; overflow: hidden; white-space: nowrap; border-bottom: 3px solid var(--p); position: sticky; top: 0; z-index: 1000; }
+        .ticker-m { display: inline-block; animation: scroll 40s linear infinite; padding-left: 100%; }
+        @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+
+        header { background: var(--grad); padding: 20px; color: white; border-radius: 0 0 40px 40px; display: flex; justify-content: space-between; align-items: center; }
+        section { padding: 20px; display: none; }
+        section.active { display: block; }
+        .card { background: var(--c); border-radius: 30px; padding: 25px; margin-bottom: 25px; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
+
+        table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+        th { background: var(--a); color: var(--p); padding: 10px; text-align: left; }
+        td { padding: 10px; border-bottom: 1px solid #eee; text-align: center; }
+
+        .rem-btn { background: none; border: none; color: var(--g); cursor: pointer; padding: 5px; font-size: 0.9rem; }
+
+        .btn-action { background: var(--g); color: var(--p); border: none; padding: 18px; border-radius: 18px; width: 100%; font-weight: 800; cursor: pointer; margin-bottom: 10px; transition: transform 0.2s; }
+        .btn-action:active { transform: scale(0.95); }
+
+        nav { background: var(--c); display: flex; justify-content: space-around; padding: 20px 0; position: fixed; bottom: 0; width: 100%; box-shadow: 0 -15px 35px rgba(0,0,0,0.1); border-radius: 40px 40px 0 0; z-index: 5000; }
+        nav button { background: none; border: none; color: #94a3b8; font-size: 0.7rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        nav button.active { color: var(--p); font-weight: 800; }
+
+        .arabic-text { font-family: 'Amiri', serif; font-size: 1.8rem; line-height: 2.2; text-align: center; color: var(--p); direction: rtl; }
+
+        #quranViewer { max-height: 400px; overflow-y: auto; padding: 15px; border: 1px solid #eee; border-radius: 15px; background: #fffdf9; margin-top: 15px; display: none; }
+
+        .calc-input { width: 100%; padding: 15px; border-radius: 15px; border: 1px solid #ddd; margin-bottom: 10px; font-size: 1rem; }
+        .calc-res { background: var(--a); padding: 15px; border-radius: 15px; margin-top: 15px; text-align: center; border: 1px dashed var(--p); }
+
+        .lang-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+    </style>
 </head>
 
 <body>
 
-<div id="gate">
-<div style="text-align:center;padding:40px;">
-<h2>Masjidul Hasanath</h2>
-<div id="g_id_signin"></div>
+<!-- Hidden SEO Content for Search Engines -->
+<div style="position:absolute; left:-9999px; top:-9999px;">
+    <h1>Masjidul Hasanath Godamuduna Official Islamic Portal</h1>
+    <p>
+        Masjidul Hasanath digital portal for Godamuduna residents.
+        Features include Ramadan 2026 timetable, February prayer times,
+        Quran reading with audio recitation, 45 essential daily duas,
+        digital tasbih counter and zakat calculator and Islamic tools.
+    </p>
 </div>
+
+
+<div id="gate">
+    <div class="gate-card">
+        <i class="fas fa-kaaba" style="font-size: 4rem; color: var(--g); margin-bottom: 25px;"></i>
+        <h2>Masjidul Hasanath</h2>
+        
+        <div id="langStep">
+            <p style="margin-bottom: 20px;">Select Language / භාෂාව තෝරන්න / மொழி</p>
+            <div class="lang-grid">
+                <button class="btn-action" onclick="setLanguage('en')">English</button>
+                <button class="btn-action" onclick="setLanguage('si')">සිංහල</button>
+                <button class="btn-action" onclick="setLanguage('ta')">தமிழ்</button>
+                <button class="btn-action" onclick="setLanguage('ar')">العربية</button>
+            </div>
+        </div>
+
+        <div id="loginStep" style="display:none;">
+            <p>Digital Portal Entrance</p>
+            <div id="g_id_signin" style="margin-top:20px; display: flex; justify-content: center;"></div>
+            <button onclick="showLangStep()" style="margin-top:25px; background:none; border:none; color:white; font-size:0.75rem; text-decoration:underline; opacity:0.8; cursor:pointer;">Change Language</button>
+        </div>
+
+        <p style="font-size: 0.75rem; margin-top: 40px; opacity: 0.6; font-weight: 600;">BUILT BY HAMAD FAZMIL (16)</p>
+    </div>
 </div>
 
 <div id="app" style="display:none;">
+    <div class="ticker"><div class="ticker-m">📢 NOTICE: RAMADAN 2026 STARTS FEB 19 • DEVELOPED BY HAMAD FAZMIL • DATA SOURCE: GODAMUDUNA OFFICIAL 📢</div></div>
+    
+    <header>
+        <div><h3 style="margin:0;">Masjidul Hasanath</h3></div>
+        <div class="header-user-group">
+            <div class="user-top-right" id="userArea">
+                <span id="userName">User</span>
+                <img id="userImg" src="">
+            </div>
+            <button class="logout-link" onclick="logout()">LOGOUT <i class="fas fa-sign-out-alt"></i></button>
+        </div>
+    </header>
 
-<header style="background:var(--grad);padding:20px;color:white;border-radius:0 0 40px 40px;display:flex;justify-content:space-between;">
-<h3 style="margin:0;">Masjidul Hasanath</h3>
-<div>
-<span id="userName"></span>
-<img id="userImg" style="width:30px;height:30px;border-radius:50%;">
-<button onclick="logout()">Logout</button>
-</div>
-</header>
+    <section id="home" class="active">
+        <div class="card" style="background: var(--grad); color: white; text-align: center;">
+            <p style="margin:0; font-size: 0.85rem;" id="txtCountdown">Ramadan 2026 Countdown</p>
+            <h1 id="timer">00d 00h 00m</h1>
+        </div>
 
-<section id="home" class="active">
+        <div class="card">
+            <h3><i class="fas fa-map-marker-alt"></i> Godamuduna Community Feed</h3>
+            <div id="locStatus" style="font-size:0.75rem; margin-bottom:10px; color:#666;">Verifying resident location...</div>
+            <div id="postArea" style="display:none;">
+                <textarea id="feedMsg" style="width:100%; padding:12px; border-radius:12px; border:1px solid #ddd;" placeholder="Share with the village..."></textarea>
+                <button class="btn-action" onclick="addFeed()" style="margin-top:10px;">Post Update</button>
+            </div>
+            <div id="feedContent" style="margin-top:15px;"></div>
+        </div>
 
-<div class="card">
-<h3>Godamuduna Community Feed</h3>
+        <div class="card">
+            <h3><i class="fas fa-calendar-alt"></i> February 2026 Calendar</h3>
+            <div style="overflow-x:auto;">
+                <table id="febTable">
+                    <thead><tr><th>Date</th><th>Fajr</th><th>Sunrise</th><th>Luhr</th><th>Asr</th><th>Magrib</th><th>Isha</th></tr></thead>
+                    <tbody id="febBody"></tbody>
+                </table>
+            </div>
+        </div>
 
-<!-- POST AREA NOW ALWAYS VISIBLE -->
-<div id="postArea">
-<textarea id="feedMsg" style="width:100%;padding:12px;border-radius:12px;border:1px solid #ddd;" placeholder="Share with the village..."></textarea>
-<button class="btn-action" onclick="addFeed()">Post Update</button>
-</div>
+        <div class="card">
+            <h3><i class="fas fa-moon"></i> Ramadan 2026 Timetable</h3>
+            <div style="overflow-x:auto;">
+                <table id="ramTable">
+                    <thead><tr><th>Period</th><th>Sahar</th><th>Fajr</th><th>Luhr</th><th>Asr</th><th>Magrib</th><th>Isha</th></tr></thead>
+                    <tbody id="ramBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
 
-<div id="feedContent" style="margin-top:15px;"></div>
-</div>
+    <section id="quran">
+        <div class="card">
+            <h3><i class="fas fa-book-open"></i> Al-Quran Al-Kareem</h3>
+            <select id="surahSel" class="btn-action" style="background:white; border:1px solid #ddd;" onchange="fetchSurah()">
+                <option value="">Select Surah (114 Surahs)...</option>
+            </select>
+            <audio id="quranAudio" controls style="width: 100%; margin-top: 15px; display: none;"></audio>
+            <div id="quranViewer" class="arabic-text"></div>
+        </div>
 
-</section>
+        <div class="card">
+            <h3><i class="fas fa-heart"></i> 45 Essential Duas</h3>
+            <select id="duaSel" class="btn-action" style="background:white; border:1px solid #ddd;" onchange="showDua()">
+                <option value="">Select a Dua...</option>
+            </select>
+            <div id="duaDisp" style="margin-top:20px;"></div>
+        </div>
+    </section>
 
-<section id="me">
-<div class="card" style="text-align:center;">
-<h2>Hamad Fazmil</h2>
-<p>Developer | Age 16</p>
-</div>
-</section>
+    <section id="tools">
+        <div class="card" style="text-align:center;">
+            <h3>Digital Tasbih</h3>
+            <div id="tasbihVal" style="font-size: 5rem; font-weight: 800; color: var(--p);">0</div>
+            <button class="btn-action" onclick="countTasbih()">TAP TO COUNT</button>
+            <button onclick="resetTasbih()" style="margin-top:15px; background:none; border:none; text-decoration:underline; cursor:pointer;">Reset</button>
+        </div>
 
-<nav>
-<button onclick="tab('home',this)" class="active"><i class="fas fa-home"></i>Home</button>
-<button onclick="tab('me',this)"><i class="fas fa-user"></i>Hamad</button>
-</nav>
+        <div class="card">
+            <h3><i class="fas fa-calculator"></i> Zakat Calculator</h3>
+            <p style="font-size:0.8rem; margin-bottom:15px;">Enter your total Zakatable wealth (Cash, Gold, Silver, Trade goods) to calculate 2.5%.</p>
+            <input type="number" id="zWealth" class="calc-input" placeholder="Enter Total Amount">
+            <button class="btn-action" onclick="calcZakat()">CALCULATE</button>
+            <div id="zResult" class="calc-res" style="display:none;">
+                <small>Required Zakat (2.5%):</small>
+                <h2 id="zAmount" style="margin:5px 0; color:var(--p);">0.00</h2>
+            </div>
+        </div>
+    </section>
 
+    <section id="me">
+        <div class="card" style="text-align:center; border-top: 6px solid var(--g);">
+            <div style="width:100px; height:100px; background:var(--grad); border-radius:50%; margin:0 auto 20px; display:flex; align-items:center; justify-content:center; color:white; font-size:2.5rem;"><i class="fas fa-user-gear"></i></div>
+            <h2>Hamad Fazmil</h2>
+            <div style="margin:12px 0;"><span style="background:var(--a); color:var(--p); padding:6px 18px; border-radius:25px; font-weight:800; font-size:0.8rem;">DEVELOPER | AGE 16</span></div>
+            
+            <div style="text-align:left; font-size:0.9rem; line-height:1.8;">
+                <p>Assalamu Alaikum! I am Hamad Fazmil, a passionate 16-year-old developer dedicated to creating digital solutions for my masjid.</p>
+                <p><strong>My Vision:</strong> This portal for Masjidul Hasanath was built entirely with the Godamuduna residents in mind.</p>
+                <p>I hope this tool helps you in your daily worship. Please keep me in your Duas as I continue to develop more for our community.</p>
+            </div>
+        </div>
+    </section>
+
+    <nav id="mainNav">
+        <button onclick="tab('home', this)" class="active"><i class="fas fa-home"></i><span id="navHome">Home</span></button>
+        <button onclick="tab('quran', this)"><i class="fas fa-book-open"></i><span id="navQuran">Quran</span></button>
+        <button onclick="tab('tools', this)"><i class="fas fa-toolbox"></i><span id="navTools">Tools</span></button>
+        <button onclick="tab('me', this)"><i class="fas fa-user"></i><span id="navMe">Hamad</span></button>
+    </nav>
 </div>
 
 <script>
-google.accounts.id.initialize({
-client_id:"318225024149-0hjour8gpcp0in6l9ksb415ba6aqvn03.apps.googleusercontent.com",
-callback:handleAuth
-});
-google.accounts.id.renderButton(document.getElementById("g_id_signin"),{theme:"outline",size:"large"});
+    let tCount = 0;
+    let selectedLang = 'en';
 
-function handleAuth(response){
-const payload=JSON.parse(atob(response.credential.split('.')[1]));
-document.getElementById('gate').style.display='none';
-document.getElementById('app').style.display='block';
-document.getElementById('userName').innerText=payload.given_name;
-document.getElementById('userImg').src=payload.picture;
-}
+    const translations = {
+        en: { home: "Home", quran: "Quran", tools: "Tools", me: "Hamad", countdown: "Ramadan 2026 Countdown" },
+        si: { home: "නිවස", quran: "කුර්ආනය", tools: "මෙවලම්", me: "හමාඩ්", countdown: "රාමසාන් 2026 ගණන් කිරීම" },
+        ta: { home: "முகப்பு", quran: "குர்ஆன்", tools: "கருவிகள்", me: "ஹமத்", countdown: "ரமலான் 2026 கவுண்ட்டவுன்" },
+        ar: { home: "الرئيسية", quran: "القرآن", tools: "أدوات", me: "حمد", countdown: "عد تنازلي لرمضان ٢٠٢٦" }
+    };
 
-function logout(){
-google.accounts.id.disableAutoSelect();
-location.reload();
-}
+    const surahList = ["Al-Fatihah","Al-Baqarah","Ali 'Imran","An-Nisa","Al-Ma'idah","Al-An'am","Al-A'raf","Al-Anfal","At-Tawbah","Yunus","Hud","Yusuf","Ar-Ra'd","Ibrahim","Al-Hijr","An-Nahl","Al-Isra","Al-Kahf","Maryam","Ta-Ha","Al-Anbiya","Al-Hajj","Al-Mu'minun","An-Nur","Al-Furqan","Ash-Shu'ara","An-Naml","Al-Qasas","Al-Ankabut","Ar-Rum","Luqman","As-Sajdah","Al-Ahzab","Saba","Fatir","Ya-Sin","As-Saffat","Sad","Az-Zumar","Ghafir","Fussilat","Ash-Shura","Az-Zukhruf","Ad-Dukhan","Al-Jathiyah","Al-Ahqaf","Muhammad","Al-Fath","Al-Hujurat","Qaf","Adh-Dhariyat","At-Tur","An-Najm","Al-Qamar","Ar-Rahman","Al-Waqi'ah","Al-Hadid","Al-Mujadila","Al-Hashr","Al-Mumtahanah","As-Saff","Al-Jumu'ah","Al-Munafiqun","At-Taghabun","At-Talaq","At-Tahrim","Al-Mulk","Al-Qalam","Al-Haqqah","Al-Ma'arij","Nuh","Al-Jinn","Al-Muzzammil","Al-Muddaththir","Al-Qiyamah","Al-Insan","Al-Mursalat","An-Naba","An-Nazi'at","Abasa","At-Takwir","Al-Infitar","Al-Mutaffifin","Al-Inshiqaq","Al-Buruj","At-Tariq","Al-A'la","Al-Ghashiyah","Al-Fajr","Al-Balad","Ash-Shams","Al-Layl","Ad-Duha","Ash-Sharh","At-Tin","Al-Alaq","Al-Qadr","Al-Bayyinah","Az-Zalzalah","Al-Adiyat","Al-Qari'ah","At-Takathur","Al-Asr","Al-Humazah","Al-Fil","Quraysh","Al-Ma'un","Al-Kawthar","Al-Kafirun","An-Nasr","Al-Masad","Al-Ikhlas","Al-Falaq","An-Nas"];
 
-function addFeed(){
-const msg=document.getElementById('feedMsg').value;
-if(!msg)return;
-const post=`<div class="card" style="padding:15px;margin-bottom:10px;">
-<small>Just now</small>
-<p>${msg}</p>
-</div>`;
-document.getElementById('feedContent').insertAdjacentHTML('afterbegin',post);
-document.getElementById('feedMsg').value="";
-}
+    const febData = [
+        {d:"1-Feb", f:"5:08", s:"6:28", l:"12:23", a:"3:45", m:"6:18", i:"7:29"},
+        {d:"5-Feb", f:"5:09", s:"6:28", l:"12:24", a:"3:46", m:"6:19", i:"7:30"},
+        {d:"10-Feb", f:"5:09", s:"6:28", l:"12:24", a:"3:45", m:"6:20", i:"7:30"},
+        {d:"15-Feb", f:"5:08", s:"6:27", l:"12:24", a:"3:45", m:"6:21", i:"7:31"},
+        {d:"20-Feb", f:"5:07", s:"6:25", l:"12:24", a:"3:44", m:"6:21", i:"7:31"},
+        {d:"25-Feb", f:"5:06", s:"6:24", l:"12:23", a:"3:43", m:"6:22", i:"7:31"},
+        {d:"29-Feb", f:"5:05", s:"6:22", l:"12:22", a:"3:41", m:"6:22", i:"7:31"}
+    ];
 
-function tab(id,btn){
-document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
-document.getElementById(id).classList.add('active');
-document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
-btn.classList.add('active');
-}
+    const ramData = [
+        {p:"19-22 Feb", sa:"5:04", f:"5:06", l:"12:23", a:"3:43", m:"6:20", i:"7:30"},
+        {p:"23-25 Feb", sa:"5:03", f:"5:05", l:"12:22", a:"3:42", m:"6:21", i:"7:30"},
+        {p:"26-28 Feb", sa:"5:03", f:"5:05", l:"12:21", a:"3:41", m:"6:21", i:"7:30"},
+        {p:"01-04 Mar", sa:"5:01", f:"5:03", l:"12:21", a:"3:39", m:"6:21", i:"7:29"},
+        {p:"05-08 Mar", sa:"4:59", f:"5:01", l:"12:20", a:"3:35", m:"6:20", i:"7:29"},
+        {p:"09-13 Mar", sa:"4:58", f:"5:00", l:"12:19", a:"3:34", m:"6:20", i:"7:29"},
+        {p:"14-17 Mar", sa:"4:56", f:"4:58", l:"12:18", a:"3:31", m:"6:20", i:"7:28"},
+        {p:"18-21 Mar", sa:"4:54", f:"4:56", l:"12:17", a:"3:29", m:"6:20", i:"7:28"},
+        {p:"22-25 Mar", sa:"4:52", f:"4:54", l:"12:15", a:"3:26", m:"6:19", i:"7:28"},
+        {p:"26-27 Mar", sa:"4:50", f:"4:52", l:"12:14", a:"3:24", m:"6:19", i:"7:28"}
+    ];
+
+    const duaData = [
+        {t: "Waking Up", ar: "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ", en: "All praise is for Allah who gave us life after death..."},
+        {t: "Entering Toilet", ar: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبُثِ وَالْخَبَائِثِ", en: "O Allah, I seek refuge from the male and female filth..."},
+        {t: "Leaving Toilet", ar: "غُفْرَانَكَ", en: "I ask for Your forgiveness."},
+        {t: "Before Wudu", ar: "بِسْمِ اللَّهِ", en: "In the name of Allah."},
+        {t: "After Wudu", ar: "أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ", en: "I bear witness that there is no god but Allah..."},
+        {t: "Entering Mosque", ar: "اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ", en: "O Allah, open the gates of Your mercy for me."},
+        {t: "Leaving Mosque", ar: "اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ فَضْلِكَ", en: "O Allah, I ask You from Your bounty."},
+        {t: "After Adhan", ar: "اللَّهُمَّ رَبَّ هَذِهِ الدَّعْوَةِ التَّامَّةِ", en: "O Allah, Lord of this perfect call..."},
+        {t: "Breaking Fast", ar: "ذَهَبَ الظَّمَأُ وَابْتَلَّتِ الْعُرُوقُ وَثَبَتَ الْأَجْرُ", en: "The thirst is gone, the veins are moist..."},
+        {t: "After Eating", ar: "الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا وَسَقَانَا وَجَعَلَنَا مُسْلِمِينَ", en: "Praise be to Allah who fed us and made us Muslims."},
+        {t: "Before Sleeping", ar: "بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا", en: "In Your name O Allah, I die and I live."},
+        {t: "Leaving Home", ar: "بِسْمِ اللَّهِ تَوَكَّلْتُ عَلَى اللَّهِ لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ", en: "In the name of Allah, I trust in Allah..."},
+        {t: "For Parents", ar: "رَبِّ ارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا", en: "My Lord, have mercy on them as they raised me."},
+        {t: "Seeking Knowledge", ar: "رَبِّ زِدْنِي عِلْمًا", en: "My Lord, increase me in knowledge."},
+        {t: "When Angry", ar: "أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ", en: "I seek refuge in Allah from Satan."},
+        {t: "Entering Market", ar: "لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ", en: "There is no god but Allah alone..."},
+        {t: "During Rain", ar: "اللَّهُمَّ صَيِّبًا نَافِعًا", en: "O Allah, make it a beneficial rain."},
+        {t: "Thunder", ar: "سُبْحَانَ الَّذِي يُسَبِّحُ الرَّعْدُ بِحَمْدِهِ", en: "Glory be to Him whom the thunder glorifies."},
+        {t: "Visiting Sick", ar: "لَا بَأْسَ طَهُورٌ إِنْ شَاءَ اللَّهُ", en: "No harm, a purification if Allah wills."},
+        {t: "Asking for Paradise", ar: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْجَنَّةَ", en: "O Allah, I ask You for Paradise."},
+        {t: "Protection from Hell", ar: "اللَّهُمَّ أَجِرْنِي مِنَ النَّارِ", en: "O Allah, protect me from the Fire."},
+        {t: "Morning Protection", ar: "أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ", en: "I seek refuge in the perfect words of Allah."},
+        {t: "Evening Protection", ar: "بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ", en: "In the name of Allah, with whose name nothing is harmed."},
+        {t: "Before Study", ar: "اللَّهُمَّ انْفَعْنِي بِمَا عَلَّمْتَنِي", en: "O Allah, benefit me with what You taught me."},
+        {t: "Accepting Deeds", ar: "رَبَّنَا تَقَبَّلْ مِنَّا إِنَّكَ أَنْتَ السَّمِيعُ الْعَلِيمُ", en: "Our Lord, accept from us..."},
+        {t: "Travel Dua", ar: "سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَذَا", en: "Glory be to Him who subjected this to us."},
+        {t: "For Patience", ar: "رَبَّنَا أَفْرِغْ عَلَيْنَا صَبْرًا", en: "Our Lord, pour upon us patience."},
+        {t: "Dua for Ease", ar: "اللَّهُمَّ لَا سَهْلَ إِلَّا مَا جَعَلْتَهُ سَهْلًا", en: "O Allah, nothing is easy except what You make easy."},
+        {t: "Forgiveness", ar: "رَبَّنَا اغْفِرْ لَنَا ذُنُوبَنَا", en: "Our Lord, forgive us our sins."},
+        {t: "For Good Health", ar: "اللَّهُمَّ عَافිනِي فِي بَدَنِي", en: "O Allah, grant health to my body."},
+        {t: "Before Class", ar: "رَبِّ اشْرَحْ لِي صَدْرِي", en: "My Lord, expand for me my chest."},
+        {t: "Steadfastness", ar: "يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ", en: "O Turner of hearts, keep my heart firm."},
+        {t: "Against Anxiety", ar: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحُزْنِ", en: "O Allah, I seek refuge from worry and grief."},
+        {t: "Against Debt", ar: "اللَّهُمَّ اكْفِنِي بِحَلَالِكَ عَنْ حَرَامِكَ", en: "O Allah, suffice me with Your halal."},
+        {t: "Sneezing", ar: "الْحَمْدُ لِلَّهِ", en: "Praise be to Allah."},
+        {t: "Hearing Sneeze", ar: "يَرْحَمُكَ اللَّهُ", en: "May Allah have mercy on you."},
+        {t: "Entering Home", ar: "بِسْمِ اللَّهِ وَلَجْنَا وَبِسْمِ اللَّهِ خَرَجْنَا", en: "In the name of Allah we enter and leave."},
+        {t: "Protection from Shirk", ar: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ أَنْ أُشْرِكَ بِكَ", en: "O Allah, I seek refuge from shirk."},
+        {t: "Seeing Someone in Trial", ar: "الْحَمْدُ لِلَّهِ الَّذِي عَافَانِي", en: "Praise be to Allah who spared me..."},
+        {t: "Looking in Mirror", ar: "اللَّهُمَّ كَمَا حَسَّنْتَ خَلْقِي فَحَسِّنْ خُلُقِي", en: "O Allah, beautify my character..."},
+        {t: "Dua for Laylatul Qadr", ar: "اللَّهُمَّ إِنَّكَ عَفُوٌّ تُحِبُّ الْعَفْوَ فَاعْفُ عَنِّي", en: "O Allah, You are Forgiving..."},
+        {t: "Wearing Clothes", ar: "الْحَمْدُ لِلَّهِ الَّذِي كَسَانِي هَذَا", en: "Praise be to Allah who clothed me..."},
+        {t: "Placing Dead in Grave", ar: "بِسْمِ اللَّهِ وَعَلَى مِلَّةِ رَسُولِ اللَّهِ", en: "In the name of Allah and on the path..."},
+        {t: "General Goodness", ar: "رَبَّنَا آتිනَا فِي الدُّنْيَا حَسَنَةً", en: "Our Lord, give us good in this world..."},
+        {t: "End of Meeting", ar: "سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ", en: "Glory be to You O Allah, and praise."}
+    ];
+
+    window.onload = function() {
+        google.accounts.id.initialize({
+            client_id: "318225024149-0hjour8gpcp0in6l9ksb415ba6aqvn03.apps.googleusercontent.com",
+            callback: handleAuth
+        });
+        google.accounts.id.renderButton(document.getElementById("g_id_signin"), { theme: "outline", size: "large" });
+        setupData();
+        populateSurahs();
+    };
+
+    function setLanguage(lang) {
+        selectedLang = lang;
+        document.getElementById('langStep').style.display = 'none';
+        document.getElementById('loginStep').style.display = 'block';
+        applyTranslations();
+    }
+
+    function showLangStep() {
+        document.getElementById('langStep').style.display = 'block';
+        document.getElementById('loginStep').style.display = 'none';
+    }
+
+    function applyTranslations() {
+        const t = translations[selectedLang];
+        document.getElementById('navHome').innerText = t.home;
+        document.getElementById('navQuran').innerText = t.quran;
+        document.getElementById('navTools').innerText = t.tools;
+        document.getElementById('navMe').innerText = t.me;
+        document.getElementById('txtCountdown').innerText = t.countdown;
+    }
+
+    function handleAuth(response) {
+        const payload = JSON.parse(atob(response.credential.split('.')[1]));
+        document.getElementById('gate').style.display = 'none';
+        document.getElementById('app').style.display = 'block';
+        document.getElementById('userName').innerText = payload.given_name;
+        document.getElementById('userImg').src = payload.picture;
+        checkUserLocation();
+    }
+
+    function logout() {
+        google.accounts.id.disableAutoSelect();
+        location.reload();
+    }
+
+    function setupData() {
+        const feb = document.getElementById('febBody');
+        febData.forEach(p => {
+            feb.innerHTML += `<tr><td>${p.d}</td><td>${p.f}<button class="rem-btn" onclick="setRem('${p.f}')">🔔</button></td><td>${p.s}</td><td>${p.l}<button class="rem-btn" onclick="setRem('${p.l}')">🔔</button></td><td>${p.a}<button class="rem-btn" onclick="setRem('${p.a}')">🔔</button></td><td>${p.m}<button class="rem-btn" onclick="setRem('${p.m}')">🔔</button></td><td>${p.i}<button class="rem-btn" onclick="setRem('${p.i}')">🔔</button></td></tr>`;
+        });
+        const ram = document.getElementById('ramBody');
+        ramData.forEach(p => {
+            ram.innerHTML += `<tr><td>${p.p}</td><td>${p.sa}</td><td>${p.f}<button class="rem-btn" onclick="setRem('${p.f}')">🔔</button></td><td>${p.l}<button class="rem-btn" onclick="setRem('${p.l}')">🔔</button></td><td>${p.a}<button class="rem-btn" onclick="setRem('${p.a}')">🔔</button></td><td>${p.m}<button class="rem-btn" onclick="setRem('${p.m}')">🔔</button></td><td>${p.i}<button class="rem-btn" onclick="setRem('${p.i}')">🔔</button></td></tr>`;
+        });
+        const ds = document.getElementById('duaSel');
+        duaData.forEach((d, i) => ds.innerHTML += `<option value="${i}">${i+1}. ${d.t}</option>`);
+
+        setInterval(() => {
+            let diff = new Date("Feb 19, 2026 00:00:00") - new Date();
+            if(diff < 0) { document.getElementById('timer').innerText = "Ramadan Mubarak!"; return; }
+            document.getElementById('timer').innerText = Math.floor(diff/86400000) + "d " + Math.floor((diff%86400000)/3600000) + "h " + Math.floor((diff%3600000)/60000) + "m";
+        }, 1000);
+    }
+
+    function populateSurahs() {
+        const sel = document.getElementById('surahSel');
+        surahList.forEach((name, index) => {
+            sel.innerHTML += `<option value="${index + 1}">${index + 1}. ${name}</option>`;
+        });
+    }
+
+    async function fetchSurah() {
+        const num = document.getElementById('surahSel').value;
+        if(!num) return;
+        const viewer = document.getElementById('quranViewer');
+        viewer.style.display = 'block';
+        viewer.innerText = "Loading Verses...";
+        try {
+            const res = await fetch(`https://api.alquran.cloud/v1/surah/${num}`);
+            const data = await res.json();
+            let content = "";
+            data.data.ayahs.forEach(a => content += a.text + " ﴿" + a.numberInSurah + "﴾ ");
+            viewer.innerText = content;
+            const audio = document.getElementById('quranAudio');
+            audio.src = `https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/${num}.mp3`;
+            audio.style.display = 'block';
+        } catch (e) { viewer.innerText = "Error loading Surah."; }
+    }
+
+    function checkUserLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(pos => {
+                const dist = Math.sqrt(Math.pow(pos.coords.latitude - 6.7383, 2) + Math.pow(pos.coords.longitude - 80.5303, 2));
+                if (dist < 0.1) {
+                    document.getElementById('locStatus').innerText = "✅ Resident Verified: Godamuduna";
+                    document.getElementById('postArea').style.display = 'block';
+                } else {
+                    document.getElementById('locStatus').innerText = "❌ Restricted: Posting allowed for Godamuduna residents only.";
+                }
+            });
+        }
+    }
+
+    function showDua() {
+        const d = duaData[document.getElementById('duaSel').value];
+        if(!d) return;
+        document.getElementById('duaDisp').innerHTML = `<div class="card"><div class="arabic-text">${d.ar}</div><p style="text-align:center; font-style:italic; margin-top:15px; font-size:0.9rem;">"${d.en}"</p></div>`;
+    }
+
+    function addFeed() {
+        const msg = document.getElementById('feedMsg').value;
+        if(!msg) return;
+        const post = `<div class="card" style="padding:15px; margin-bottom:10px;"><small>Just now • Verified Resident</small><p style="margin:5px 0 0 0;">${msg}</p></div>`;
+        document.getElementById('feedContent').insertAdjacentHTML('afterbegin', post);
+        document.getElementById('feedMsg').value = "";
+    }
+
+    function countTasbih() { tCount++; document.getElementById('tasbihVal').innerText = tCount; }
+    function resetTasbih() { tCount = 0; document.getElementById('tasbihVal').innerText = 0; }
+    function setRem(time) { alert("Reminder set for " + time); }
+    
+    function calcZakat() {
+        const wealth = document.getElementById('zWealth').value;
+        if(wealth <= 0) { alert("Please enter a valid amount"); return; }
+        const result = (wealth * 0.025).toFixed(2);
+        document.getElementById('zAmount').innerText = result;
+        document.getElementById('zResult').style.display = 'block';
+    }
+
+    function tab(id, btn) {
+        document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
 </script>
-
 </body>
 </html>
+
+
+remove thisart in the given image from the code of my site
